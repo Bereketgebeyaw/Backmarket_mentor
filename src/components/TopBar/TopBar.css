@@ -1,0 +1,33 @@
+.topbar {
+    height: 60px;
+    width: 100%;
+    background-color: #34495e;
+    color: #ecf0f1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.topbar-left h1 {
+    font-size: 1.2rem;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.topbar-right button {
+    background-color: #e74c3c;
+    color: #ecf0f1;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.topbar-right button:hover {
+    background-color: #c0392b;
+}

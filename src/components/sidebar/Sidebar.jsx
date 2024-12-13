@@ -1,22 +1,31 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import './Sidebar.css'; // Add styling as needed
 
-const Sidebar = () => {
+const Sidebar = ({ role }) => {
+    const menuItems = {
+        buyer: [
+            { name: 'Dashboard', path: '/buyer' }, // Match the default route
+            { name: 'Orders', path: '/buyer/orders' },
+            { name: 'Wishlist', path: '/buyer/wishlist' },
+            { name: 'Support', path: '/buyer/support' },
+        ],
+    };
+
     return (
-        <div className="sidebar">
-            <h2>Dashboard</h2>
-            <nav>
-                <NavLink to="/" exact activeClassName="active">
-                    Home
-                </NavLink>
-                <NavLink to="/user-management" activeClassName="active">
-                    User Management
-                </NavLink>
-                <NavLink to="/settings" activeClassName="active">
-                    Settings
-                </NavLink>
-            </nav>
+        <div style={{ width: '200px', background: '#f4f4f4', padding: '10px' }}>
+            <ul style={{ listStyle: 'none', padding: 0 }}>
+                {menuItems[role]?.map((item, index) => (
+                    <li key={index} style={{ marginBottom: '10px' }}>
+                        <NavLink
+                            to={item.path}
+                            style={{ textDecoration: 'none', color: 'black' }}
+                            activeStyle={{ fontWeight: 'bold', color: 'blue' }}
+                        >
+                            {item.name}
+                        </NavLink>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 };

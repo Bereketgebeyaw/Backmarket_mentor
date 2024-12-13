@@ -1,16 +1,18 @@
 import React from 'react';
-import './TopBar.css';
 
 const TopBar = () => {
     return (
-        <div className="topbar">
-            <div className="topbar-left">
-                <h1>Dashboard</h1>
-            </div>
-            <div className="topbar-right">
-                <span>Admin</span>
-                <button>Logout</button>
-            </div>
+        <div
+            style={{
+                height: '60px',
+                background: '#333',
+                color: '#fff',
+                display: 'flex',
+                alignItems: 'center',
+                padding: '0 20px',
+            }}
+        >
+            <h2>Buyer Dashboard</h2>
         </div>
     );
 };

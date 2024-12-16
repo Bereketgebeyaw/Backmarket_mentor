@@ -1,16 +1,21 @@
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const apiRoutes = require("./routes/api");
+import express from 'express';
+import cors from 'cors';
+import productRoutes from './routes/productRoutes.js';  // Add the .js extension
+import dotenv from 'dotenv';
 
-require("dotenv").config();
+dotenv.config();
 
 const app = express();
-app.use(cors());
-app.use(bodyParser.json());
 
-// API Routes
-app.use("/api", apiRoutes);
+app.use(cors());  // Enable CORS
+app.use(express.json());
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Routes
+app.use('/products', productRoutes);
+// Serve static files from 'uploads' directory
+
+
+
+app.listen(5000, () => {
+  console.log('Server is running on port 5000');
+});

@@ -4,6 +4,8 @@ import productRoutes from './routes/productRoutes.js';  // Add the .js extension
 import cartRoutes from './routes/cartRoutes.js'; 
 import { addOrder, getOrders } from './controllers/orderController.js';
 import orderRoutes from './routes/orderRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+
 
 import dotenv from 'dotenv';
 
@@ -19,6 +21,8 @@ app.use('/products', productRoutes);
 // Serve static files from 'uploads' directory
 
 app.use('/cart', cartRoutes);
+
+app.use('/api/users', userRoutes);
 
 
 

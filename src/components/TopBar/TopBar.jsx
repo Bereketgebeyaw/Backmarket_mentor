@@ -46,15 +46,27 @@ const TopBar = ({ cartCount }) => {
   };
 
   const handleCheckout = () => {
-    const userConfirmed = window.confirm(
-      "You need to create an account or sign in to proceed with checkout. Do you want to continue?"
-    );
 
-    if (userConfirmed) {
-      // Redirect to the signup or login page
-      window.location.href = "/signup"; // Replace with the actual route for your signup page
+    const isLoggedIn = localStorage.getItem('isLoggedIn'); // Check if the user is logged in
+    
+    if (!isLoggedIn) {
+      const proceedToAccount = window.confirm(
+        'You need to create an account or log in to proceed with checkout. Do you want to create an account or log in?'
+      );
+      
+      if (proceedToAccount) {
+        // Redirect to the login page
+        window.location.href = '/login';
+      }
+    } else {
+      alert('Proceeding to checkout...');
+      // Add your checkout logic here
+
     }
   };
+  
+  
+  
 
   return (
     <div style={styles.topBar}>

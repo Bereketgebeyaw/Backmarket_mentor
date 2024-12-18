@@ -4,7 +4,7 @@ import BuyerLayout from './layouts/BuyerLayout';
 import BuyerDashboard from './pages/buyer/Dashboard';
 import AdminLayout from './layouts/AdminLayout';
 import ProductManagement from './pages/admin/ProductManagement';
-import PaymentPage from './components/PaymentPage';
+
 
 const App = () => {
     return (
@@ -16,7 +16,7 @@ const App = () => {
                 <Route path="/admin/*" element={<AdminLayout />}>
           <Route path="product-management" element={<ProductManagement />} />
         </Route>
-        <Route path="/payment/:productId" element={<PaymentPage />} />
+        
             </Routes>
         </BrowserRouter>
     );

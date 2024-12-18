@@ -20,7 +20,7 @@ app.use('/products', productRoutes);
 
 app.use('/cart', cartRoutes);
 
-app.use('/orders', orderRoutes);
+
 
 app.listen(5000, () => {
   console.log('Server is running on port 5000');

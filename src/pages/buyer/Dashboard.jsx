@@ -30,23 +30,10 @@ const BuyerDashboard = () => {
 
   const handleAddToCart = (product) => {
     try {
-      // Get current cart or initialize an empty array
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-      // Add the product details (not just ID)
-      cart.push({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-      });
-
-      // Save to localStorage
+      cart.push({ id: product.id, name: product.name, price: product.price });
       localStorage.setItem('cart', JSON.stringify(cart));
-
-      // Update cart count
       setCartCount(cart.length);
-
-      // Show success message
       setCartMessage('Product successfully added to cart!');
       setTimeout(() => setCartMessage(null), 3000);
     } catch (error) {
@@ -61,28 +48,23 @@ const BuyerDashboard = () => {
   if (loading) return <p>Loading products...</p>;
 
   return (
-    <div style={styles.container}>
+    <div style={{ paddingTop: '60px' /* Ensure space for fixed TopBar */ }}>
       <TopBar cartCount={cartCount} />
-      {cartMessage && <p style={styles.successMessage}>{cartMessage}</p>}
-      {products.length > 0 ? (
-        products.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            onAddToCart={() => handleAddToCart(product)}
-            onFavorite={() => handleFavorite(product.id)}
-          />
-        ))
-      ) : (
-        <p>No products available.</p>
-      )}
+      {cartMessage && <p style={{ color: 'green', fontWeight: 'bold', textAlign: 'center' }}>{cartMessage}</p>}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' }}>
+        {products.length > 0
+          ? products.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onAddToCart={() => handleAddToCart(product)}
+                onFavorite={() => handleFavorite(product.id)}
+              />
+            ))
+          : <p>No products available.</p>}
+      </div>
     </div>
   );
-};
-
-const styles = {
-  container: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' },
-  successMessage: { color: 'green', fontWeight: 'bold', textAlign: 'center' },
 };
 
 export default BuyerDashboard;

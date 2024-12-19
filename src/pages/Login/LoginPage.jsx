@@ -6,7 +6,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     if (!email || !password) {
@@ -14,11 +14,29 @@ const LoginPage = () => {
       return;
     }
 
-    if (email === 'user@example.com' && password === 'password123') {
-      alert('Login successful!');
-      window.location.href = '/buyer/dashboard'; // Redirect to buyer dashboard
-    } else {
-      setErrorMessage('Invalid email or password.');
+    // API call to back-end login route
+    try {
+      const response = await fetch('http://localhost:5000/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // If login is successful, redirect to dashboard
+        alert('Login successful!');
+        window.location.href = '/buyer/dashboard'; // Redirect to buyer dashboard
+      } else {
+        // Display error message if login fails
+        setErrorMessage(data.message || 'Invalid email or password.');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      setErrorMessage('Server error. Please try again later.');
     }
   };
 
@@ -31,6 +49,7 @@ const LoginPage = () => {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          name="email"
           className="login-input"
         />
         <input
@@ -38,6 +57,7 @@ const LoginPage = () => {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          name="password"
           className="login-input"
         />
         {errorMessage && <p className="error-message">{errorMessage}</p>}

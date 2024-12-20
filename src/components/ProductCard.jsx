@@ -36,11 +36,12 @@ const ProductCard = ({ product, onAddToCart, onFavorite }) => {
 
 const styles = {
   card: {
-    border: '1px solid #ddd',
+    marginTop:"30px",
+    border: '1px solid #e0e0e0',
     borderRadius: '12px',
     padding: '20px',
     textAlign: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#f9f9f9',
     boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
     transition: 'transform 0.3s ease, box-shadow 0.3s ease',
     cursor: 'pointer',
@@ -62,30 +63,30 @@ const styles = {
   placeholder: {
     width: '100%',
     height: '200px',
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#e0e0e0',
     borderRadius: '12px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: '#aaa',
+    color: '#b0b0b0',
     marginBottom: '15px',
   },
   name: {
     fontSize: '18px',
     fontWeight: 'bold',
-    color: '#333',
+    color: '#2c3e50',
     margin: '10px 0',
   },
   description: {
     fontSize: '14px',
-    color: '#666',
+    color: '#7f8c8d',
     marginBottom: '10px',
     minHeight: '40px',
   },
   price: {
     fontSize: '20px',
     fontWeight: 'bold',
-    color: '#007bff',
+    color: '#2980b9',
     margin: '10px 0',
   },
   actions: {
@@ -94,7 +95,7 @@ const styles = {
     marginTop: '10px',
   },
   cartButton: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#3498db',
     color: '#fff',
     border: 'none',
     padding: '8px 12px',
@@ -105,7 +106,7 @@ const styles = {
     transition: 'background-color 0.3s ease',
   },
   favoriteButton: {
-    backgroundColor: '#ff4d4f',
+    backgroundColor: '#9b59b6', // Changed to purple
     color: '#fff',
     border: 'none',
     padding: '8px 12px',

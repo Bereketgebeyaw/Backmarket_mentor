@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import './LoginPage.css';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
  const handleLogin = async (e) => {
    e.preventDefault();
@@ -55,6 +57,21 @@ const LoginPage = () => {
    }
  };
 
+
+
+      if (response.ok) {
+        // If login is successful, redirect to dashboard
+        alert('Login successful!');
+        navigate('/user'); // Redirect to buyer dashboard
+      } else {
+        // Display error message if login fails
+        setErrorMessage(data.message || 'Invalid email or password.');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      setErrorMessage('Server error. Please try again later.');
+    }
+  };
 
 
   return (

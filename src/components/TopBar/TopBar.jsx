@@ -51,26 +51,26 @@ const TopBar = ({ cartCount }) => {
     localStorage.setItem("cart", JSON.stringify(updatedCart));
     setCartItems(updatedCart);
   };
+const handleCheckout = () => {
+  const isLoggedIn = localStorage.getItem("isLoggedIn"); // Check if the user is logged in
 
-  const handleCheckout = () => {
+  if (!isLoggedIn) {
+    const proceedToAccount = window.confirm(
+      "You need to create an account or log in to proceed with checkout. Do you want to create an account or log in?"
+    );
 
-    const isLoggedIn = localStorage.getItem('isLoggedIn'); // Check if the user is logged in
+    if (proceedToAccount) {
+      // Store cartItems in localStorage
     
-    if (!isLoggedIn) {
-      const proceedToAccount = window.confirm(
-        'You need to create an account or log in to proceed with checkout. Do you want to create an account or log in?'
-      );
-      
-      if (proceedToAccount) {
-        // Redirect to the login page
-        window.location.href = '/login';
-      }
-    } else {
-      alert('Proceeding to checkout...');
-      // Add your checkout logic here
-
+      window.location.href = "/login";
     }
-  };
+  } else {
+    alert("Proceeding to checkout...");
+    // Add your checkout logic here
+  }
+};
+
+
   
   
   

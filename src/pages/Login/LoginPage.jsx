@@ -8,25 +8,56 @@ const LoginPage = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+ const handleLogin = async (e) => {
+   e.preventDefault();
 
-    if (!email || !password) {
-      setErrorMessage('Email and password are required.');
-      return;
-    }
+   if (!email || !password) {
+     setErrorMessage("Email and password are required.");
+     return;
+   }
 
-    // API call to back-end login route
-    try {
-      const response = await fetch('http://localhost:5000/api/users/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+   try {
+     // Read cart items from localStorage
+     const cartData = localStorage.getItem("checkoutCart");
+     const cartItems = cartData ? JSON.parse(cartData) : [];
 
-      const data = await response.json();
+     // Extract only product_id and quantity for each cart item
+     const mappedCartItems = cartItems.map((item) => ({
+       product_id: item.id,
+       quantity: item.quantity,
+     }));
+
+     // Construct request body and exclude cartItems if empty
+     const requestBody = { email, password };
+     if (mappedCartItems.length > 0) {
+       requestBody.cartItems = mappedCartItems; // Only include cartItems if they exist
+     }
+
+     // API call to back-end login route
+     const response = await fetch("http://localhost:5000/api/users/login", {
+       method: "POST",
+       headers: {
+         "Content-Type": "application/json",
+       },
+       body: JSON.stringify(requestBody), // Send only email, password, and cartItems (if not empty)
+     });
+
+     const data = await response.json();
+
+     if (response.ok) {
+       alert("Login successful!");
+       localStorage.removeItem("checkoutCart"); // Clear cart from localStorage after login
+       window.location.href = "/buyer/dashboard"; // Redirect to buyer dashboard
+     } else {
+       setErrorMessage(data.message || "Invalid email or password.");
+     }
+   } catch (error) {
+     console.error("Error during login:", error);
+     setErrorMessage("Server error. Please try again later.");
+   }
+ };
+
+
 
       if (response.ok) {
         // If login is successful, redirect to dashboard
@@ -41,6 +72,7 @@ const LoginPage = () => {
       setErrorMessage('Server error. Please try again later.');
     }
   };
+
 
   return (
     <div className="login-container">
@@ -67,8 +99,11 @@ const LoginPage = () => {
           Login
         </button>
       </form>
-      <p className="login-link">
-        Don't have an account? <a href="/signup">Sign up here</a>.
+      <p
+        className="login-link"
+      >
+        Don't have an account?
+        <a href="/signup">Sign up here</a>.
       </p>
     </div>
   );

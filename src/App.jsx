@@ -7,6 +7,8 @@ import ProductManagement from './pages/admin/ProductManagement';
 import CheckoutPage from './pages/CheckoutPage';
 import LoginPage from './pages/Login/LoginPage';
 import SignupPage from './pages/Signup/SignupPage';
+import UserLayout from './layouts/UserLayout';
+import UserDashboard from './pages/buyer/userdashboard';
 
 
 const App = () => {
@@ -14,11 +16,15 @@ const App = () => {
     return (
         <BrowserRouter>
             <Routes>
+                 
                 <Route path="/buyer/*" element={<BuyerLayout />}>
                     <Route path="" element={<BuyerDashboard />} />
                 </Route>
                 <Route path="/login/*" element={<LoginPage />}></Route>
                 <Route path="/signup/*" element={<SignupPage/>}></Route>
+                <Route path="/user/*" element={<UserLayout />}>
+                    <Route path="" element={<UserDashboard />} />
+                </Route>
                 <Route path="/admin/*" element={<AdminLayout />}>
           <Route path="product-management" element={<ProductManagement />} />
         </Route>

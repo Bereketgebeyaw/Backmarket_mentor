@@ -3,7 +3,8 @@ import { fetchProducts } from "../../services/productService";
 import ProductCard from "../../components/ProductCard";
 import TopBar from "../../components/TopBar/TopBar";
 
-const BuyerDashboard = () => {
+
+const UserDashboard = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cartCount, setCartCount] = useState(0);
@@ -99,4 +100,4 @@ const BuyerDashboard = () => {
   );
 };
 
-export default BuyerDashboard;
+export default UserDashboard;

@@ -23,22 +23,14 @@ const SignupPage = () => {
     }
 
     try {
-      const cartData = localStorage.getItem("checkoutCart");
-      const cartItems = cartData ? JSON.parse(cartData) : [];
-
-      // Extract only product_id and quantity for each cart item
-      const mappedCartItems = cartItems.map((item) => ({
-        product_id: item.id,
-        quantity: item.quantity,
-      }));
-
+     
       const response = await fetch('http://localhost:5000/api/users/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password,
-           }),
+        body: { name, email, password,
+           },
       });
 
       const data = await response.json();

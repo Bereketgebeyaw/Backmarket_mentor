@@ -16,7 +16,7 @@ const navigate = useNavigate();
 
    try {
      // Read cart items from localStorage
-     const cartData = localStorage.getItem("checkoutCart");
+     const cartData = localStorage.getItem("cart");
      const cartItems = cartData ? JSON.parse(cartData) : [];
 
      // Extract only product_id and quantity for each cart item
@@ -45,11 +45,11 @@ const navigate = useNavigate();
      if (response.ok) {
        alert("Login successful!");
          if (mappedCartItems.length > 0) {
-           localStorage.removeItem("checkoutCart"); // Clear cart from localStorage after login
+           localStorage.removeItem("cart"); // Clear cart from localStorage after login
            navigate("/user");
          }
          else{
-          localStorage.removeItem("checkoutCart"); // Clear cart from localStorage after login
+          localStorage.removeItem("cart"); // Clear cart from localStorage after login
           navigate("/user");
          }
        

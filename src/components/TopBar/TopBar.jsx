@@ -29,6 +29,7 @@ const TopBar = ({ cartCount }) => {
 
     // Update localStorage and state
     localStorage.setItem("cart", JSON.stringify(updatedCart));
+    
     setCartItems(updatedCart);
   };
 
@@ -38,6 +39,7 @@ const TopBar = ({ cartCount }) => {
 
     // Update localStorage and state
     localStorage.setItem("cart", JSON.stringify(updatedCart));
+    
     setCartItems(updatedCart);
   };
 
@@ -49,6 +51,7 @@ const TopBar = ({ cartCount }) => {
 
     // Update localStorage and state
     localStorage.setItem("cart", JSON.stringify(updatedCart));
+   
     setCartItems(updatedCart);
   };
 const handleCheckout = () => {

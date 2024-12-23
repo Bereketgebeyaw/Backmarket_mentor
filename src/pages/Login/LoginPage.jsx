@@ -7,62 +7,67 @@ const LoginPage = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
 const navigate = useNavigate();
- const handleLogin = async (e) => {
-   e.preventDefault();
+const handleLogin = async (e) => {
+  e.preventDefault();
 
-   if (!email || !password) {
-     setErrorMessage("Email and password are required.");
-     return;
-   }
+  if (!email || !password) {
+    setErrorMessage("Email and password are required.");
+    return;
+  }
 
-   try {
-     // Read cart items from localStorage
-     const cartData = localStorage.getItem("cart");
-     const cartItems = cartData ? JSON.parse(cartData) : [];
+  try {
+    // Read cart items from localStorage
+    const cartData = localStorage.getItem("cart");
+    const cartItems = cartData ? JSON.parse(cartData) : [];
 
-     // Extract only product_id and quantity for each cart item
-     const mappedCartItems = cartItems.map((item) => ({
-       product_id: item.id,
-       quantity: item.quantity,
-     }));
+    // Extract only product_id and quantity for each cart item
+    const mappedCartItems = cartItems.map((item) => ({
+      product_id: item.id,
+      quantity: item.quantity,
+    }));
 
-     // Construct request body and exclude cartItems if empty
-     const requestBody = { email, password };
-     if (mappedCartItems.length > 0) {
-       requestBody.cartItems = mappedCartItems; // Only include cartItems if they exist
-     }
+    // Construct request body and exclude cartItems if empty
+    const requestBody = { email, password };
+    if (mappedCartItems.length > 0) {
+      requestBody.cartItems = mappedCartItems; // Only include cartItems if they exist
+    }
 
-     // API call to back-end login route
-     const response = await fetch("http://localhost:5000/api/users/login", {
-       method: "POST",
-       headers: {
-         "Content-Type": "application/json",
-       },
-       body: JSON.stringify(requestBody), // Send only email, password, and cartItems (if not empty)
-     });
+    // API call to back-end login route
+    const response = await fetch("http://localhost:5000/api/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody), // Send only email, password, and cartItems (if not empty)
+    });
 
-     const data = await response.json();
+    const data = await response.json();
 
-     if (response.ok) {
-       alert("Login successful!");
-         if (mappedCartItems.length > 0) {
-           localStorage.removeItem("cart"); // Clear cart from localStorage after login
-           navigate("/user");
-         }
-         else{
-          localStorage.removeItem("cart"); // Clear cart from localStorage after login
-          navigate("/user");
-         }
-       
-         
-     } else {
-       setErrorMessage(data.message || "Invalid email or password.");
-     }
-   } catch (error) {
-     console.error("Error during login:", error);
-     setErrorMessage("Server error. Please try again later.");
-   }
- };
+    if (response.ok) {
+      // If login is successful, store the token in localStorage
+      const token = data.token; // Assuming the token is returned as data.token
+      if (token) {
+        localStorage.setItem("authToken", token); // Store the token in localStorage
+      }
+
+      alert("Login successful!");
+
+      // Remove the cart from localStorage after login, if applicable
+      if (mappedCartItems.length > 0) {
+        localStorage.removeItem("cart"); // Clear cart from localStorage after login
+        navigate("/user/");
+      } else {
+        localStorage.removeItem("cart"); // Clear cart from localStorage after login
+        navigate("/user/");
+      }
+    } else {
+      setErrorMessage(data.message || "Invalid email or password.");
+    }
+  } catch (error) {
+    console.error("Error during login:", error);
+    setErrorMessage("Server error. Please try again later.");
+  }
+};
 
 
   return (

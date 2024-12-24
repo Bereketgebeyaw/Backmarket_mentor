@@ -8,7 +8,8 @@ import CheckoutPage from './pages/CheckoutPage';
 import LoginPage from './pages/Login/LoginPage';
 import SignupPage from './pages/Signup/SignupPage';
 import UserLayout from './layouts/UserLayout';
-import UserDashboard from './pages/buyer/userdashboard';
+
+import UserCart from './pages/buyer/UserCart';
 
 
 const App = () => {
@@ -22,8 +23,7 @@ const App = () => {
                 </Route>
                 <Route path="/login/*" element={<LoginPage />}></Route>
                 <Route path="/signup/*" element={<SignupPage/>}></Route>
-                <Route path="/user/*" element={<UserLayout />}>
-                    <Route path="" element={<UserDashboard />} />
+                <Route path="/user/*" element={<UserCart />}>
                 </Route>
                 <Route path="/admin/*" element={<AdminLayout />}>
           <Route path="product-management" element={<ProductManagement />} />

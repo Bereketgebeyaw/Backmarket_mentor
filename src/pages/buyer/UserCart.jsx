@@ -46,17 +46,17 @@ const UserCart = () => {
 
 const styles = {
   container: {
-    padding: "20px",
-    textAlign: "left", // Align text to the left
-    maxWidth: "1200px", // Set a maximum width for the container
-    margin: "0 auto", // Center the container on the page (horizontally only)
+    padding: "16px", // Reduced padding for a tighter layout
+    textAlign: "left",
+    maxWidth: "900px", // Reduced max width for a compact layout
+    margin: "0 auto",
   },
   cartContainer: {
-    display: "flex", // Flexbox for horizontal layout
-    flexWrap: "wrap", // Allow wrapping to the next row if space runs out
-    justifyContent: "flex-start", // Align cards to the left
-    gap: "20px", // Space between cards
-    marginTop: "20px",
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "start", // Center align the cards
+    gap: "16px", // Slightly reduced gap between cards
+    marginTop: "16px",
   },
 };
 export default UserCart;

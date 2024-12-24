@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { fetchCartProducts } from "../../services/UserCartService";
 import CartCard from "../../components/CartCard";
+import { useNavigate } from "react-router-dom";
 
 const UserCart = () => {
   const [cartProducts, setCartProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
-
+  const navigate = useNavigate(); 
   // Fetch cart products using the service
   const getCartProducts = async () => {
     try {
@@ -68,6 +69,12 @@ const handleQuantityChange = (id, delta) => {
           <div style={styles.totalPrice}>
             <h3>Total Price: ${totalPrice}</h3>
           </div>
+          <button
+            style={styles.paymentButton}
+            onClick={() => navigate("/paymentPage")} // Navigate to the payment page
+          >
+            Continue to Payment
+          </button>
         </>
       )}
     </div>
@@ -96,6 +103,17 @@ const styles = {
     fontWeight: "bold",
     textAlign: "right",
     color: "#2c3e50",
+  },
+  paymentButton: {
+    marginTop: "16px",
+    padding: "10px 20px",
+    background: "#27ae60",
+    color: "#fff",
+    border: "none",
+    borderRadius: "8px",
+    fontSize: "1rem",
+    cursor: "pointer",
+    textAlign: "right",
   },
 };
 export default UserCart;

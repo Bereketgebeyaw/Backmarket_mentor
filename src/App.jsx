@@ -8,6 +8,7 @@ import CheckoutPage from './pages/CheckoutPage';
 import LoginPage from './pages/Login/LoginPage';
 import SignupPage from './pages/Signup/SignupPage';
 import UserLayout from './layouts/UserLayout';
+import PaymentPage from './components/PaymentPage';
 
 import UserCart from './pages/buyer/UserCart';
 
@@ -25,6 +26,7 @@ const App = () => {
                 <Route path="/signup/*" element={<SignupPage/>}></Route>
                 <Route path="/user/*" element={<UserCart />}>
                 </Route>
+                <Route path="/PaymentPage" element={<PaymentPage />} />
                 <Route path="/admin/*" element={<AdminLayout />}>
           <Route path="product-management" element={<ProductManagement />} />
         </Route>

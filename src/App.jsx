@@ -11,6 +11,7 @@ import UserLayout from './layouts/UserLayout';
 import PaymentPage from './components/PaymentPage';
 import PickupPage from './components/PickupPage';
 import FinalPaymentPage from './components/FinalPaymentPage';
+import AddCategory from './pages/admin/AddCategory';
 
 import UserCart from './pages/buyer/UserCart';
 
@@ -32,7 +33,8 @@ const App = () => {
                 <Route path="/PickupPage" element={<PickupPage />} />
                 <Route path="/FinalPaymentPage" element={<FinalPaymentPage />} />
                 <Route path="/admin/*" element={<AdminLayout />}>
-          <Route path="product-management" element={<ProductManagement />} />
+                <Route path="product-management" element={<ProductManagement />} />
+                <Route path="add-category" element={<AddCategory />} />
         </Route>
        
 

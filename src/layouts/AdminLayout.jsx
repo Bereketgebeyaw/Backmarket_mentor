@@ -8,6 +8,7 @@ const AdminLayout = () => {
       <nav style={{ width: '250px', padding: '20px', borderRight: '1px solid #ddd' }}>
         <ul>
           <li><Link to="/admin/product-management">Product Management</Link></li>
+          <li><Link to="/admin/add-category">Add New Category</Link></li>
           {/* Add more admin routes here */}
         </ul>
       </nav>

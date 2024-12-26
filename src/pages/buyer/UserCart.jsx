@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchCartProducts } from "../../services/UserCartService";
 import CartCard from "../../components/CartCard";
 import { useNavigate } from "react-router-dom";
-
+import PaymentPage from "../../components/PaymentPage";
 const UserCart = () => {
   const [cartProducts, setCartProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -71,7 +71,7 @@ const handleQuantityChange = (id, delta) => {
           </div>
           <button
             style={styles.paymentButton}
-            onClick={() => navigate("/paymentPage")} // Navigate to the payment page
+            onClick={() => navigate("/PaymentPage")} // Navigate to the payment page
           >
             Continue to Payment
           </button>

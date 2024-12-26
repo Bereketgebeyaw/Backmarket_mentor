@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const AddCategoryForm = () => {
   const [formData, setFormData] = useState({
@@ -14,13 +15,31 @@ const AddCategoryForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Category: "${formData.categoryName}"\nDescription: "${formData.description}" added successfully!`);
-    setFormData({
-      categoryName: '',
-      description: '',
-    }); // Clear the input fields after submission
+    
+    try {
+      // Send the POST request to create a new category
+      const response = await axios.post('http://localhost:5000/category/create', {
+        name: formData.categoryName,
+        description: formData.description,
+      });
+
+      // Handle successful response
+      alert(response.data.message); // Show success message
+      setFormData({
+        categoryName: '',
+        description: '',
+      }); // Clear the input fields after successful submission
+    } catch (error) {
+      // Handle error
+      console.error('Error creating category:', error);
+      if (error.response) {
+        alert(error.response.data.message);
+      } else {
+        alert('Failed to create category. Please try again later.');
+      }
+    }
   };
 
   return (

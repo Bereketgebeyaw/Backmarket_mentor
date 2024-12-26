@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const PaymentPage = () => {
   const { productId } = useParams();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     deliveryLocation: '',
-    paymentMethod: 'creditCard', // Default to credit card
+    pickupMethod: 'inPerson', // Default to in-person
   });
 
   const handleChange = (e) => {
@@ -17,38 +19,43 @@ const PaymentPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`
-      Payment successful!
-      Product ID: ${productId}
-      Name: ${formData.name}
-      Email: ${formData.email}
-      Delivery Location: ${formData.deliveryLocation}
-      Payment Method: ${formData.paymentMethod}
-    `);
+    navigate('/pickupPage', { state: { paymentData: formData } }); // Pass the formData to the PickupPage
   };
 
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h1 style={styles.title}>Payment Page</h1>
-        <p style={styles.description}>You are paying for product ID: <strong>{productId}</strong></p>
-
+        <h1 style={styles.title}>Delivery Details</h1>
+        <p style={styles.description}>
+          You are providing delivery details for product ID: <strong>{productId}</strong>
+        </p>
         <form onSubmit={handleSubmit} style={styles.form}>
-          {/* Basic Information */}
           <div style={styles.formGroup}>
-            <label htmlFor="name" style={styles.label}>Full Name:</label>
+            <label htmlFor="firstName" style={styles.label}>First Name:</label>
             <input
               type="text"
-              id="name"
-              name="name"
-              value={formData.name}
+              id="firstName"
+              name="firstName"
+              value={formData.firstName}
               onChange={handleChange}
-              placeholder="Enter your full name"
+              placeholder="Enter your first name"
               required
               style={styles.input}
             />
           </div>
-
+          <div style={styles.formGroup}>
+            <label htmlFor="lastName" style={styles.label}>Last Name:</label>
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+              placeholder="Enter your last name"
+              required
+              style={styles.input}
+            />
+          </div>
           <div style={styles.formGroup}>
             <label htmlFor="email" style={styles.label}>Email:</label>
             <input
@@ -62,40 +69,35 @@ const PaymentPage = () => {
               style={styles.input}
             />
           </div>
-
-          {/* Delivery Location */}
           <div style={styles.formGroup}>
-            <label htmlFor="deliveryLocation" style={styles.label}>Delivery Location:</label>
-            <input
-              type="text"
-              id="deliveryLocation"
-              name="deliveryLocation"
-              value={formData.deliveryLocation}
-              onChange={handleChange}
-              placeholder="Enter your delivery location"
-              required
-              style={styles.input}
-            />
-          </div>
-
-          {/* Payment Method */}
-          <div style={styles.formGroup}>
-            <label htmlFor="paymentMethod" style={styles.label}>Payment Method:</label>
+            <label htmlFor="pickupMethod" style={styles.label}>Pickup Method:</label>
             <select
-              id="paymentMethod"
-              name="paymentMethod"
-              value={formData.paymentMethod}
+              id="pickupMethod"
+              name="pickupMethod"
+              value={formData.pickupMethod}
               onChange={handleChange}
               style={styles.select}
             >
-              <option value="creditCard">Credit Card</option>
-
-              <option value="bankTransfer">Bank Transfer</option>
+              <option value="delivery">Home Delivery</option>
+              <option value="inPerson">In-Person Pickup</option>
             </select>
           </div>
-
-          {/* Submit Button */}
-          <button type="submit" style={styles.button}>Pay Now</button>
+          {formData.pickupMethod === 'delivery' && (
+            <div style={styles.formGroup}>
+              <label htmlFor="deliveryLocation" style={styles.label}>Delivery Location:</label>
+              <input
+                type="text"
+                id="deliveryLocation"
+                name="deliveryLocation"
+                value={formData.deliveryLocation}
+                onChange={handleChange}
+                placeholder="Enter delivery location"
+                required
+                style={styles.input}
+              />
+            </div>
+          )}
+          <button type="submit" style={styles.button}>Continue</button>
         </form>
       </div>
     </div>

@@ -9,6 +9,8 @@ import LoginPage from './pages/Login/LoginPage';
 import SignupPage from './pages/Signup/SignupPage';
 import UserLayout from './layouts/UserLayout';
 import PaymentPage from './components/PaymentPage';
+import PickupPage from './components/PickupPage';
+import FinalPaymentPage from './components/FinalPaymentPage';
 
 import UserCart from './pages/buyer/UserCart';
 
@@ -27,6 +29,8 @@ const App = () => {
                 <Route path="/user/*" element={<UserCart />}>
                 </Route>
                 <Route path="/PaymentPage" element={<PaymentPage />} />
+                <Route path="/PickupPage" element={<PickupPage />} />
+                <Route path="/FinalPaymentPage" element={<FinalPaymentPage />} />
                 <Route path="/admin/*" element={<AdminLayout />}>
           <Route path="product-management" element={<ProductManagement />} />
         </Route>

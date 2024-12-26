@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { fetchCategories } from '../services/categoryService'; 
+
+// Import your category service
 
 const AddProductForm = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +12,22 @@ const AddProductForm = () => {
     category: '',
     image: null, // To hold the selected file
   });
+
+  const [categories, setCategories] = useState([]); // State to store fetched categories
+
+  useEffect(() => {
+    // Fetch categories on component mount
+    const getCategories = async () => {
+      try {
+        const data = await fetchCategories(); // Use the service to fetch categories
+        setCategories(data); // Update the categories state
+      } catch (error) {
+        console.error('Failed to fetch categories:', error);
+      }
+    };
+
+    getCategories();
+  }, []); // Runs only once on component mount
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -73,14 +92,23 @@ const AddProductForm = () => {
         required
         style={styles.textarea}
       ></textarea>
-      <input
-        type="text"
+      
+      {/* Dropdown to display categories */}
+      <select
         name="category"
-        placeholder="Category"
+        value={formData.category}
         onChange={handleChange}
         required
         style={styles.input}
-      />
+      >
+        <option value="">Select Category</option>
+        {categories.map((category) => (
+          <option key={category.id} value={category.id}>
+            {category.name}
+          </option>
+        ))}
+      </select>
+
       <input
         type="file"
         name="image"

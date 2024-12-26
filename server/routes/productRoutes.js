@@ -21,7 +21,7 @@ router.post('/', upload.single('image'), async (req, res) => {
 
   try {
     const query = `
-      INSERT INTO products (name, description, price, image, image_type, category)
+      INSERT INTO products (name, description, price, image, image_type, category_id)
       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;
     `;
     const values = [name, description, price, image, imageType, category];

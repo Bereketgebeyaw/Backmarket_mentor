@@ -34,3 +34,15 @@ export const createCategory = async (req, res) => {
     }
   }
 };
+export const getCategory = async (req, res) => {
+  try {
+    // Query to fetch all categories from the database
+    const result = await db.query("SELECT * FROM categories");
+
+    // Send a response with the categories data
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error("Error during fetching categories:", error.message);
+    res.status(500).json({ message: "Server error. Please try again later." });
+  }
+};

@@ -12,7 +12,7 @@ const PaymentPage = () => {
     street: "",
     city: "",
     state: "",
-    zipCode: "",
+    zip_code: "",
     country: "",
   });
 
@@ -21,36 +21,37 @@ const PaymentPage = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+ const handleSubmit = (e) => {
+   e.preventDefault();
 
-    if (formData.pickupMethod === "inPerson") {
-      // Set shop address for in-person pickup
-      localStorage.setItem(
-        "address",
-        JSON.stringify({
-          street: "123 Shop Street",
-          city: "CityName",
-          state: "StateName",
-          zipCode: "12345",
-          country: "CountryName",
-        })
-      );
-    } else {
-      // Save entered delivery address to local storage
-      const address = {
-        street: formData.street,
-        city: formData.city,
-        state: formData.state,
-        zipCode: formData.zipCode,
-        country: formData.country,
-      };
-      localStorage.setItem("address", JSON.stringify(address));
-    }
+   if (formData.pickupMethod === "inPerson") {
+     // Set shop address for in-person pickup
+     localStorage.setItem(
+       "address",
+       JSON.stringify({
+         street: "123 Shop Street",
+         city: "CityName",
+         state: "StateName",
+         zip_code: "12345",
+         country: "CountryName",
+       })
+     );
+   } else {
+     // Save entered delivery address to local storage
+     const address = {
+       street: formData.street,
+       city: formData.city,
+       state: formData.state,
+       zip_code: formData.zip_code,
+       country: formData.country,
+     };
+     localStorage.setItem("address", JSON.stringify(address));
+   }
 
-    // Navigate to the next page
-    navigate("/pickupPage", { state: { paymentData: formData } });
-  };
+   // Navigate to the next page
+   navigate("/pickupPage", { state: { paymentData: formData } });
+ };
+
 
 
   return (

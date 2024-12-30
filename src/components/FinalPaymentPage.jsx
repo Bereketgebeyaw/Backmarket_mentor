@@ -22,14 +22,76 @@ const FinalPaymentPage = () => {
   const handleBankSelect = (bankName) => {
     setSelectedBank(bankName);
   };
+const handleSubmit = async () => {
+  if (paymentOption === "bankTransfer" && !selectedBank) {
+    alert("Please select a bank for the bank transfer.");
+    return;
+  }
 
-  const handleSubmit = () => {
-    if (paymentOption === 'bankTransfer' && !selectedBank) {
-      alert('Please select a bank for the bank transfer.');
-      return;
+  // Retrieve the address from localStorage
+  const addressData = localStorage.getItem("address");
+
+  console.log("Address Data from LocalStorage:", addressData);
+
+  if (!addressData) {
+    alert("No address found. Please provide delivery details.");
+    return;
+  }
+
+  let address;
+  try {
+    // Parse the address from localStorage
+    address = JSON.parse(addressData);
+
+    console.log("Parsed Address:", address);
+
+    // Validate if all required fields are present
+    if (
+      !address.street ||
+      !address.city ||
+      !address.state ||
+      !address.zip_code ||
+      !address.country
+    ) {
+      throw new Error(
+        "Missing required address fields (Street, City, State, ZIP Code, Country)."
+      );
     }
-    navigate('/paymentSuccess');
-  };
+  } catch (error) {
+    console.error("Error parsing address data:", error);
+    alert(
+      "Error reading address data from localStorage. Please check the stored address."
+    );
+    return;
+  }
+
+  // Send the address to the backend API
+  try {
+    const response = await fetch("http://localhost:5000/address/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(address), // Send the full address object
+    });
+
+    if (response.ok) {
+      // Proceed to payment success page on success
+      navigate("/paymentSuccess");
+    } else {
+      const errorData = await response.json();
+      console.error("Error from backend:", errorData); // Log error response
+      alert(`Failed to register address: ${errorData.message}`);
+    }
+  } catch (error) {
+    console.error("Error registering address:", error);
+    alert("An error occurred while registering the address. Please try again.");
+  }
+};
+
+
+
+
 
   return (
     <div style={styles.container}>

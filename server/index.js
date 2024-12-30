@@ -6,7 +6,7 @@ import { addOrder, getOrders } from './controllers/orderController.js';
 import orderRoutes from './routes/orderRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import CategoryRoutes from "./routes/CategoryRoutes.js";
-
+import addressRoutes from "./routes/addressRoutes.js";
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -22,6 +22,7 @@ app.use('/products', productRoutes);
 
 app.use('/cart', cartRoutes);
 app.use('/category', CategoryRoutes);
+app.use('/address', addressRoutes);
 
 app.use('/api/users', userRoutes);
 

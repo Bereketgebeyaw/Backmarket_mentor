@@ -117,13 +117,16 @@ export const loginUser = async (req, res) => {
       }
     }
 
-    res.status(200).json({ message: "Login successful.", user });
+    const token = jwt.sign({ userId: user.id }, "your_secret_key", {
+      expiresIn: "1h",
+    });
+
+    res.status(200).json({ message: "Login successful.", token, user });
   } catch (error) {
     console.error("Error during login:", error.message);
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
-
 
 export const getCartProducts = async (req, res) => {
   const userId = req.userId; // Retrieved from the middleware

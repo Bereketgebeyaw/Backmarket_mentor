@@ -28,22 +28,31 @@ const handleSubmit = async () => {
     return;
   }
 
-  // Retrieve the address from localStorage
+  // Retrieve the address and token from localStorage
   const addressData = localStorage.getItem("address");
+  const token = localStorage.getItem("authToken");
 
   console.log("Address Data from LocalStorage:", addressData);
-
+  console.log("Token Data from LocalStorage:", token);
   if (!addressData) {
     alert("No address found. Please provide delivery details.");
     return;
   }
+  if (!token) {
+    alert("No token found. Please login.");
+    return;
+  }
 
   let address;
+  let tokenData;
+
   try {
-    // Parse the address from localStorage
+    // Parse the address and create the token object
     address = JSON.parse(addressData);
+    tokenData = { token }; // Wrap the token string in an object
 
     console.log("Parsed Address:", address);
+    console.log("Token Object:", tokenData);
 
     // Validate if all required fields are present
     if (
@@ -65,14 +74,20 @@ const handleSubmit = async () => {
     return;
   }
 
-  // Send the address to the backend API
+  // Combine address and token into a single object
+  const payload = {
+    address,
+    token: tokenData.token, // Use the token directly
+  };
+
+  // Send the payload to the backend API
   try {
     const response = await fetch("http://localhost:5000/address/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(address), // Send the full address object
+      body: JSON.stringify(payload), // Send the combined object
     });
 
     if (response.ok) {
@@ -88,10 +103,6 @@ const handleSubmit = async () => {
     alert("An error occurred while registering the address. Please try again.");
   }
 };
-
-
-
-
 
   return (
     <div style={styles.container}>

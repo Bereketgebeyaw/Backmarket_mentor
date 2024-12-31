@@ -171,14 +171,14 @@ const PaymentPage = () => {
                 />
               </div>
               <div style={styles.formGroup}>
-                <label htmlFor="zipCode" style={styles.label}>
+                <label htmlFor="zip_code" style={styles.label}>
                   ZIP/Postal Code:
                 </label>
                 <input
                   type="text"
-                  id="zipCode"
-                  name="zipCode"
-                  value={formData.zipCode}
+                  id="zip_code"
+                  name="zip_code"
+                  value={formData.zip_code}
                   onChange={handleChange}
                   placeholder="Enter your ZIP/postal code"
                   required

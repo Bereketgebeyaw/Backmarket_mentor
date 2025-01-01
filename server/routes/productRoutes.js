@@ -11,20 +11,28 @@ const upload = multer({ storage: storage });
 
 // POST route to add a product
 router.post('/', upload.single('image'), async (req, res) => {
-  const { name, description, price, category } = req.body;
+  const { name, description, price, quantity_in_stock, category } = req.body;
   const image = req.file ? req.file.buffer : null;
   const imageType = req.file ? mime.extension(req.file.mimetype) : null;
 
-  if (!name || !description || !price || !category || !image) {
+  if (!name || !description || !price || !quantity_in_stock || !category || !image) {
     return res.status(400).send('All fields are required.');
   }
 
   try {
     const query = `
-      INSERT INTO products (name, description, price, image, image_type, category_id)
-      VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;
+      INSERT INTO products (name, description, price, quantity_in_stock, image, image_type, category_id)
+      VALUES ($1, $2, $3, $4 ,$5, $6, $7) RETURNING *;
     `;
-    const values = [name, description, price, image, imageType, category];
+    const values = [
+      name,
+      description,
+      price,
+      quantity_in_stock,
+      image,
+      imageType,
+      category,
+    ];
     const result = await db.query(query, values);
 
     res.status(201).json(result.rows[0]);
@@ -37,7 +45,10 @@ router.post('/', upload.single('image'), async (req, res) => {
 // GET route to fetch all products
 router.get('/', async (req, res) => {
   try {
-    const result = await db.query('SELECT * FROM products');
+    const result = await db.query(
+      "SELECT * FROM products WHERE quantity_in_stock > 0"
+    );
+
     
     const products = result.rows.map((product) => {
       if (product.image) {

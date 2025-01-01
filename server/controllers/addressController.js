@@ -149,7 +149,38 @@ export const createAddress = async (req, res) => {
           cartId,
         ]);
         console.log("Cart products deleted successfully.");
+        
+         console.log("Updating product quantities...");
+         for (const product of cartProducts) {
+           await db.query(
+             `UPDATE products 
+          SET quantity_in_stock = quantity_in_stock - $1 
+          WHERE id = $2`,
+             [product.quantity, product.product_id]
+           );
+         }
+          console.log("Updating product quantities...");
+    for (const product of cartProducts) {
+      const quantityInStockResult = await db.query(
+        `SELECT quantity_in_stock FROM products WHERE id = $1`,
+        [product.product_id]
+      );
 
+      const quantityInStock = quantityInStockResult.rows[0].quantity_in_stock;
+
+      if (quantityInStock === 0) {
+        await db.query(
+          `DELETE FROM cart_products WHERE product_id = $1`,
+          [product.product_id]
+        );
+      } else  {
+        await db.query(
+          `UPDATE cart_products 
+           SET quantity = $1 
+           WHERE product_id = $2 AND quantity > $1`,
+          [quantityInStock, product.product_id]
+        );
+      }}
         // Send success response
         isProcessing = false;
         return res.status(201).json({

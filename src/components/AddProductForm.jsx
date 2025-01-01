@@ -10,6 +10,7 @@ const AddProductForm = () => {
     price: '',
     description: '',
     category: '',
+    quantity_in_stock: '',
     image: null, // To hold the selected file
   });
 
@@ -47,6 +48,7 @@ const AddProductForm = () => {
     const data = new FormData();
     data.append('name', formData.name);
     data.append('price', formData.price);
+    data.append('quantity_in_stock', formData.quantity_in_stock);
     data.append('description', formData.description);
     data.append('category', formData.category);
     data.append('image', formData.image);
@@ -85,6 +87,14 @@ const AddProductForm = () => {
         required
         style={styles.input}
       />
+      <input
+        type="number"
+        name="quantity_in_stock"
+        placeholder="quantity_in_stock"
+        onChange={handleChange}
+        required
+        style={styles.input}
+      />
       <textarea
         name="description"
         placeholder="Description"
@@ -92,7 +102,7 @@ const AddProductForm = () => {
         required
         style={styles.textarea}
       ></textarea>
-      
+
       {/* Dropdown to display categories */}
       <select
         name="category"
@@ -117,7 +127,9 @@ const AddProductForm = () => {
         required
         style={styles.fileInput}
       />
-      <button type="submit" style={styles.button}>Add Product</button>
+      <button type="submit" style={styles.button}>
+        Add Product
+      </button>
     </form>
   );
 };

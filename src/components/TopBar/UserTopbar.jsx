@@ -27,36 +27,92 @@ const UserTopbar = ({ cartCount }) => {
     navigate("/login"); // Navigate to the login page
   };
 
-  const handleRemoveFromCart = (index) => {
+  const handleRemoveFromCart = async (index) => {
     const updatedCart = [...cartItems];
-    updatedCart.splice(index, 1); // Remove the item by index
-
-    // Update localStorage and state
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-    
-    setCartItems(updatedCart);
+    const removedItem = updatedCart.splice(index, 1)[0];
+  
+    try {
+      const response = await fetch("http://localhost:5000/api/dashboard/update-cart", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+        body: JSON.stringify({
+          productId: removedItem.productId,
+          quantity: 0,
+        }),
+      });
+  
+      if (response.ok) {
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        setCartItems(updatedCart);
+      } else {
+        console.error("Failed to remove item from cart.");
+      }
+    } catch (error) {
+      console.error("Error removing item from cart:", error);
+    }
   };
 
-  const handleIncreaseQuantity = (index) => {
+  const handleIncreaseQuantity = async (index) => {
     const updatedCart = [...cartItems];
-    updatedCart[index].quantity += 1; // Increase quantity by 1
-
-    // Update localStorage and state
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-    
-    setCartItems(updatedCart);
+    updatedCart[index].quantity += 1;
+  
+    try {
+      const response = await fetch("http://localhost:5000/api/dashboard/update-cart", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+        body: JSON.stringify({
+          productId: updatedCart[index].productId,
+          quantity: updatedCart[index].quantity,
+        }),
+      });
+  
+      if (response.ok) {
+        // Update local storage and state
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        setCartItems(updatedCart);
+      } else {
+        console.error("Failed to update cart.");
+      }
+    } catch (error) {
+      console.error("Error updating cart:", error);
+    }
   };
+  
 
-  const handleDecreaseQuantity = (index) => {
+  const handleDecreaseQuantity = async (index) => {
     const updatedCart = [...cartItems];
     if (updatedCart[index].quantity > 1) {
-      updatedCart[index].quantity -= 1; // Decrease quantity by 1
+      updatedCart[index].quantity -= 1;
+  
+      try {
+        const response = await fetch("http://localhost:5000/api/dashboard/update-cart", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+          body: JSON.stringify({
+            productId: updatedCart[index].productId,
+            quantity: updatedCart[index].quantity,
+          }),
+        });
+  
+        if (response.ok) {
+          localStorage.setItem("cart", JSON.stringify(updatedCart));
+          setCartItems(updatedCart);
+        } else {
+          console.error("Failed to update cart.");
+        }
+      } catch (error) {
+        console.error("Error updating cart:", error);
+      }
     }
-
-    // Update localStorage and state
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-   
-    setCartItems(updatedCart);
   };
 const handleCheckout = () => {
   

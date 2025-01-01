@@ -7,6 +7,7 @@ import orderRoutes from './routes/orderRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import CategoryRoutes from "./routes/CategoryRoutes.js";
 import addressRoutes from "./routes/addressRoutes.js";
+import loggedUserRouts from  './routes/loggedUserRouts.js'
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -25,6 +26,9 @@ app.use('/category', CategoryRoutes);
 app.use('/address', addressRoutes);
 
 app.use('/api/users', userRoutes);
+
+
+app.use("/api/dashboard", loggedUserRouts);
 
 
 

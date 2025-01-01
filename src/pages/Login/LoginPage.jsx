@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './LoginPage.css';
 import { useNavigate } from "react-router-dom";
+
+
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -58,7 +60,7 @@ const handleLogin = async (e) => {
         navigate("/user/");
       } else {
         localStorage.removeItem("cart"); // Clear cart from localStorage after login
-        navigate("/user/");
+        navigate("/user-dashboard/");
       }
     } else {
       setErrorMessage(data.message || "Invalid email or password.");

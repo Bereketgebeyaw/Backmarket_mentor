@@ -4,16 +4,18 @@ import BuyerLayout from './layouts/BuyerLayout';
 import BuyerDashboard from './pages/buyer/Dashboard';
 import AdminLayout from './layouts/AdminLayout';
 import ProductManagement from './pages/admin/ProductManagement';
-import CheckoutPage from './pages/CheckoutPage';
+
 import LoginPage from './pages/Login/LoginPage';
+
 import SignupPage from './pages/Signup/SignupPage';
-import UserLayout from './layouts/UserLayout';
+
 import PaymentPage from './components/PaymentPage';
 import PickupPage from './components/PickupPage';
 import FinalPaymentPage from './components/FinalPaymentPage';
 import AddCategory from './pages/admin/AddCategory';
 
 import UserCart from './pages/buyer/UserCart';
+import UserDashboard from './pages/buyer/UserDashboard';
 
 
 const App = () => {
@@ -25,10 +27,13 @@ const App = () => {
                 <Route path="/buyer/*" element={<BuyerLayout />}>
                     <Route path="" element={<BuyerDashboard />} />
                 </Route>
+               
                 <Route path="/login/*" element={<LoginPage />}></Route>
+                
                 <Route path="/signup/*" element={<SignupPage/>}></Route>
                 <Route path="/user/*" element={<UserCart />}>
                 </Route>
+                <Route path="/user-dashboard" element={<UserDashboard />} />
                 <Route path="/PaymentPage" element={<PaymentPage />} />
                 <Route path="/PickupPage" element={<PickupPage />} />
                 <Route path="/FinalPaymentPage" element={<FinalPaymentPage />} />

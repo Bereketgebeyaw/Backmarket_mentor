@@ -1,5 +1,5 @@
 import express from "express";
-import { getCartProductsForDashboard,addProductToCart} from '../controllers/loggedUserController.js';
+import { getCartProductsForDashboard,addProductToCart,updateCartProductQuantity} from '../controllers/loggedUserController.js';
 import { authenticateToken } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -11,6 +11,8 @@ const router = express.Router();
 router.get("/cart-products", authenticateToken, getCartProductsForDashboard);
 
 router.post("/add-to-cart", authenticateToken, addProductToCart);
+
+router.put("/update-cart", authenticateToken, updateCartProductQuantity);
 
 
 export default router;

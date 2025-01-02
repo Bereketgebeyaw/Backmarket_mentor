@@ -82,7 +82,7 @@ const handleSubmit = async () => {
 
   // Send the payload to the backend API
   try {
-    const response = await fetch("http://localhost:5000/address/create", {
+    const response = await fetch("http://localhost:5000/orders/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

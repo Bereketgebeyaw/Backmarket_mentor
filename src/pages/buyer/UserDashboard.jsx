@@ -4,12 +4,15 @@ import ProductCard from "../../components/ProductCard";
 
 import UserTopbar from "../../components/TopBar/UserTopbar";
 
+import Sidebar from "../../components/Sidebar/Sidebar";
+
 const UserDashboard = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cartCount, setCartCount] = useState(0);
   const [cartMessage, setCartMessage] = useState(null);
 
+  const userRole = "buyer"
   useEffect(() => {
     const loadProducts = async () => {
       try {
@@ -81,32 +84,38 @@ const UserDashboard = () => {
   if (loading) return <p>Loading products...</p>;
 
   return (
-    <div style={{ paddingTop: "0px" /* Ensure space for fixed TopBar */ }}>
-      <UserTopbar cartCount={cartCount} />
-      {cartMessage && (
-        <p style={{ color: "green", fontWeight: "bold", textAlign: "center" }}>
-          {cartMessage}
-        </p>
-      )}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-          gap: "16px",
-        }}
-      >
-        {products.length > 0 ? (
-          products.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onAddToCart={() => handleAddToCart(product)}
-              onFavorite={() => handleFavorite(product.id)}
-            />
-          ))
-        ) : (
-          <p>No products available.</p>
+    <div style={{ display: "flex", minHeight: "100vh" }}>
+      {/* Sidebar */}
+      <Sidebar role={userRole} />
+
+      {/* Main Content */}
+      <div style={{ flex: 1, padding: "20px" }}>
+        <UserTopbar cartCount={cartCount} />
+        {cartMessage && (
+          <p style={{ color: "green", fontWeight: "bold", textAlign: "center" }}>
+            {cartMessage}
+          </p>
         )}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+            gap: "16px",
+          }}
+        >
+          {products.length > 0 ? (
+            products.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onAddToCart={() => handleAddToCart(product)}
+                onFavorite={() => handleFavorite(product.id)}
+              />
+            ))
+          ) : (
+            <p>No products available.</p>
+          )}
+        </div>
       </div>
     </div>
   );

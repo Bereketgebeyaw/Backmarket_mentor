@@ -15,7 +15,7 @@ const TopBar = ({ cartCount }) => {
 
   const toggleDropdown = () => {
     setIsDropdownVisible(!isDropdownVisible);
-  };
+  }; 
 
 
 

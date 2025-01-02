@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 
 
-
 const UserTopbar = ({ cartCount }) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [cartItems, setCartItems] = useState([]);
@@ -115,12 +114,9 @@ const UserTopbar = ({ cartCount }) => {
     }
   };
 const handleCheckout = () => {
+  navigate("/user/");
   
-    {
-    alert("Proceeding to checkout...");
-    // Add your checkout logic here
-  }
-};
+}
 
 
   

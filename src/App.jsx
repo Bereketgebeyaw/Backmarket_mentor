@@ -17,6 +17,8 @@ import AddCategory from './pages/admin/AddCategory';
 import UserCart from './pages/buyer/UserCart';
 import UserDashboard from './pages/buyer/UserDashboard';
 
+import Orders from './pages/buyer/Orders';
+
 
 const App = () => {
    
@@ -33,7 +35,9 @@ const App = () => {
                 <Route path="/signup/*" element={<SignupPage/>}></Route>
                 <Route path="/user/*" element={<UserCart />}>
                 </Route>
-                <Route path="/user-dashboard" element={<UserDashboard />} />
+                <Route path="/user-dashboard" element={<UserDashboard />}>
+                    <Route path="orders" element={<Orders />} /> {/* Nested Orders route */}
+                </Route>
                 <Route path="/PaymentPage" element={<PaymentPage />} />
                 <Route path="/PickupPage" element={<PickupPage />} />
                 <Route path="/FinalPaymentPage" element={<FinalPaymentPage />} />

@@ -3,7 +3,7 @@ import { fetchProducts } from "../../services/productService";
 import ProductCard from "../../components/ProductCard";
 
 import UserTopbar from "../../components/TopBar/UserTopbar";
-
+import { Outlet } from "react-router-dom";
 import Sidebar from "../../components/Sidebar/Sidebar";
 
 const UserDashboard = () => {
@@ -84,41 +84,43 @@ const UserDashboard = () => {
   if (loading) return <p>Loading products...</p>;
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh" }}>
-      {/* Sidebar */}
-      <Sidebar role={userRole} />
+  <div style={{ display: "flex", minHeight: "100vh" }}>
+    {/* Sidebar */}
+    <Sidebar role={userRole} />
 
-      {/* Main Content */}
-      <div style={{ flex: 1, padding: "20px" }}>
-        <UserTopbar cartCount={cartCount} />
-        {cartMessage && (
-          <p style={{ color: "green", fontWeight: "bold", textAlign: "center" }}>
-            {cartMessage}
-          </p>
+    {/* Main Content */}
+    <div style={{ flex: 1, padding: "20px" }}>
+      <UserTopbar cartCount={cartCount} />
+      {cartMessage && (
+        <p style={{ color: "green", fontWeight: "bold", textAlign: "center" }}>
+          {cartMessage}
+        </p>
+      )}
+      <Outlet /> {/* This will render child routes */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+          gap: "16px",
+        }}
+      >
+        {products.length > 0 ? (
+          products.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              onAddToCart={() => handleAddToCart(product)}
+              onFavorite={() => handleFavorite(product.id)}
+            />
+          ))
+        ) : (
+          <p>No products available.</p>
         )}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-            gap: "16px",
-          }}
-        >
-          {products.length > 0 ? (
-            products.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onAddToCart={() => handleAddToCart(product)}
-                onFavorite={() => handleFavorite(product.id)}
-              />
-            ))
-          ) : (
-            <p>No products available.</p>
-          )}
-        </div>
       </div>
     </div>
-  );
+  </div>
+);
+
 };
 
 export default UserDashboard;

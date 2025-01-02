@@ -24,7 +24,7 @@ const App = () => {
         <BrowserRouter>
             <Routes>
                  
-                <Route path="/buyer/*" element={<BuyerLayout />}>
+                <Route path="" element={<BuyerLayout />}>
                     <Route path="" element={<BuyerDashboard />} />
                 </Route>
                

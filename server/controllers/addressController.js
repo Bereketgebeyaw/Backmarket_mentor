@@ -206,3 +206,81 @@ export const createAddress = async (req, res) => {
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
+
+export const getOrders = async (req, res) => {
+  const userId = req.userId; // Retrieved from the middleware
+
+  try {
+    console.log("Fetching orders for user ID:", userId);
+
+    // Fetch all orders with their address details for the current user
+    const ordersResult = await db.query(
+      `SELECT 
+         o.id AS order_id, 
+         o.status, 
+         o.created_at, 
+         a.id AS address_id, 
+         a.street, 
+         a.city, 
+         a.state, 
+         a.zip_code, 
+         a.country
+       FROM orders o
+       JOIN addresses a ON o.address_id = a.id
+       WHERE o.user_id = $1
+       ORDER BY o.created_at DESC`,
+      [userId]
+    );
+
+    const orders = ordersResult.rows;
+
+    if (orders.length === 0) {
+      console.log("No orders found for the user.");
+      return res.status(200).json({ message: "No orders found.", orders: [] });
+    }
+
+    // Fetch products for each order
+    const ordersWithDetails = await Promise.all(
+      orders.map(async (order) => {
+        const productsResult = await db.query(
+          `SELECT 
+             op.product_id, 
+             op.quantity, 
+             p.name, 
+             p.price, 
+             p.description 
+           FROM order_products op
+           JOIN products p ON op.product_id = p.id
+           WHERE op.order_id = $1`,
+          [order.order_id]
+        );
+
+        return {
+          order_id: order.order_id,
+          status: order.status,
+          created_at: order.created_at,
+          address: {
+            id: order.address_id,
+            street: order.street,
+            city: order.city,
+            state: order.state,
+            zip_code: order.zip_code,
+            country: order.country,
+          },
+          products: productsResult.rows,
+        };
+      })
+    );
+
+    console.log("Orders fetched successfully:", ordersWithDetails);
+
+    res.status(200).json({
+      message: "Orders retrieved successfully.",
+      orders: ordersWithDetails,
+    });
+  } catch (error) {
+    console.error("Error fetching orders:", error.message);
+    res.status(500).json({ message: "Server error. Please try again later." });
+  }
+};
+

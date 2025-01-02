@@ -57,7 +57,7 @@ const UserDashboard = () => {
         const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
         const updatedCart = [
           ...currentCart,
-          { productId: product.id, quantity, productName: product.name },
+          { id: product.id, quantity, name: product.name, price: product.price },
         ];
         localStorage.setItem("cart", JSON.stringify(updatedCart));
   

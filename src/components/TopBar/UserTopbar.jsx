@@ -115,7 +115,6 @@ const UserTopbar = ({ cartCount }) => {
   };
 const handleCheckout = () => {
   navigate("/user/");
-  
 }
 
 

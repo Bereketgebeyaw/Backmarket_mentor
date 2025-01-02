@@ -5,7 +5,7 @@ const Sidebar = ({ role }) => {
     const menuItems = {
         buyer: [
             { name: 'Dashboard', path: '' }, // Match the default route
-            { name: 'Orders', path: '/buyer/orders' },
+            { name: 'Orders', path: '/user-dashboard/orders' },
             { name: 'Wishlist', path: '/buyer/wishlist' },
             { name: 'Support', path: '/buyer/support' },
         ],

@@ -1,56 +1,63 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from "react";
+import { fetchOrders } from "../../services/orderService"; // Adjust the path if needed
 
-const Orders = ({ userId }) => {
+const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch orders when the component mounts or userId changes
   useEffect(() => {
-    const fetchOrders = async () => {
+    const loadOrders = async () => {
       try {
-        const response = await fetch(`/orders/${userId}`);
-        if (response.ok) {
-          const data = await response.json();
-          setOrders(data);  // Save the fetched orders
-        } else {
-          setError('Failed to fetch orders');
-        }
-      } catch (error) {
-        setError('Error fetching orders');
-        console.error(error);
+        const data = await fetchOrders();
+        setOrders(data);
+      } catch (err) {
+        setError(err.message);
       } finally {
-        setLoading(false);  // Set loading to false when the fetch is complete
+        setLoading(false);
       }
     };
 
-    fetchOrders();
-  }, [userId]);  // Run the effect when userId changes
+    loadOrders();
+  }, []);
 
-  // Render the component
-  if (loading) {
-    return <p>Loading your orders...</p>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
+  if (loading) return <p>Loading orders...</p>;
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <div>
+    <div style={{ padding: "20px" }}>
       <h1>Your Orders</h1>
       {orders.length === 0 ? (
         <p>No orders found.</p>
       ) : (
-        <ul>
-          {orders.map((order) => (
-            <li key={order.id}>
-              <strong>Product:</strong> {order.product_name}<br />
-              <strong>Quantity:</strong> {order.quantity}<br />
-              <strong>Order Date:</strong> {new Date(order.created_at).toLocaleDateString()}
-            </li>
-          ))}
-        </ul>
+        orders.map((order) => (
+          <div
+            key={order.id}
+            style={{
+              border: "1px solid #ddd",
+              borderRadius: "5px",
+              marginBottom: "10px",
+              padding: "10px",
+            }}
+          >
+            <h3>Order ID: {order.id}</h3>
+            <p>Status: {order.status}</p>
+            <p>Created At: {new Date(order.createdAt).toLocaleString()}</p>
+            <h4>Address:</h4>
+            <p>
+              {order.address.street}, {order.address.city}, {order.address.state}{" "}
+              {order.address.zipCode}, {order.address.country}
+            </p>
+            <h4>Products:</h4>
+            <ul>
+              {order.products.map((product) => (
+                <li key={product.id}>
+                  {product.name} - Quantity: {product.quantity}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
       )}
     </div>
   );

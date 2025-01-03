@@ -1,76 +1,84 @@
-import React, { useState } from 'react';
-import './LoginPage.css';
+import React, { useState } from "react";
+import "./LoginPage.css";
 import { useNavigate } from "react-router-dom";
 
-
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-const navigate = useNavigate();
-const handleLogin = async (e) => {
-  e.preventDefault();
+  const navigate = useNavigate();
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-  if (!email || !password) {
-    setErrorMessage("Email and password are required.");
-    return;
-  }
-
-  try {
-    // Read cart items from localStorage
-    const cartData = localStorage.getItem("cart");
-    const cartItems = cartData ? JSON.parse(cartData) : [];
-
-    // Extract only product_id and quantity for each cart item
-    const mappedCartItems = cartItems.map((item) => ({
-      product_id: item.id,
-      quantity: item.quantity,
-    }));
-
-    // Construct request body and exclude cartItems if empty
-    const requestBody = { email, password };
-    if (mappedCartItems.length > 0) {
-      requestBody.cartItems = mappedCartItems; // Only include cartItems if they exist
+    if (!email || !password) {
+      setErrorMessage("Email and password are required.");
+      return;
     }
 
-    // API call to back-end login route
-    const response = await fetch("http://localhost:5000/api/users/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody), // Send only email, password, and cartItems (if not empty)
-    });
+    try {
+      // Read cart items from localStorage
+      const cartData = localStorage.getItem("cart");
+      const cartItems = cartData ? JSON.parse(cartData) : [];
 
-    const data = await response.json();
+      // Extract only product_id and quantity for each cart item
+      const mappedCartItems = cartItems.map((item) => ({
+        product_id: item.id,
+        quantity: item.quantity,
+      }));
 
-    if (response.ok) {
-      // If login is successful, store the token in localStorage
-      const token = data.token; // Assuming the token is returned as data.token
-      if (token) {
-        localStorage.setItem("authToken", token); // Store the token in localStorage
-      }
+      // Read favorites from localStorage
+      const favoritesData = localStorage.getItem("favorites");
+      const favorites = favoritesData ? JSON.parse(favoritesData) : [];
 
-      alert("Login successful!");
+      // Extract product_id for each favorite item
+      const mappedFavorites = favorites.map((item) => ({
+        id: item.id,
+      }));
 
-      // Remove the cart from localStorage after login, if applicable
+      // Construct request body
+      const requestBody = { email, password };
       if (mappedCartItems.length > 0) {
-        localStorage.removeItem("cart"); // Clear cart from localStorage after login
-        navigate("/user/");
-      } else {
-        localStorage.removeItem("cart"); // Clear cart from localStorage after login
-        navigate("/user-dashboard/");
+        requestBody.cartItems = mappedCartItems; // Include cartItems if they exist
       }
-    } else {
-      setErrorMessage(data.message || "Invalid email or password.");
-    }
-  } catch (error) {
-    console.error("Error during login:", error);
-    setErrorMessage("Server error. Please try again later.");
-  }
-};
+      if (mappedFavorites.length > 0) {
+        requestBody.favorites = mappedFavorites; // Include favorites if they exist
+      }
 
+      // API call to back-end login route
+      const response = await fetch("http://localhost:5000/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody), // Send email, password, cartItems, and favorites
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // If login is successful, store the token in localStorage
+        const token = data.token; // Assuming the token is returned as data.token
+        if (token) {
+          localStorage.setItem("authToken", token); // Store the token in localStorage
+        }
+
+        alert("Login successful!");
+
+        // Remove the cart and favorites from localStorage after login
+        localStorage.removeItem("cart");
+        localStorage.removeItem("favorites");
+
+        // Redirect to the appropriate user page
+        navigate("/user-dashboard/");
+      } else {
+        setErrorMessage(data.message || "Invalid email or password.");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      setErrorMessage("Server error. Please try again later.");
+    }
+  };
 
   return (
     <div className="login-container">

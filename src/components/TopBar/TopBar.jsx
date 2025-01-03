@@ -89,29 +89,29 @@ const handleCheckout = () => {
         <span style={styles.tagline}>Our Marketplace</span>
       </div>
       <div style={styles.menu}>
-        <a href="#men" style={styles.menuItem}>
+        <a href="/" style={styles.menuItem}>
           MEN
         </a>
-        <a href="#women" style={styles.menuItem}>
+        <a href="/" style={styles.menuItem}>
           WOMEN
         </a>
-        <a href="#kids" style={styles.menuItem}>
+        <a href="/" style={styles.menuItem}>
           KIDS
         </a>
-        <a href="#jewelry" style={styles.menuItem}>
+        <a href="/" style={styles.menuItem}>
           Jewelry
         </a>
-        <a href="#electronics" style={styles.menuItem}>
+        <a href="/" style={styles.menuItem}>
           Electronics
         </a>
-        <a href="#perfume" style={styles.menuItem}>
+        <a href="/" style={styles.menuItem}>
           Perfume
         </a>
-        <a href="#kitchen" style={styles.menuItem}>
+        <a href="/" style={styles.menuItem}>
           Kitchen Item
         </a>
-        <a href="#gift" style={styles.menuItem}>
-          Gift Card
+        <a href="/wishlists" style={styles.menuItem}>
+          WishList
         </a>
       </div>
       <div style={styles.rightSection}>

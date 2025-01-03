@@ -1,16 +1,18 @@
-import React from 'react';
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
-const ProductCard = ({ product, onAddToCart, onFavorite }) => {
+const ProductCard = ({ product, isFavorite, onAddToCart, onFavorite }) => {
+  const handleFavoriteClick = () => {
+    onFavorite(product); // Add or remove from favorites
+  };
+
   return (
     <div style={styles.card}>
       {/* Product Image */}
-      {product.image ? (
-        <div style={styles.imageContainer}>
-          <img src={product.image} alt={product.name} style={styles.image} />
-        </div>
-      ) : (
-        <div style={styles.placeholder}>No Image Available</div>
-      )}
+      <div style={styles.imageContainer}>
+        <img src={product.image} alt={product.name} style={styles.image} />
+      </div>
 
       {/* Product Name */}
       <h3 style={styles.name}>{product.name}</h3>
@@ -23,11 +25,17 @@ const ProductCard = ({ product, onAddToCart, onFavorite }) => {
 
       {/* Action Buttons */}
       <div style={styles.actions}>
-        <button style={styles.cartButton} onClick={() => onAddToCart(product.id)}>
+        <button style={styles.cartButton} onClick={() => onAddToCart(product)}>
           Add to Cart 🛒
         </button>
-        <button style={styles.favoriteButton} onClick={() => onFavorite(product.id)}>
-          ♥️ Favorite
+        <button
+          style={{
+            ...styles.favoriteButton,
+            color: isFavorite ? "red" : "gray", // Dynamically change color
+          }}
+          onClick={handleFavoriteClick}
+        >
+          <FontAwesomeIcon icon={faHeart} />
         </button>
       </div>
     </div>
@@ -36,85 +44,59 @@ const ProductCard = ({ product, onAddToCart, onFavorite }) => {
 
 const styles = {
   card: {
-    marginTop:"30px",
-    border: '1px solid #e0e0e0',
-    borderRadius: '12px',
-    padding: '20px',
-    textAlign: 'center',
-    backgroundColor: '#f9f9f9',
-    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
-    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-    cursor: 'pointer',
-    maxWidth: '300px',
-    margin: 'auto',
+    border: "1px solid #e0e0e0",
+    borderRadius: "12px",
+    padding: "20px",
+    textAlign: "center",
+    backgroundColor: "#f9f9f9",
+    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
   },
   imageContainer: {
-    width: '100%',
-    height: '200px',
-    overflow: 'hidden',
-    borderRadius: '12px',
-    marginBottom: '15px',
+    height: "200px",
+    overflow: "hidden",
+    borderRadius: "12px",
+    marginBottom: "15px",
   },
   image: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'contain', // Ensures the entire image fits within the container
-  },
-  placeholder: {
-    width: '100%',
-    height: '200px',
-    backgroundColor: '#e0e0e0',
-    borderRadius: '12px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#b0b0b0',
-    marginBottom: '15px',
+    width: "100%",
+    height: "100%",
+    objectFit: "contain",
   },
   name: {
-    fontSize: '18px',
-    fontWeight: 'bold',
-    color: '#2c3e50',
-    margin: '10px 0',
+    fontSize: "18px",
+    fontWeight: "bold",
+    color: "#2c3e50",
+    margin: "10px 0",
   },
   description: {
-    fontSize: '14px',
-    color: '#7f8c8d',
-    marginBottom: '10px',
-    minHeight: '40px',
+    fontSize: "14px",
+    color: "#7f8c8d",
+    marginBottom: "10px",
   },
   price: {
-    fontSize: '20px',
-    fontWeight: 'bold',
-    color: '#2980b9',
-    margin: '10px 0',
+    fontSize: "20px",
+    fontWeight: "bold",
+    color: "#2980b9",
   },
   actions: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginTop: '10px',
+    display: "flex",
+    justifyContent: "space-between",
+    marginTop: "10px",
   },
   cartButton: {
-    backgroundColor: '#3498db',
-    color: '#fff',
-    border: 'none',
-    padding: '8px 12px',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    fontSize: '14px',
-    fontWeight: 'bold',
-    transition: 'background-color 0.3s ease',
+    backgroundColor: "#3498db",
+    color: "#fff",
+    border: "none",
+    padding: "8px 12px",
+    borderRadius: "6px",
+    cursor: "pointer",
   },
   favoriteButton: {
-    backgroundColor: '#9b59b6', // Changed to purple
-    color: '#fff',
-    border: 'none',
-    padding: '8px 12px',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    fontSize: '14px',
-    fontWeight: 'bold',
-    transition: 'background-color 0.3s ease',
+    backgroundColor: "transparent",
+    border: "none",
+    fontSize: "24px",
+    cursor: "pointer",
+    transition: "color 0.3s ease",
   },
 };
 

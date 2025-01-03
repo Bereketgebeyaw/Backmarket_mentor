@@ -3,7 +3,7 @@ import db from "../db.js";
 import jwt from "jsonwebtoken";
 
 export const signupUser = async (req, res) => {
-  const { name, email, password,cartItems } = req.body;
+  const { name, email, password } = req.body;
 
   if (!name || !email || !password) {
     return res
@@ -12,7 +12,7 @@ export const signupUser = async (req, res) => {
   }
 
   try {
-   
+    // Check if the email already exists
     const { rows: existingUsers } = await db.query(
       "SELECT * FROM users WHERE email = $1",
       [email]
@@ -21,10 +21,10 @@ export const signupUser = async (req, res) => {
       return res.status(400).json({ message: "Email already exists." });
     }
 
-    
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
- 
+    // Insert the new user into the database
     const { rows } = await db.query(
       "INSERT INTO users (name, email, password, created_at) VALUES ($1, $2, $3, $4) RETURNING *",
       [name, email, hashedPassword, new Date().toISOString()]
@@ -32,10 +32,21 @@ export const signupUser = async (req, res) => {
 
     const newUser = rows[0];
 
-   
+    // Create an empty cart for the user
     await db.query("INSERT INTO cart (user_id) VALUES ($1)", [newUser.id]);
 
-    
+    // Create a default wishlist for the user
+    await db.query(
+      "INSERT INTO wishlists (user_id, name, created_at, updated_at) VALUES ($1, $2, $3, $4)",
+      [
+        newUser.id,
+        "My Wishlist", // Default wishlist name
+        new Date().toISOString(),
+        new Date().toISOString(),
+      ]
+    );
+
+    // Respond with success
     res.status(201).json({
       message: "User created successfully.",
       user: { id: newUser.id, name: newUser.name, email: newUser.email },
@@ -46,14 +57,10 @@ export const signupUser = async (req, res) => {
   }
 };
 
-
-
-
-
 export const loginUser = async (req, res) => {
   console.log("Login Request Body:", req.body); // Debug incoming request
 
-  const { email, password, cartItems } = req.body;
+  const { email, password, cartItems, favorites } = req.body;
 
   if (!email || !password) {
     return res
@@ -75,7 +82,7 @@ export const loginUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password." });
     }
 
-    // Check if cartItems exist and is a non-empty array
+    // Handle cart items
     if (cartItems && Array.isArray(cartItems) && cartItems.length > 0) {
       const { rows: cart } = await db.query(
         "SELECT * FROM cart WHERE user_id = $1",
@@ -91,13 +98,11 @@ export const loginUser = async (req, res) => {
       for (const item of cartItems) {
         const { product_id, quantity } = item;
 
-        // Validate product_id and quantity
         if (!product_id || !quantity) {
-          console.error("Invalid product or quantity:", item); // Debug invalid cart item
-          continue; // Skip this item to avoid SQL error
+          console.error("Invalid product or quantity:", item);
+          continue;
         }
 
-        // Check if product already exists in cart
         const { rows: existingCartProduct } = await db.query(
           "SELECT * FROM cart_products WHERE cart_id = $1 AND product_id = $2",
           [cartId, product_id]
@@ -117,8 +122,46 @@ export const loginUser = async (req, res) => {
       }
     }
 
+    // Handle favorite items
+    if (favorites && Array.isArray(favorites) && favorites.length > 0) {
+      // Get the user's wishlist
+      const { rows: wishlist } = await db.query(
+        "SELECT * FROM wishlists WHERE user_id = $1",
+        [user.id]
+      );
+
+      if (!wishlist || wishlist.length === 0) {
+        throw new Error("Wishlist not found for user.");
+      }
+
+      const wishlistId = wishlist[0].id;
+
+      for (const favorite of favorites) {
+        const { id: productId } = favorite;
+
+        if (!productId) {
+          console.error("Invalid product ID in favorites:", favorite);
+          continue;
+        }
+
+        // Check if the product is already in the wishlist
+        const { rows: existingWishlistProduct } = await db.query(
+          "SELECT * FROM wishlist_products WHERE wishlist_id = $1 AND product_id = $2",
+          [wishlistId, productId]
+        );
+
+        if (existingWishlistProduct.length === 0) {
+          await db.query(
+            "INSERT INTO wishlist_products (wishlist_id, product_id) VALUES ($1, $2)",
+            [wishlistId, productId]
+          );
+        }
+      }
+    }
+
+    // Generate a JWT token
     const token = jwt.sign({ userId: user.id }, "your_secret_key", {
-      expiresIn: "1h", 
+      expiresIn: "1h",
     });
 
     res.status(200).json({ message: "Login successful.", token, user });
@@ -127,6 +170,7 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
+
 
 export const getCartProducts = async (req, res) => {
   const userId = req.userId; // Retrieved from the middleware

@@ -3,14 +3,21 @@ import { fetchProducts } from "../../services/productService";
 import ProductCard from "../../components/ProductCard";
 import TopBar from "../../components/TopBar/TopBar";
 
-const BuyerDashboard = () => {
+const BuyerWishlist = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cartCount, setCartCount] = useState(0);
   const [cartMessage, setCartMessage] = useState(null);
   const [favorites, setFavorites] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
+    const checkLoginStatus = () => {
+      // Check login status from local storage
+      const userLoggedIn = JSON.parse(localStorage.getItem("isLoggedIn"));
+      setIsLoggedIn(userLoggedIn);
+    };
+
     const loadProducts = async () => {
       try {
         const data = await fetchProducts();
@@ -22,6 +29,7 @@ const BuyerDashboard = () => {
       }
     };
 
+    checkLoginStatus();
     loadProducts();
 
     // Initialize cart count
@@ -89,6 +97,11 @@ const BuyerDashboard = () => {
 
   if (loading) return <p>Loading products...</p>;
 
+  // Filter products to only include those in favorites
+  const favoriteProducts = products.filter((product) =>
+    favorites.some((fav) => fav.id === product.id)
+  );
+
   return (
     <div style={{ paddingTop: "0px" /* Ensure space for fixed TopBar */ }}>
       <TopBar cartCount={cartCount} />
@@ -104,8 +117,8 @@ const BuyerDashboard = () => {
           gap: "16px",
         }}
       >
-        {products.length > 0 ? (
-          products.map((product) => (
+        {favoriteProducts.length > 0 ? (
+          favoriteProducts.map((product) => (
             <ProductCard
               key={product.id}
               product={product}
@@ -118,8 +131,22 @@ const BuyerDashboard = () => {
           <p>No products available.</p>
         )}
       </div>
+      {!isLoggedIn && (
+        <div style={{ textAlign: "center", padding: "20px" }}>
+          <h2>Please Log In</h2>
+          <p>To view your favorites next time, please log in.</p>
+          <button
+            onClick={() => {
+              // Redirect to the login page or show a login form
+              window.location.href = "/login"; // Example redirect to login page
+            }}
+          >
+            Log In
+          </button>
+        </div>
+      )}
     </div>
   );
 };
 
-export default BuyerDashboard;
+export default BuyerWishlist;

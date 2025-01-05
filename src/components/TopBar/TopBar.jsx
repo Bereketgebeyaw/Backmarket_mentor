@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
 
+
+
 const TopBar = ({ cartCount }) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [cartItems, setCartItems] = useState([]);
@@ -42,6 +44,8 @@ const TopBar = ({ cartCount }) => {
     
     setCartItems(updatedCart);
   };
+
+  
 
   const handleDecreaseQuantity = (index) => {
     const updatedCart = [...cartItems];
@@ -182,9 +186,15 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#f8f5ec",
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    backdropFilter: "blur(10px)" ,
     padding: "10px 20px",
+    marginLeft: "1.5rem",
     borderBottom: "2px solid #ccc",
+    position: "fixed",
+    width: "95%",
+    borderRadius: "1rem",
+    zIndex: "1000",
   },
   logoContainer: {
     display: "flex",
@@ -195,7 +205,7 @@ const styles = {
     marginRight: "10px",
   },
   tagline: {
-    color: "#b1975b",
+    color: "#00c04b",
     fontSize: "18px",
     fontWeight: "bold",
   },
@@ -209,7 +219,7 @@ const styles = {
     fontWeight: "bold",
     padding: "5px 10px",
     borderRadius: "5px",
-    backgroundColor: "#fff",
+    backgroundColor: "",
   },
   
   
@@ -219,7 +229,7 @@ const styles = {
     gap: "15px",
   },
   currencyDropdown: {
-    border: "1px solid #ccc",
+    border: "1px solid #00c04b ",
     borderRadius: "5px",
     padding: "5px",
   },
@@ -246,7 +256,8 @@ const styles = {
     top: "40px",
     right: "0",
     width: "300px",
-    backgroundColor: "#fff",
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    backdropFilter: "blur(10px)" ,
     border: "1px solid #ddd",
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
     zIndex: 10,
@@ -287,8 +298,8 @@ const styles = {
   },
   checkoutButton: {
     marginTop: "10px",
-    width: "100%",
-    backgroundColor: "#28a745",
+    width: "100%",backgroundColor: "rgba(255, 255, 255, 0.8)",
+    backdropFilter: "blur(10px)" ,
     color: "#fff",
     padding: "8px",
     border: "none",
@@ -298,7 +309,8 @@ const styles = {
     fontWeight: "bold",
   },
   removeButton: {
-    backgroundColor: "#ff4d4f",
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    backdropFilter: "blur(10px)" ,
     color: "#fff",
     border: "none",
     padding: "4px 8px",
@@ -310,9 +322,9 @@ const styles = {
 
 
   loginButton: {
-    backgroundColor: "#b1975b",
-    color: "#fff",
-    border: "none",
+    backgroundColor: "",
+    color: "back", 
+    border: "1px solid #00c04b",
     padding: "8px 15px",
     borderRadius: "5px",
     cursor: "pointer",

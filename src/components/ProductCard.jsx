@@ -8,7 +8,10 @@ const ProductCard = ({ product, isFavorite, onAddToCart, onFavorite }) => {
   };
 
   return (
-    <div style={styles.card}>
+    
+    <div style={styles.card} >
+      
+
       {/* Product Image */}
       <div style={styles.imageContainer}>
         <img src={product.image} alt={product.name} style={styles.image} />
@@ -21,14 +24,15 @@ const ProductCard = ({ product, isFavorite, onAddToCart, onFavorite }) => {
       <p style={styles.description}>{product.description}</p>
 
       {/* Product Price */}
-      <p style={styles.price}>${product.price}</p>
+      <p style={styles.price}>${product.price}/price</p>
 
       {/* Action Buttons */}
       <div style={styles.actions}>
         <button style={styles.cartButton} onClick={() => onAddToCart(product)}>
           Add to Cart 🛒
-        </button>
-        <button
+          </button>
+          
+          <button
           style={{
             ...styles.favoriteButton,
             color: isFavorite ? "red" : "gray", // Dynamically change color
@@ -37,6 +41,9 @@ const ProductCard = ({ product, isFavorite, onAddToCart, onFavorite }) => {
         >
           <FontAwesomeIcon icon={faHeart} />
         </button>
+
+       
+       
       </div>
     </div>
   );
@@ -48,14 +55,18 @@ const styles = {
     borderRadius: "12px",
     padding: "20px",
     textAlign: "center",
+    marginTop: "4.5rem",
     backgroundColor: "#f9f9f9",
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+    overflow: "hidden",
+
   },
   imageContainer: {
     height: "200px",
     overflow: "hidden",
     borderRadius: "12px",
-    marginBottom: "15px",
+    marginBottom: "-28px",
+    marginTop: "-1.5rem",
   },
   image: {
     width: "100%",
@@ -67,16 +78,19 @@ const styles = {
     fontWeight: "bold",
     color: "#2c3e50",
     margin: "10px 0",
+    textAlign: "left",
   },
   description: {
     fontSize: "14px",
     color: "#7f8c8d",
     marginBottom: "10px",
+    textAlign: "left",
   },
   price: {
     fontSize: "20px",
     fontWeight: "bold",
     color: "#2980b9",
+    textAlign: "left",
   },
   actions: {
     display: "flex",
@@ -84,11 +98,13 @@ const styles = {
     marginTop: "10px",
   },
   cartButton: {
-    backgroundColor: "#3498db",
+    backgroundColor: "#00c04b",
     color: "#fff",
     border: "none",
-    padding: "8px 12px",
-    borderRadius: "6px",
+    padding: "8px 15px",
+    width:"15rem",
+    borderRadius: "100px",
+    
     cursor: "pointer",
   },
   favoriteButton: {
@@ -96,6 +112,7 @@ const styles = {
     border: "none",
     fontSize: "24px",
     cursor: "pointer",
+    marginTop: " -35rem",
     transition: "color 0.3s ease",
   },
 };

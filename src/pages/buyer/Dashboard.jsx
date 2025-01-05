@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchProducts } from "../../services/productService";
 import ProductCard from "../../components/ProductCard";
 import TopBar from "../../components/TopBar/TopBar";
+import Footer from "../../components/bottomBar/Footer";
 
 const BuyerDashboard = () => {
   const [products, setProducts] = useState([]);
@@ -118,7 +119,17 @@ const BuyerDashboard = () => {
           <p>No products available.</p>
         )}
       </div>
+      <div style={{
+         
+          position: "relative",
+          marginTop:"1rem",
+          
+        }}>
+      
+      <Footer/>
     </div>
+    </div>
+    
   );
 };
 

@@ -52,7 +52,8 @@ const UserTopbar = ({ cartCount }) => {
       console.error("Error removing item from cart:", error);
     }
   };
-
+   
+  
   const handleIncreaseQuantity = async (index) => {
     const updatedCart = [...cartItems];
     updatedCart[index].quantity += 1;
@@ -230,6 +231,8 @@ const styles = {
     padding: "10px 20px",
     borderBottom: "2px solid #ccc",
     position:"fixed",
+    fontFamily: 'sans-serif',
+
   },
   logoContainer: {
     
@@ -248,11 +251,11 @@ const styles = {
   menu: {
     display: "flex",
     gap: "15px",
+    fontFamily: 'sans-serif',
   },
   menuItem: {
     textDecoration: "none",
     color: "#333",
-    fontWeight: "bold",
     padding: "5px 10px",
     borderRadius: "5px",
    

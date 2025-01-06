@@ -195,6 +195,7 @@ const styles = {
     width: "95%",
     borderRadius: "1rem",
     zIndex: "1000",
+    fontFamily: 'sans-serif',
   },
   logoContainer: {
     display: "flex",

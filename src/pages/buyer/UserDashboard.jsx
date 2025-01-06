@@ -5,6 +5,7 @@ import ProductCard from "../../components/ProductCard";
 import UserTopbar from "../../components/TopBar/UserTopbar";
 import { Outlet } from "react-router-dom";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import Footer from "../../components/bottomBar/Footer";
 
 const UserDashboard = () => {
   const [products, setProducts] = useState([]);
@@ -84,6 +85,7 @@ const UserDashboard = () => {
   if (loading) return <p>Loading products...</p>;
 
   return (
+    <div>
   <div style={{ display: "flex", minHeight: "100vh" }}>
     {/* Sidebar */}
     <Sidebar role={userRole} />
@@ -116,8 +118,13 @@ const UserDashboard = () => {
         ) : (
           <p>No products available.</p>
         )}
+        
       </div>
+      
     </div>
+    
+  </div>
+  <Footer/>
   </div>
 );
 

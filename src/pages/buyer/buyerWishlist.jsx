@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchProducts } from "../../services/productService";
 import ProductCard from "../../components/ProductCard";
 import TopBar from "../../components/TopBar/TopBar";
+import Footer from "../../components/bottomBar/Footer";
 
 const BuyerWishlist = () => {
   const [products, setProducts] = useState([]);
@@ -115,6 +116,7 @@ const BuyerWishlist = () => {
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
           gap: "16px",
+          boxSizing:" borderBox",
         }}
       >
         {favoriteProducts.length > 0 ? (
@@ -145,6 +147,13 @@ const BuyerWishlist = () => {
           </button>
         </div>
       )}
+      <div style={{
+        position: "fixed",
+        marginTop: "110px",
+        width: "100%",
+      }}>
+      <Footer/>
+      </div>
     </div>
   );
 };

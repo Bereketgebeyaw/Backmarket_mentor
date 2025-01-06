@@ -12,10 +12,10 @@ const Sidebar = ({ role }) => {
     };
 
     return (
-        <div style={{ width: '150px', background: '#f4f4f4', padding: '10px' }}>
-            <ul style={{ listStyle: 'none', padding: 0 }}>
+        <div style={{ width: '150px', background: '#f4f4f4', padding: '10px' , fontFamily: 'sans-serif'}}>
+            <ul style={{ listStyle: 'none', padding: 0 , position:'fixed'}}>
                 {menuItems[role]?.map((item, index) => (
-                    <li key={index} style={{ marginBottom: '10px' }}>
+                    <li key={index} style={{ marginBottom: '20px' }}>
                         <NavLink
                             to={item.path}
                             style={{ textDecoration: 'none', color: 'black' }}

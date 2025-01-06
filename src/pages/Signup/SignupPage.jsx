@@ -1,6 +1,8 @@
 // SignupPage.js
 import React, { useState } from 'react';
 import './SignupPage.css';
+import TopBar from '../../components/TopBar/TopBar';
+import Footer from '../../components/bottomBar/Footer';
 
 const SignupPage = () => {
   const [name, setName] = useState('');
@@ -55,7 +57,11 @@ const SignupPage = () => {
   };
 
   return (
+    <div>
+      <TopBar/>
+      
     <div className="signup-container">
+    <div className='container1'>
       <h2 className="signup-title">Sign Up</h2>
       <form className="signup-form" onSubmit={handleSignup}>
         <input
@@ -90,6 +96,7 @@ const SignupPage = () => {
         <button type="submit" className="signup-button">
           Sign Up
         </button>
+
       </form>
       <p
         className="signup-link"
@@ -97,6 +104,9 @@ const SignupPage = () => {
       >
         Already have an account? <a href="/login">Login here</a>.
       </p>
+      </div>
+      </div>
+      <Footer/>
     </div>
   );
 };

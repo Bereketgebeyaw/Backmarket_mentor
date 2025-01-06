@@ -4,6 +4,7 @@ import BuyerLayout from './layouts/BuyerLayout';
 import BuyerDashboard from './pages/buyer/Dashboard';
 import BuyerWishlist from "./pages/buyer/buyerWishlist";
 import AdminLayout from './layouts/AdminLayout';
+import SellerLayout from "./layouts/SellerLayout";
 import ProductManagement from './pages/admin/ProductManagement';
 
 import LoginPage from './pages/Login/LoginPage';
@@ -17,7 +18,7 @@ import AddCategory from './pages/admin/AddCategory';
 
 import UserCart from './pages/buyer/UserCart';
 import UserDashboard from './pages/buyer/UserDashboard';
-
+import SellerSignupPage from "./pages/Signup/sellerSignupPage";
 import Orders from './pages/buyer/Orders';
 
 
@@ -34,6 +35,7 @@ const App = () => {
           <Route path="/login/*" element={<LoginPage />}></Route>
 
           <Route path="/signup/*" element={<SignupPage />}></Route>
+          <Route path="/register/*" element={<SellerSignupPage />}></Route>
           <Route path="/user/*" element={<UserCart />}></Route>
           <Route path="/user-dashboard" element={<UserDashboard />}>
             <Route path="orders" element={<Orders />} />{" "}
@@ -43,6 +45,10 @@ const App = () => {
           <Route path="/PickupPage" element={<PickupPage />} />
           <Route path="/FinalPaymentPage" element={<FinalPaymentPage />} />
           <Route path="/admin/*" element={<AdminLayout />}>
+            <Route path="product-management" element={<ProductManagement />} />
+            <Route path="add-category" element={<AddCategory />} />
+          </Route>
+          <Route path="/seller/*" element={<SellerLayout />}>
             <Route path="product-management" element={<ProductManagement />} />
             <Route path="add-category" element={<AddCategory />} />
           </Route>

@@ -10,6 +10,7 @@ const LoginPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -71,8 +72,12 @@ const LoginPage = () => {
         localStorage.removeItem("cart");
         localStorage.removeItem("favorites");
 
-        // Redirect to the appropriate user page
-        navigate("/user-dashboard/");
+        // Check if the user is a seller and navigate accordingly
+        if (data.user.role === "seller") {
+          navigate("/seller"); // Redirect to seller dashboard or admin page
+        } else {
+          navigate("/user-dashboard"); // Redirect to user dashboard
+        }
       } else {
         setErrorMessage(data.message || "Invalid email or password.");
       }

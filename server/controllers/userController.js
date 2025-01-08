@@ -3,7 +3,8 @@ import db from "../db.js";
 import jwt from "jsonwebtoken";
 
 export const signupUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, isSeller, businessName, storeDescription } =
+    req.body;
 
   if (!name || !email || !password) {
     return res
@@ -26,16 +27,38 @@ export const signupUser = async (req, res) => {
 
     // Insert the new user into the database
     const { rows } = await db.query(
-      "INSERT INTO users (name, email, password, created_at) VALUES ($1, $2, $3, $4) RETURNING *",
-      [name, email, hashedPassword, new Date().toISOString()]
+      "INSERT INTO users (name, email, password, role, created_at) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [
+        name,
+        email,
+        hashedPassword,
+        isSeller ? "seller" : "user",
+        new Date().toISOString(),
+      ]
     );
 
     const newUser = rows[0];
 
-    // Create an empty cart for the user
-    await db.query("INSERT INTO cart (user_id) VALUES ($1)", [newUser.id]);
+    // If the user is a seller, create a seller record
+    if (isSeller) {
+      await db.query(
+        "INSERT INTO sellers (user_id, business_name, store_description, created_at) VALUES ($1, $2, $3, $4)",
+        [newUser.id, businessName, storeDescription, new Date().toISOString()]
+      );
+      // Don't create a cart and wishlist for sellers
+      return res.status(201).json({
+        message: "Seller created successfully.",
+        user: {
+          id: newUser.id,
+          name: newUser.name,
+          email: newUser.email,
+          role: newUser.role,
+        },
+      });
+    }
 
-    // Create a default wishlist for the user
+    // Create a default cart and wishlist for regular users
+    await db.query("INSERT INTO cart (user_id) VALUES ($1)", [newUser.id]);
     await db.query(
       "INSERT INTO wishlists (user_id, name, created_at, updated_at) VALUES ($1, $2, $3, $4)",
       [
@@ -46,16 +69,21 @@ export const signupUser = async (req, res) => {
       ]
     );
 
-    // Respond with success
     res.status(201).json({
       message: "User created successfully.",
-      user: { id: newUser.id, name: newUser.name, email: newUser.email },
+      user: {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+      },
     });
   } catch (error) {
     console.error("Error during signup:", error.message);
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
+
 
 export const loginUser = async (req, res) => {
   console.log("Login Request Body:", req.body); // Debug incoming request
@@ -82,94 +110,124 @@ export const loginUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password." });
     }
 
-    // Handle cart items
-    if (cartItems && Array.isArray(cartItems) && cartItems.length > 0) {
-      const { rows: cart } = await db.query(
-        "SELECT * FROM cart WHERE user_id = $1",
+    // Fetch seller-specific data if user is a seller
+    let seller = null;
+    if (user.role === "seller") {
+      const { rows: sellerData } = await db.query(
+        "SELECT * FROM sellers WHERE user_id = $1",
         [user.id]
       );
-
-      if (!cart || cart.length === 0) {
-        throw new Error("Cart not found for user.");
-      }
-
-      const cartId = cart[0].id;
-
-      for (const item of cartItems) {
-        const { product_id, quantity } = item;
-
-        if (!product_id || !quantity) {
-          console.error("Invalid product or quantity:", item);
-          continue;
-        }
-
-        const { rows: existingCartProduct } = await db.query(
-          "SELECT * FROM cart_products WHERE cart_id = $1 AND product_id = $2",
-          [cartId, product_id]
-        );
-
-        if (existingCartProduct.length > 0) {
-          await db.query(
-            "UPDATE cart_products SET quantity = quantity + $1 WHERE cart_id = $2 AND product_id = $3",
-            [quantity, cartId, product_id]
-          );
-        } else {
-          await db.query(
-            "INSERT INTO cart_products (cart_id, product_id, quantity) VALUES ($1, $2, $3)",
-            [cartId, product_id, quantity]
-          );
-        }
-      }
+      seller = sellerData[0]; // If the user is a seller, get the seller data
     }
 
-    // Handle favorite items
-    if (favorites && Array.isArray(favorites) && favorites.length > 0) {
-      // Get the user's wishlist
-      const { rows: wishlist } = await db.query(
-        "SELECT * FROM wishlists WHERE user_id = $1",
-        [user.id]
-      );
-
-      if (!wishlist || wishlist.length === 0) {
-        throw new Error("Wishlist not found for user.");
-      }
-
-      const wishlistId = wishlist[0].id;
-
-      for (const favorite of favorites) {
-        const { id: productId } = favorite;
-
-        if (!productId) {
-          console.error("Invalid product ID in favorites:", favorite);
-          continue;
-        }
-
-        // Check if the product is already in the wishlist
-        const { rows: existingWishlistProduct } = await db.query(
-          "SELECT * FROM wishlist_products WHERE wishlist_id = $1 AND product_id = $2",
-          [wishlistId, productId]
+    // For regular users, handle cart items and favorites
+    if (user.role !== "seller") {
+      // Handle cart items
+      if (cartItems && Array.isArray(cartItems) && cartItems.length > 0) {
+        const { rows: cart } = await db.query(
+          "SELECT * FROM cart WHERE user_id = $1",
+          [user.id]
         );
 
-        if (existingWishlistProduct.length === 0) {
-          await db.query(
-            "INSERT INTO wishlist_products (wishlist_id, product_id) VALUES ($1, $2)",
+        if (!cart || cart.length === 0) {
+          throw new Error("Cart not found for user.");
+        }
+
+        const cartId = cart[0].id;
+
+        for (const item of cartItems) {
+          const { product_id, quantity } = item;
+
+          if (!product_id || !quantity) {
+            console.error("Invalid product or quantity:", item);
+            continue;
+          }
+
+          const { rows: existingCartProduct } = await db.query(
+            "SELECT * FROM cart_products WHERE cart_id = $1 AND product_id = $2",
+            [cartId, product_id]
+          );
+
+          if (existingCartProduct.length > 0) {
+            await db.query(
+              "UPDATE cart_products SET quantity = quantity + $1 WHERE cart_id = $2 AND product_id = $3",
+              [quantity, cartId, product_id]
+            );
+          } else {
+            await db.query(
+              "INSERT INTO cart_products (cart_id, product_id, quantity) VALUES ($1, $2, $3)",
+              [cartId, product_id, quantity]
+            );
+          }
+        }
+      }
+
+      // Handle favorite items
+      if (favorites && Array.isArray(favorites) && favorites.length > 0) {
+        // Get the user's wishlist
+        const { rows: wishlist } = await db.query(
+          "SELECT * FROM wishlists WHERE user_id = $1",
+          [user.id]
+        );
+
+        if (!wishlist || wishlist.length === 0) {
+          throw new Error("Wishlist not found for user.");
+        }
+
+        const wishlistId = wishlist[0].id;
+
+        for (const favorite of favorites) {
+          const { id: productId } = favorite;
+
+          if (!productId) {
+            console.error("Invalid product ID in favorites:", favorite);
+            continue;
+          }
+
+          // Check if the product is already in the wishlist
+          const { rows: existingWishlistProduct } = await db.query(
+            "SELECT * FROM wishlist_products WHERE wishlist_id = $1 AND product_id = $2",
             [wishlistId, productId]
           );
+
+          if (existingWishlistProduct.length === 0) {
+            await db.query(
+              "INSERT INTO wishlist_products (wishlist_id, product_id) VALUES ($1, $2)",
+              [wishlistId, productId]
+            );
+          }
         }
       }
     }
 
     // Generate a JWT token
-    const token = jwt.sign({ userId: user.id }, "your_secret_key", {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { userId: user.id, role: user.role },
+      "your_secret_key",
+      {
+        expiresIn: "1h",
+      }
+    );
 
+    // If the user is a seller, navigate to the seller dashboard
+    if (user.role === "seller") {
+      return res.status(200).json({
+        message: "Login successful. Redirecting to Seller Dashboard.",
+        token,
+        user,
+        seller,
+        redirectTo: "/seller-dashboard",
+      });
+    }
+
+    // If the user is not a seller, proceed as normal
     res.status(200).json({ message: "Login successful.", token, user });
   } catch (error) {
     console.error("Error during login:", error.message);
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
+
 
 
 export const getCartProducts = async (req, res) => {

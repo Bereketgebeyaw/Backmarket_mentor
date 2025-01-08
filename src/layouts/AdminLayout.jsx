@@ -9,7 +9,11 @@ const AdminLayout = () => {
         <ul>
           <li><Link to="/admin/product-management">Product Management</Link></li>
           <li><Link to="/admin/add-category">Add New Category</Link></li>
+
           <li><Link to="/admin/add-subcategory">Add New Subcategory</Link></li> {/* New link */}
+
+          
+
           {/* Add more admin routes here */}
         </ul>
       </nav>

@@ -52,7 +52,8 @@ const UserTopbar = ({ cartCount }) => {
       console.error("Error removing item from cart:", error);
     }
   };
-
+   
+  
   const handleIncreaseQuantity = async (index) => {
     const updatedCart = [...cartItems];
     updatedCart[index].quantity += 1;
@@ -225,9 +226,13 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#f8f5ec",
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    backdropFilter: "blur(10px)" ,
     padding: "10px 20px",
     borderBottom: "2px solid #ccc",
+    position:"fixed",
+    fontFamily: 'sans-serif',
+
   },
   logoContainer: {
     
@@ -239,21 +244,21 @@ const styles = {
     marginRight: "10px",
   },
   tagline: {
-    color: "#b1975b",
+    color: "#00c04b",
     fontSize: "18px",
     fontWeight: "bold",
   },
   menu: {
     display: "flex",
     gap: "15px",
+    fontFamily: 'sans-serif',
   },
   menuItem: {
     textDecoration: "none",
     color: "#333",
-    fontWeight: "bold",
     padding: "5px 10px",
     borderRadius: "5px",
-    backgroundColor: "#fff",
+   
   },
   
   
@@ -263,9 +268,11 @@ const styles = {
     gap: "15px",
   },
   currencyDropdown: {
-    border: "1px solid #ccc",
+    border: "1px solid #00c04b",
     borderRadius: "5px",
     padding: "5px",
+    backgroundColor: "none",
+    
   },
   cartContainer: {
     position: "relative",
@@ -290,7 +297,7 @@ const styles = {
     top: "40px",
     right: "0",
     width: "300px",
-    backgroundColor: "#fff",
+    backgroundColor: "#00c04b",
     border: "1px solid #ddd",
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
     zIndex: 10,
@@ -310,7 +317,7 @@ const styles = {
     justifyContent: "space-between",
     alignItems: "center",
     padding: "5px 0",
-    borderBottom: "1px solid #ddd",
+    borderBottom: "1px solid #00c04b",
   },
   cartItemDetails: {
     display: "flex",
@@ -332,7 +339,7 @@ const styles = {
   checkoutButton: {
     marginTop: "10px",
     width: "100%",
-    backgroundColor: "#28a745",
+    backgroundColor: "#00c04b",
     color: "#fff",
     padding: "8px",
     border: "none",
@@ -342,7 +349,7 @@ const styles = {
     fontWeight: "bold",
   },
   removeButton: {
-    backgroundColor: "#ff4d4f",
+    backgroundColor: "##00c04b",
     color: "#fff",
     border: "none",
     padding: "4px 8px",
@@ -354,12 +361,13 @@ const styles = {
 
 
   loginButton: {
-    backgroundColor: "#b1975b",
-    color: "#fff",
-    border: "none",
+    
+    color: "black",
+    border: "0.1rem solid #00c04b",
     padding: "8px 15px",
     borderRadius: "5px",
     cursor: "pointer",
+    backgroundColor: "none",
   },
 };
 

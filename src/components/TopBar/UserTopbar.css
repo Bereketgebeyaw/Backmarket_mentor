@@ -1,0 +1,164 @@
+.topBara {
+  margin-top: 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 10px 20px;
+  border-bottom: 2px solid #ccc;
+  position: fixed;
+  font-family: sans-serif;
+  z-index: 1000;
+}
+
+.logoContainera {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 50px;
+  margin-right: 10px;
+}
+
+.taglinea {
+  color: #00c04b;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.menua {
+  display: flex;
+  gap: 15px;
+  font-family: sans-serif;
+}
+
+.menuItema {
+  text-decoration: none;
+  color: #333;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.menuItema:hover{
+  color: #00c04b;
+}
+
+.rightSectiona {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.currencyDropdowna {
+  border: 1px solid #00c04b;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.cartContainera {
+  position: relative;
+  cursor: pointer;
+}
+
+.cartIcona {
+  font-size: 24px;
+}
+
+.cartCounta {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.dropdowna {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 300px;
+  background-color: #00c04b;
+  border: 1px solid #ddd;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  padding: 10px;
+  border-radius: 8px;
+  color: #333;
+}
+
+.cartLista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.cartItema {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px solid #00c04b;
+}
+
+.cartItemDetailsa {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+}
+
+.quantityControlsa {
+  display: flex;
+  align-items: center;
+}
+
+.quantityButtona {
+  background-color: #ddd;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 0 5px;
+}
+
+.checkoutButtona {
+  margin-top: 10px;
+  width: 100%;
+  background-color: #00c04b;
+  color: #fff;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.removeButtona {
+  background-color: #00c04b;
+  color: #fff;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.loginButtona {
+  color: black;
+  border: 0.1rem solid #00c04b;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: none;
+}
+.loginButtona:hover {
+  border: 0.2rem solid #00c04b;
+}

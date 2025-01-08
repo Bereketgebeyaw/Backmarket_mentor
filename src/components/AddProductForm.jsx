@@ -102,8 +102,9 @@ const AddProductForm = () => {
   };
 
   return (
+    <div style={styles.forms}>
     <form onSubmit={handleSubmit} style={styles.form}>
-      <h2>Add New Product</h2>
+      <h2 style={{textAlign: 'center', color:"#00c04b" }}>Add New Product</h2>
       <input
         type="text"
         name="name"
@@ -242,10 +243,20 @@ const AddProductForm = () => {
         Add Product
       </button>
     </form>
+    </div>
   );
 };
 
 const styles = {
+  forms:{
+  
+   margin:"3rem 10rem 1rem 10rem",
+   paddingTop:"2rem",
+   boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+   borderRadius: "10rem 0rem 0rem 0rem",
+   backgroundColor: "rgba(255, 255, 255, 0.8)",
+    backdropFilter: "blur(10px)" ,
+  },
   form: {
     display: 'flex',
     flexDirection: 'column',
@@ -253,29 +264,34 @@ const styles = {
     maxWidth: '400px',
     margin: 'auto',
     padding: '20px',
-    border: '1px solid #ddd',
+    
     borderRadius: '8px',
   },
   input: {
     padding: '10px',
     fontSize: '16px',
+    border: '0.1rem solid #00c04b',
   },
   textarea: {
     padding: '10px',
     fontSize: '16px',
-    resize: 'vertical',
+
+    height: '100px',
+    border: '0.1rem solid #00c04b',
+
   },
   fileInput: {
     padding: '10px',
     fontSize: '16px',
   },
   button: {
-    padding: '12px',
-    fontSize: '18px',
-    backgroundColor: '#4CAF50',
+
+    padding: '10px',
+    backgroundColor: '#00c04b',
     color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
+    border: '0.1rem solid #00c04b',
+    borderRadius: '5rem',
+
     cursor: 'pointer',
     marginTop: '10px',
   },

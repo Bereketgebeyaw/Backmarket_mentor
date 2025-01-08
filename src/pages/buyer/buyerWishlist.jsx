@@ -115,7 +115,7 @@ const BuyerWishlist = () => {
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-          gap: "16px",
+          gap: "25px",
           boxSizing:" borderBox",
         }}
       >
@@ -134,7 +134,7 @@ const BuyerWishlist = () => {
         )}
       </div>
       {!isLoggedIn && (
-        <div style={{ textAlign: "center", padding: "20px" }}>
+        <div style={{ textAlign: "center", padding: "20px", margin: "3rem "}}>
           <h2>Please Log In</h2>
           <p>To view your favorites next time, please log in.</p>
           <button
@@ -152,8 +152,9 @@ const BuyerWishlist = () => {
         marginTop: "110px",
         width: "100%",
       }}>
-      <Footer/>
+      
       </div>
+      <div><Footer/></div>
     </div>
   );
 };

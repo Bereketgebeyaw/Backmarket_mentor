@@ -1,0 +1,83 @@
+.card {
+  
+  padding: 20px;
+  text-align: center;
+  margin-top: 4.5rem;
+  margin-bottom: -5rem;
+  overflow-y:auto ;
+  overflow-x:hidden ;
+  font-family: sans-serif;
+  background-image: url(/image/productCard.png);
+  object-fit:contain;
+  background-color: none;
+  height: 26.5rem;
+}
+
+.imgs {
+  margin-left: -4rem;
+  width: 10rem;
+}
+
+.imageContainer {
+  height: 200px;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-top: 3rem;
+  
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2c3e50;
+  margin: 10px 0;
+  text-align: left;
+}
+
+.description {
+  font-size: 14px;
+  color: #7f8c8d;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  text-align: left;
+  margin-top: -18rem;
+  margin-left: 4.5rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.cartButton {
+  background-color: #00c04b;
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
+  width: 15rem;
+  border-radius: 100px;
+  cursor: pointer;
+  margin-top: 17rem ;
+}
+
+.favoriteButton {
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  margin-top: -18rem;
+  transition: color 0.3s ease;
+}

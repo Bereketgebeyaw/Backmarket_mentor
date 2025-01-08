@@ -21,7 +21,8 @@ const CartCard = ({ product, onQuantityChange }) => {
           <span style={styles.quantity}>{product.quantity}</span>
           <button
             style={styles.quantityButton}
-            onClick={() => onQuantityChange(product.id, 1)} // Increase quantity
+            onClick={
+              () => onQuantityChange(product.id, 1)} // Increase quantity
           >
             +
           </button>

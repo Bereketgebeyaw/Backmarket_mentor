@@ -43,8 +43,10 @@ const AddCategoryForm = () => {
   };
 
   return (
+    <div style={styles.category}>
     <form onSubmit={handleSubmit} style={styles.form}>
-      <h2>Add New Category</h2>
+     
+      <h2 style={styles.h2}>Add New Category</h2>
       
       <input
         type="text"
@@ -66,7 +68,9 @@ const AddCategoryForm = () => {
       ></textarea>
 
       <button type="submit" style={styles.button}>Add Category</button>
+    
     </form>
+    </div>
   );
 };
 
@@ -78,26 +82,45 @@ const styles = {
     maxWidth: '400px',
     margin: 'auto',
     padding: '20px',
-    border: '1px solid #ddd',
+    fontFamily: 'sans-serif',
     borderRadius: '8px',
+  },
+   h2:{
+    textAlign: "center",
+    color:" #00c04b",
+   },
+  category:{
+   backgroundColor: "rgba(255, 255, 255, 0.8)",
+   backdropFilter: "blur(10px)" ,
+   boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+   marginLeft:"13rem", 
+   marginRight:"13rem", 
+   marginTop:"1rem",
+   paddingTop: "5rem", 
+   paddingBottom: "5rem", 
+   borderRadius: "130px 0px 0px 0px",
+   
   },
   input: {
     padding: '10px',
     fontSize: '16px',
+    border: "0.1rem solid #00c04b",
   },
   textarea: {
     padding: '10px',
     fontSize: '16px',
     height: '100px',
+    border: "0.1rem solid #00c04b",
   },
   button: {
     padding: '10px',
-    backgroundColor: '#007BFF',
+    backgroundColor: '#00c04b',
     color: '#fff',
     border: 'none',
-    borderRadius: '5px',
+    borderRadius: '15rem',
     cursor: 'pointer',
     fontSize: '16px',
+    
   },
 };
 

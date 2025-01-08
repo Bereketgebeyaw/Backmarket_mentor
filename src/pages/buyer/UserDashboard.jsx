@@ -103,7 +103,11 @@ const UserDashboard = () => {
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-          gap: "16px",
+          paddingLeft: "1rem",
+          paddingRight: "1rem",
+          gap: "1.3rem",
+        
+          backgroundColor:"#f0f0f0",
         }}
       >
         {products.length > 0 ? (

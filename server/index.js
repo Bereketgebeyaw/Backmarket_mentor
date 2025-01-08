@@ -8,6 +8,8 @@ import userRoutes from './routes/userRoutes.js';
 import CategoryRoutes from "./routes/CategoryRoutes.js";
 import addressRoutes from "./routes/addressRoutes.js";
 import loggedUserRouts from  './routes/loggedUserRouts.js'
+
+import subcatgoryRouts from './routes/subcatgoryRouts.js' 
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -30,6 +32,7 @@ app.use('/api/users', userRoutes);
 
 app.use("/api/dashboard", loggedUserRouts);
 
+app.use('/subcategory',subcatgoryRouts)
 
 
 app.listen(5000, () => {

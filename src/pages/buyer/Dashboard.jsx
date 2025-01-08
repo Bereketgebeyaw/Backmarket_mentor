@@ -9,7 +9,6 @@ const BuyerDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [cartCount, setCartCount] = useState(0);
   const [cartMessage, setCartMessage] = useState(null);
-  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -27,65 +26,44 @@ const BuyerDashboard = () => {
 
     // Initialize cart count
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    setCartCount(cart.reduce((total, item) => total + item.quantity, 0));
-
-    // Initialize favorites
-    const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    setFavorites(storedFavorites);
+    setCartCount(cart.reduce((total, item) => total + item.quantity, 0)); // Initialize with total quantity of items in cart
   }, []);
 
   const handleAddToCart = (product) => {
     try {
       const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
+      // Check if the product already exists in the cart
       const existingProductIndex = cart.findIndex(
         (item) => item.id === product.id
       );
 
       if (existingProductIndex !== -1) {
+        // If product exists, increase its quantity by 1
         cart[existingProductIndex].quantity += 1;
       } else {
+        // If product does not exist, add it to the cart with quantity 1
         cart.push({
           id: product.id,
           name: product.name,
           price: product.price,
-          quantity: 1,
+          quantity: 1, // Initialize with quantity 1
         });
       }
 
+      // Update localStorage and cart count
       localStorage.setItem("cart", JSON.stringify(cart));
-      setCartCount(cart.reduce((total, item) => total + item.quantity, 0));
+      const totalItems = cart.reduce((total, item) => total + item.quantity, 0); // Total cart count based on quantity
+      setCartCount(totalItems); // Update cart count
       setCartMessage("Product successfully added to cart!");
       setTimeout(() => setCartMessage(null), 3000);
-
-      // Remove from favorites if it exists
-      const updatedFavorites = favorites.filter((fav) => fav.id !== product.id);
-      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-      setFavorites(updatedFavorites);
     } catch (error) {
       console.error("Error adding to cart:", error);
     }
   };
 
-  const handleFavorite = (product) => {
-    try {
-      const updatedFavorites = [...favorites];
-
-      const existingIndex = updatedFavorites.findIndex(
-        (fav) => fav.id === product.id
-      );
-
-      if (existingIndex !== -1) {
-        updatedFavorites.splice(existingIndex, 1);
-      } else {
-        updatedFavorites.push(product);
-      }
-
-      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-      setFavorites(updatedFavorites);
-    } catch (error) {
-      console.error("Error handling favorite:", error);
-    }
+  const handleFavorite = (productId) => {
+    console.log("Favorite product:", productId);
   };
 
   if (loading) return <p>Loading products...</p>;
@@ -110,9 +88,8 @@ const BuyerDashboard = () => {
             <ProductCard
               key={product.id}
               product={product}
-              isFavorite={favorites.some((fav) => fav.id === product.id)}
-              onAddToCart={handleAddToCart}
-              onFavorite={handleFavorite}
+              onAddToCart={() => handleAddToCart(product)}
+              onFavorite={() => handleFavorite(product.id)}
             />
           ))
         ) : (

@@ -11,18 +11,32 @@ const upload = multer({ storage: storage });
 
 // POST route to add a product
 router.post('/', upload.single('image'), async (req, res) => {
-  const { name, description, price, quantity_in_stock, category } = req.body;
+  const { name, description, price, quantity_in_stock, category, subcategory, brand, price_range, size, target_demographics, shelf_life } = req.body;
   const image = req.file ? req.file.buffer : null;
   const imageType = req.file ? mime.extension(req.file.mimetype) : null;
 
-  if (!name || !description || !price || !quantity_in_stock || !category || !image) {
+  if (!name || !description || !price || !quantity_in_stock || !image || !subcategory || !brand || !price_range || !size || !target_demographics || !shelf_life) {
     return res.status(400).send('All fields are required.');
   }
+  console.log('Data to be inserted:', {
+    name,
+    description,
+    price,
+    quantity_in_stock,
+    imageType,
+    subcategory,
+    brand,
+    price_range,
+    size,
+    target_demographics,
+    shelf_life,
+  });
+
 
   try {
     const query = `
-      INSERT INTO products (name, description, price, quantity_in_stock, image, image_type, category_id)
-      VALUES ($1, $2, $3, $4 ,$5, $6, $7) RETURNING *;
+      INSERT INTO products (name, description, price, quantity_in_stock, image, image_type, subcategory_id, brand, price_range, size, target_demographics, shelf_life)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *;
     `;
     const values = [
       name,
@@ -31,7 +45,12 @@ router.post('/', upload.single('image'), async (req, res) => {
       quantity_in_stock,
       image,
       imageType,
-      category,
+      subcategory,
+      brand,
+      price_range,
+      size,
+      target_demographics,
+      shelf_life,
     ];
     const result = await db.query(query, values);
 
@@ -41,6 +60,7 @@ router.post('/', upload.single('image'), async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+
 
 // GET route to fetch all products
 router.get('/', async (req, res) => {

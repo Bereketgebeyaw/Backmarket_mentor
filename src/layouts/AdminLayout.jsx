@@ -9,10 +9,19 @@ const AdminLayout = () => {
       <div  style={{ marginLeft:"4rem"  , }}><UserTopbar /></div>
     <div style={{ display: 'flex' ,  }}>
       {/* Sidebar */}
+
       <nav style={{ width: '250px', padding: '20px', borderRight: '1px solid #ddd', }}>
         <ul style={{position: 'fixed',  marginTop: '3rem' ,  }}>
           <li style={{  marginTop: '3rem'  , listStyleType:"none"  }} ><Link to="/admin/product-management">Product Management</Link></li>
           <li style={{  marginTop: '2rem' , listStyleType:"none" }}><Link to="/admin/add-category">Add New Category</Link></li>
+             <li><Link to="/admin/add-subcategory">Add New Subcategory</Link></li> {/* New link */}
+
+
+         
+
+          
+
+
           {/* Add more admin routes here */}
         </ul>
       </nav>

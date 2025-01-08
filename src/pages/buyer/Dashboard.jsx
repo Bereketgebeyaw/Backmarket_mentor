@@ -79,8 +79,12 @@ const BuyerDashboard = () => {
       <div
         style={{
           display: "grid",
+          backgroundColor: "#f0f0f0",
           gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-          gap: "16px",
+          gap: "4.3rem",
+          paddingLeft: "2rem",
+          paddingRight: "1rem",
+          
         }}
       >
         {products.length > 0 ? (

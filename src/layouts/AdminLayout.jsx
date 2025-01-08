@@ -11,6 +11,8 @@ const AdminLayout = () => {
           <li><Link to="/admin/add-category">Add New Category</Link></li>
 
           <li><Link to="/admin/add-subcategory">Add New Subcategory</Link></li> {/* New link */}
+          <li><Link to="/admin/add-subcategory">Onboard Supplier</Link></li> {/* New link */}
+
 
 
           

@@ -29,13 +29,14 @@ const SellerSignupPage = () => {
       setErrorMessage("Passwords do not match.");
       return;
     }
-
+     const isSeller= 'True';
     try {
       // Prepare the data for the request
       const requestData = {
         name,
         email,
         password,
+        isSeller,
         businessName,
         storeDescription,
       };

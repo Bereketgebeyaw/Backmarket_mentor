@@ -12,6 +12,9 @@ const AdminLayout = () => {
 
           <li><Link to="/admin/add-subcategory">Add New Subcategory</Link></li> {/* New link */}
 
+
+          
+
           {/* Add more admin routes here */}
         </ul>
       </nav>

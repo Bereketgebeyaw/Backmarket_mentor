@@ -16,6 +16,7 @@ export const up = function (knex) {
         table.integer("user_id").unsigned().notNullable(); // Reference to Users table
         table.string("business_name").notNullable(); // Business name
         table.text("store_description").notNullable(); // Store description
+        table.string("status").notNullable().defaultTo("pending");
         table.timestamps(true, true); // Adds created_at and updated_at
 
         // Foreign key reference

@@ -10,6 +10,7 @@ import addressRoutes from "./routes/addressRoutes.js";
 import loggedUserRouts from  './routes/loggedUserRouts.js'
 
 import subcatgoryRouts from './routes/subcatgoryRouts.js' 
+import sellerRoutes from "./routes/sellerRoutes.js";
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -34,6 +35,7 @@ app.use("/api/dashboard", loggedUserRouts);
 
 app.use('/subcategory',subcatgoryRouts)
 
+app.use("/api/sellers", sellerRoutes);
 
 app.listen(5000, () => {
   console.log('Server is running on port 5000');

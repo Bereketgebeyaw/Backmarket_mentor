@@ -14,6 +14,7 @@ export const authenticateToken = (req, res, next) => {
       return res.status(403).json({ message: "Invalid token." });
     }
     req.userId = user.userId; // Attach user ID to the request
+    req.userRole = user.role;
     next();
   });
 };

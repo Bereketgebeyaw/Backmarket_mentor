@@ -86,19 +86,37 @@ const AddProductForm = () => {
     data.append('shelf_life', formData.shelf_life);
 
     try {
-      
-      const response = await axios.post('http://localhost:5000/products', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+  // Retrieve the token from localStorage
+  const token = localStorage.getItem("authToken");
 
-      console.log('Product added successfully:', response.data);
-      alert('Product added successfully!');
-    } catch (error) {
-      console.error('Error adding product:', error);
-      alert('Failed to add product. Please try again.');
-    }
+  if (!token) {
+    alert("You are not authenticated. Please log in.");
+    return;
+  }
+
+  // Set up headers with the token
+  const response = await axios.post("http://localhost:5000/products", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${token}`, // Add the token to the Authorization header
+    },
+  });
+
+  console.log("Product added successfully:", response.data);
+  alert("Product added successfully!");
+} catch (error) {
+  console.error("Error adding product:", error);
+
+  // Provide a more user-friendly error message based on the status code
+  if (error.response && error.response.status === 401) {
+    alert("Authentication failed. Please log in again.");
+  } else if (error.response && error.response.status === 403) {
+    alert("You do not have permission to perform this action.");
+  } else {
+    alert("Failed to add product. Please try again.");
+  }
+}
+
   };
 
   return (

@@ -75,7 +75,11 @@ const LoginPage = () => {
         // Check if the user is a seller and navigate accordingly
         if (data.user.role === "seller") {
           navigate("/seller"); // Redirect to seller dashboard or admin page
-        } else {
+        } 
+        else if (data.user.role === "admin") {
+            navigate("/admin"); 
+        } 
+        else {
           navigate("/user-dashboard"); // Redirect to user dashboard
         }
       } else {

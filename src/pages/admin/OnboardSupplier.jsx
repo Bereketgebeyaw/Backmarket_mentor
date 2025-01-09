@@ -8,11 +8,7 @@ const OnboardSupplier = () => {
   useEffect(() => {
     // Fetch pending sellers
     axios
-      .get('http://localhost:5000/api/sellers/pending', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
+      .get('http://localhost:5000/api/sellers/pending')
       .then((response) => {
         if (response.data && response.data.length > 0) {
           setPendingSellers(response.data);
@@ -27,9 +23,37 @@ const OnboardSupplier = () => {
       });
   }, []);
 
-  if (!isVisible) {
-    return null; // Hide the component if there are no pending sellers
-  }
+  // Approve Seller
+  const handleApprove = (id) => {
+    axios
+      .put(`http://localhost:5000/api/sellers/${id}/approve`)
+      .then((response) => {
+        console.log('Seller approved:', response.data);
+        // Optionally, update the state to reflect the change
+        if (response.data.seller.status === 'approved') {
+          setPendingSellers(prevState => prevState.filter(seller => seller.id !== id));
+        }
+      })
+      .catch((error) => {
+        console.error('Error approving seller:', error);
+      });
+  };
+  
+  // Deny Seller
+  const handleDeny = (id) => {
+    axios
+      .put(`http://localhost:5000/api/sellers/${id}/deny`)
+      .then((response) => {
+        console.log('Seller denied:', response.data);
+        // Optionally, update the state to reflect the change
+        if (response.data.seller.status === 'denied') {
+          setPendingSellers(prevState => prevState.filter(seller => seller.id !== id));
+        }
+      })
+      .catch((error) => {
+        console.error('Error denying seller:', error);
+      });
+  };
 
   const containerStyle = {
     width: '80%',
@@ -94,18 +118,45 @@ const OnboardSupplier = () => {
               <th style={thStyle}>Store Description</th>
               <th style={thStyle}>Status</th>
               <th style={thStyle}>Created At</th>
+              <th style={thStyle}>Actions</th>
             </tr>
           </thead>
           <tbody>
             {pendingSellers.map((seller) => (
-              <tr
-                key={seller.id}
-                style={trHoverStyle}
-              >
+              <tr key={seller.id} style={trHoverStyle}>
                 <td style={tdStyle}>{seller.business_name}</td>
                 <td style={tdStyle}>{seller.store_description}</td>
                 <td style={tdStyle}>{seller.status}</td>
                 <td style={tdStyle}>{new Date(seller.created_at).toLocaleString()}</td>
+                <td style={tdStyle}>
+                  <button
+                    onClick={() => handleApprove(seller.id)}
+                    style={{
+                      backgroundColor: '#28a745',
+                      color: '#fff',
+                      padding: '6px 12px',
+                      border: 'none',
+                      borderRadius: '4px',
+                      marginRight: '10px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Approve
+                  </button>
+                  <button
+                    onClick={() => handleDeny(seller.id)}
+                    style={{
+                      backgroundColor: '#dc3545',
+                      color: '#fff',
+                      padding: '6px 12px',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Deny
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

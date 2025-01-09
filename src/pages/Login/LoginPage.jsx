@@ -66,7 +66,7 @@ const LoginPage = () => {
           localStorage.setItem("authToken", token); // Store the token in localStorage
         }
 
-        alert("Login successful!");
+       
 
         // Remove the cart and favorites from localStorage after login
         localStorage.removeItem("cart");
@@ -74,7 +74,21 @@ const LoginPage = () => {
 
         // Check if the user is a seller and navigate accordingly
         if (data.user.role === "seller") {
-          navigate("/seller"); // Redirect to seller dashboard or admin page
+            if (data.seller.status === "approved") {
+              navigate("/seller");
+            } 
+            else if (data.seller.status === "denied") {
+              alert(
+                "Your request to become a seller has been denied. Please contact support for further assistance."
+              );
+              navigate("/");
+            } else {
+              alert(
+                "Your account is not yet approved by the admin. Please try logging in again once you receive approval."
+              );
+
+              navigate("/");
+            }
         } 
         else if (data.user.role === "admin") {
             navigate("/admin"); 

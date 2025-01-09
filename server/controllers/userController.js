@@ -208,8 +208,9 @@ export const loginUser = async (req, res) => {
         expiresIn: "1h",
       }
     );
-
+console.log('seller');
     // If the user is a seller, navigate to the seller dashboard
+    console.log(seller);
     if (user.role === "seller") {
       return res.status(200).json({
         message: "Login successful. Redirecting to Seller Dashboard.",

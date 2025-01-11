@@ -106,39 +106,40 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="top_bar"><TopBar/>
-    <div className="login-container">
-      
-       <div className="container">
-      <h2 className="login-title">Login</h2>
-      <form className="login-form" onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          name="email"
-          className="login-input"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          name="password"
-          className="login-input"
-        />
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
-        <button type="submit" className="login-button">
-          Login
-        </button>
-      </form>
-      <p className="login-link">
-        Don't have an account? <a href="/signup">Sign up here</a>.
-      </p>
-    </div>
-    </div>
-    <Footer/>
+    <div className="top_bar">
+      <TopBar />
+      <div className="login-container">
+        <div className="container">
+          <h2 className="login-title">Login</h2>
+          <form className="login-form" onSubmit={handleLogin}>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              name="email"
+              className="login-input"
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              name="password"
+              className="login-input"
+            />
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+            <button type="submit" className="login-button">
+              Login
+            </button>
+          </form>
+          <p className="login-link">
+            New here? <a href="/signup">Sign up as a buyer</a> or{" "}
+            <a href="/register">register as a seller</a>.
+          </p>
+        </div>
+      </div>
+      <Footer />
     </div>
   );
 };

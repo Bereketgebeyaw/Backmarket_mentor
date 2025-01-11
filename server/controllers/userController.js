@@ -3,8 +3,22 @@ import db from "../db.js";
 import jwt from "jsonwebtoken";
 
 export const signupUser = async (req, res) => {
-  const { name, email, password, isSeller, businessName, storeDescription } =
-    req.body;
+  
+ 
+  const {
+    name,
+    email,
+    password,
+    isSeller,
+    businessName,
+    storeDescription,
+    physicalAddress,
+    bankAccount,
+    categories,
+    subcategories,
+    termsAccepted,
+  } = req.body;
+   
 
   if (!name || !email || !password) {
     return res
@@ -41,19 +55,87 @@ export const signupUser = async (req, res) => {
 
     // If the user is a seller, create a seller record
     if (isSeller) {
-      await db.query(
-        "INSERT INTO sellers (user_id, business_name, store_description, created_at) VALUES ($1, $2, $3, $4)",
-        [newUser.id, businessName, storeDescription, new Date().toISOString()]
-      );
-      // Don't create a cart and wishlist for sellers
+      const businessLicense = req.files?.businessLicense
+        ? req.files.businessLicense[0].buffer
+        : null;
+      const tinCertificate = req.files?.tinCertificate
+        ? req.files.tinCertificate[0].buffer
+        : null;
+      const vatCertificate = req.files?.vatCertificate
+        ? req.files.vatCertificate[0].buffer
+        : null;
+      const kebeleId = req.files?.kebeleId
+        ? req.files.kebeleId[0].buffer
+        : null;
+
+      if (
+        !businessName ||
+        !storeDescription ||
+        !physicalAddress ||
+        !bankAccount ||
+        !categories ||
+        !subcategories ||
+        !termsAccepted ||
+        !businessLicense ||
+        !tinCertificate ||
+        !vatCertificate ||
+        !kebeleId
+      ) {
+        return res.status(400).send("All fields are required.");
+      }
+
+      // Insert user data into the database
+      const query = `
+        INSERT INTO sellers (
+          user_id, 
+          business_name, 
+          store_description, 
+          kebele_id, 
+          business_license, 
+          tin_certificate, 
+          vat_certificate, 
+          physical_address, 
+          bank_account, 
+          categories, 
+          subcategories, 
+          terms_accepted, 
+          created_at
+        ) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *;
+      `;
+
+      const values = [
+        newUser.id,
+        businessName,
+        storeDescription,
+        kebeleId,
+        businessLicense,
+        tinCertificate,
+        vatCertificate,
+        physicalAddress,
+        bankAccount,
+        categories,
+        subcategories,
+        termsAccepted,
+        new Date().toISOString(),
+      ];
+      console.log("Name:", name);
+      console.log("Email:", email);
+      console.log("Password:", password);
+      console.log("Is Seller:", isSeller);
+      console.log("Business Name:", businessName);
+      console.log("Store Description:", storeDescription);
+      console.log("Physical Address:", physicalAddress);
+      console.log("Bank Account:", businessLicense);
+      console.log("Categories:", kebeleId);
+      console.log("Subcategories:", tinCertificate);
+      console.log("Terms Accepted:", vatCertificate);
+
+      const result = await db.query(query, values);
+
       return res.status(201).json({
         message: "Seller created successfully.",
-        user: {
-          id: newUser.id,
-          name: newUser.name,
-          email: newUser.email,
-          role: newUser.role,
-        },
+        seller: result.rows[0],
       });
     }
 
@@ -69,7 +151,7 @@ export const signupUser = async (req, res) => {
       ]
     );
 
-    res.status(201).json({
+    return res.status(201).json({
       message: "User created successfully.",
       user: {
         id: newUser.id,
@@ -79,9 +161,25 @@ export const signupUser = async (req, res) => {
       },
     });
   } catch (error) {
+    // Log more detailed error information
     console.error("Error during signup:", error.message);
+    console.error("Error stack:", error.stack); // Provides more context on where the error occurred
+
+    // If the error has a response (e.g., from a failed request to an external service)
+    if (error.response) {
+      console.error("Response error data:", error.response.data);
+      console.error("Response status:", error.response.status);
+      console.error("Response headers:", error.response.headers);
+    } else if (error.request) {
+      // If the request was made but no response was received
+      console.error("Request error data:", error.request);
+    } else {
+      // General error in setting up the request or something else
+      console.error("Error message:", error.message);
+    }
     res.status(500).json({ message: "Server error. Please try again later." });
   }
+
 };
 
 

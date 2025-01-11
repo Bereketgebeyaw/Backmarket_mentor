@@ -11,6 +11,7 @@ import loggedUserRouts from  './routes/loggedUserRouts.js'
 
 import subcatgoryRouts from './routes/subcatgoryRouts.js' 
 import sellerRoutes from "./routes/sellerRoutes.js";
+import orderProductRoutes from "./routes/orderProductRoutes.js";
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -18,7 +19,9 @@ dotenv.config();
 const app = express();
 
 app.use(cors());  // Enable CORS
-app.use(express.json());
+
+app.use(express.json({ limit: "10mb" }));
+
 
 // Routes
 app.use('/products', productRoutes);
@@ -27,6 +30,7 @@ app.use('/products', productRoutes);
 app.use('/cart', cartRoutes);
 app.use('/category', CategoryRoutes);
 app.use('/orders', addressRoutes);
+app.use("/orderProducts", orderProductRoutes);
 
 app.use('/api/users', userRoutes);
 

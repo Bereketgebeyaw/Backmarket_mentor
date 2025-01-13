@@ -136,6 +136,7 @@ const LoginPage = () => {
           <p className="login-link">
             New here? <a href="/signup">Sign up as a buyer</a> or{" "}
             <a href="/register">register as a seller</a>.
+           <br></br> <a href="/register">Reset Password</a>.
           </p>
         </div>
       </div>

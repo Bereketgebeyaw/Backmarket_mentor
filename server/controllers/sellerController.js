@@ -1,5 +1,8 @@
 import db from "../db.js"; // Replace with your actual database connection
 import { sendApprovalEmail, sendDenialEmail } from "./mailer.js";
+import crypto from "crypto";
+import bcrypt from "bcrypt";
+
 
 export const getPendingSellers = async (req, res) => {
   try {
@@ -78,7 +81,15 @@ export const approveSeller = async (req, res) => {
 
     if (user) {
       // Send approval email
-      sendApprovalEmail(user.email, user.password);
+      const tempPassword = crypto.randomBytes(8).toString("hex"); // Generate a random password
+      const hashedPassword = await bcrypt.hash(tempPassword, 10);
+
+      // Update the user's password in the database
+      await db.query("UPDATE users SET password = $1 WHERE id = $2", [
+        hashedPassword,
+        seller.user_id,
+      ]);
+      sendApprovalEmail(user.email, tempPassword);
     }
 
     res.status(200).json({ message: "Seller approved", seller });

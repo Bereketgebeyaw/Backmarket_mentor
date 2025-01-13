@@ -1,8 +1,14 @@
 import express from 'express';
-import { signupUser, loginUser,getCartProducts } from '../controllers/userController.js'; // Import both controllers
+import {
+  signupUser,
+  loginUser,
+  getCartProducts,
+  PasswordReset,
+} from "../controllers/userController.js"; // Import both controllers
 import { authenticateToken } from "../middleware/authMiddleware.js";
 import multer from "multer";
 import mime from "mime-types";
+
 
 
 const storage = multer.memoryStorage();
@@ -20,6 +26,6 @@ router.post('/signup', upload.fields([
 
 // POST route for login
 router.post('/login', loginUser);
-
+router.post("/reset", authenticateToken,PasswordReset);
 router.get("/cart", authenticateToken, getCartProducts);
 export default router;

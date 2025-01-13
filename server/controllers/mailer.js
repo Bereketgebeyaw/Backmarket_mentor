@@ -17,7 +17,7 @@ export const sendApprovalEmail = (email, password) => {
            <p>You can access our portal using the following credentials:</p>
            <p>Username: ${email}</p>
            <p>Password: ${password}</p>
-           <p><a href="http://your-portal-url.com/login">Login to your account</a></p>
+           <p><a href="http://localhost:5173/login">Login to your account</a></p>
            <p>Please reset your password upon your first login.</p>`,
   };
 

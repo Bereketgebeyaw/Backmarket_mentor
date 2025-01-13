@@ -23,10 +23,9 @@ import AddSubcategory from './pages/admin/AddSubcategory';
 
 
 import SellerSignupPage from "./pages/Signup/sellerSignupPage";
-
 import Orders from './pages/buyer/Orders';
-
 import OnboardSupplier from './pages/admin/OnboardSupplier';
+import AddCatalog from './pages/admin/AddCatalog';
 
 
 const App = () => {
@@ -56,6 +55,7 @@ const App = () => {
             <Route path="add-category" element={<AddCategory />} />
             <Route path="add-subcategory" element={<AddSubcategory />} />
             <Route path="onboard-supplier" element={<OnboardSupplier />} />
+            <Route path="add-catalog" element={<AddCatalog />} />
 
           </Route>
           <Route path="/seller/*" element={<SellerLayout />}>
@@ -63,6 +63,7 @@ const App = () => {
             <Route path="add-category" element={<AddCategory />} />
             <Route path="add-subcategory" element={<AddSubcategory />} />
           </Route>
+         
         </Routes>
       </BrowserRouter>
     );

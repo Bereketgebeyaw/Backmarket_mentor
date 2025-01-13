@@ -28,6 +28,9 @@ const AdminLayout = () => {
             <li style={{ marginTop: '2rem', listStyleType: 'none' }}>
               <Link to="/admin/onboard-supplier">Onboard Supplier</Link>
             </li>
+            <li style={{ marginTop: '2rem', listStyleType: 'none' }}>
+      <Link to="/admin/add-catalog">Add New Catalog</Link>
+    </li>
           </ul>
         </nav>
 

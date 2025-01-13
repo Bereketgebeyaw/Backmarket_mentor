@@ -83,12 +83,12 @@ export const approveSeller = async (req, res) => {
       // Send approval email
       const tempPassword = crypto.randomBytes(8).toString("hex"); // Generate a random password
       const hashedPassword = await bcrypt.hash(tempPassword, 10);
+      await db.query(
+        "UPDATE users SET password = $1, password_reset = $2 WHERE id = $3",
+        [hashedPassword, "yes", seller.user_id]
+      );
 
-      // Update the user's password in the database
-      await db.query("UPDATE users SET password = $1 WHERE id = $2", [
-        hashedPassword,
-        seller.user_id,
-      ]);
+    
       sendApprovalEmail(user.email, tempPassword);
     }
 

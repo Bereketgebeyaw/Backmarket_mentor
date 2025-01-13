@@ -358,3 +358,46 @@ export const getCartProducts = async (req, res) => {
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
+
+
+
+export const PasswordReset = async (req, res) => {
+  try {
+   
+    const userId = req.userId;
+
+    if (!userId) {
+      return res
+        .status(401)
+        .json({ message: "Unauthorized. User ID is missing." });
+    }
+
+    // Extract the new password from the request body
+    const { password } = req.body;
+
+    if (!password) {
+      return res.status(400).json({ message: "New password is required." });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Update the user's password in the database
+    const result = await db.query(
+      "UPDATE users SET password = $1, password_reset = $2 WHERE id = $3 RETURNING id",
+      [hashedPassword, "no", userId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Respond with success message
+    res.status(200).json({ message: "Password updated successfully." });
+  } catch (error) {
+    console.error("Error updating password:", error.message);
+    res
+      .status(500)
+      .json({ message: "An error occurred while updating the password." });
+  }
+};

@@ -8,9 +8,8 @@ import SellerLayout from "./layouts/SellerLayout";
 import ProductManagement from './pages/admin/ProductManagement';
 
 import LoginPage from './pages/Login/LoginPage';
-
 import SignupPage from './pages/Signup/SignupPage';
-
+import PasswordReset from './pages/Reset/passwordReset';
 import PaymentPage from './components/PaymentPage';
 import PickupPage from './components/PickupPage';
 import FinalPaymentPage from './components/FinalPaymentPage';
@@ -40,6 +39,7 @@ const App = () => {
           </Route>
 
           <Route path="/login/*" element={<LoginPage />}></Route>
+          <Route path="/reset/*" element={<PasswordReset />}></Route>
 
           <Route path="/signup/*" element={<SignupPage />}></Route>
           <Route path="/register/*" element={<SellerSignupPage />}></Route>
@@ -56,7 +56,6 @@ const App = () => {
             <Route path="add-category" element={<AddCategory />} />
             <Route path="add-subcategory" element={<AddSubcategory />} />
             <Route path="onboard-supplier" element={<OnboardSupplier />} />
-
           </Route>
           <Route path="/seller/*" element={<SellerLayout />}>
             <Route path="product-management" element={<ProductManagement />} />

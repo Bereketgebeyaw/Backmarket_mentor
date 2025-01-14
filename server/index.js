@@ -8,10 +8,11 @@ import userRoutes from './routes/userRoutes.js';
 import CategoryRoutes from "./routes/CategoryRoutes.js";
 import addressRoutes from "./routes/addressRoutes.js";
 import loggedUserRouts from  './routes/loggedUserRouts.js'
-
+import getCatalogRoutes from "./routes/getCatalogRoutes.js";
 import subcatgoryRouts from './routes/subcatgoryRouts.js' 
 import sellerRoutes from "./routes/sellerRoutes.js";
 import orderProductRoutes from "./routes/orderProductRoutes.js";
+
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -28,8 +29,10 @@ app.use('/products', productRoutes);
 // Serve static files from 'uploads' directory
 
 app.use('/cart', cartRoutes);
+
 app.use('/category', CategoryRoutes);
 app.use('/orders', addressRoutes);
+app.use("/catalogs", getCatalogRoutes);
 app.use("/orderProducts", orderProductRoutes);
 
 app.use('/api/users', userRoutes);
@@ -37,7 +40,7 @@ app.use('/api/users', userRoutes);
 
 app.use("/api/dashboard", loggedUserRouts);
 
-app.use('/subcategory',subcatgoryRouts)
+app.use("/subcategory", subcatgoryRouts);
 
 app.use("/api/sellers", sellerRoutes);
 

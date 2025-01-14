@@ -75,7 +75,11 @@ const LoginPage = () => {
         // Check if the user is a seller and navigate accordingly
         if (data.user.role === "seller") {
             if (data.seller.status === "approved") {
-              navigate("/seller");
+               if (data.user.password_reset === "yes") {
+                 navigate("/reset");
+               }
+               else{navigate("/seller");}
+              
             } 
             else if (data.seller.status === "denied") {
               alert(
@@ -136,7 +140,6 @@ const LoginPage = () => {
           <p className="login-link">
             New here? <a href="/signup">Sign up as a buyer</a> or{" "}
             <a href="/register">register as a seller</a>.
-           <br></br> <a href="/register">Reset Password</a>.
           </p>
         </div>
       </div>

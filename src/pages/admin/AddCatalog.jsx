@@ -15,7 +15,9 @@ const AddCatalog = () => {
   
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
-  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState("");  // Define the message state
+
   useEffect(() => {
     // Fetch categories when the component mounts
     const loadCategories = async () => {
@@ -43,16 +45,48 @@ const AddCatalog = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // For now, we are just logging the form data
-    console.log(formData);
-    // You can replace this with the actual POST request later
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("http://localhost:5000/catalog", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add catalog item");
+      }
+
+      const data = await response.json();
+      setMessage(data.message);  // Set success message
+      setFormData({
+        product_name: "",
+        product_description: "",
+        category_id: "",
+        subcategory_id: "",
+        brand: "",
+        model: "",
+        size: "",
+      }); // Reset the form
+    } catch (error) {
+      console.error("Error:", error);
+      setMessage("Error adding catalog item");  // Set error message
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div style={{ backgroundColor: "#fff", padding: "20px", borderRadius: "8px" }}>
       <h1 style={{ textAlign: "center", marginBottom: "20px" }}>Add New Catalog</h1>
+      
+      {message && <p style={{ color: message.includes("Error") ? "red" : "green", textAlign: "center" }}>{message}</p>} {/* Display message */}
+
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: "15px" }}>
           <label htmlFor="product_name">Product Name:</label>
@@ -169,8 +203,9 @@ const AddCatalog = () => {
             fontWeight: "bold",
             cursor: "pointer",
           }}
+          disabled={isSubmitting}  // Disable the button while submitting
         >
-          Add Catalog
+          {isSubmitting ? "Adding..." : "Add Catalog"}
         </button>
       </form>
     </div>

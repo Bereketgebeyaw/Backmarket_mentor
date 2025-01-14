@@ -12,6 +12,7 @@ import loggedUserRouts from  './routes/loggedUserRouts.js'
 import subcatgoryRouts from './routes/subcatgoryRouts.js' 
 import sellerRoutes from "./routes/sellerRoutes.js";
 import orderProductRoutes from "./routes/orderProductRoutes.js";
+import catalogRoutes from "./routes/catalogRoutes.js";
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -40,6 +41,8 @@ app.use("/api/dashboard", loggedUserRouts);
 app.use('/subcategory',subcatgoryRouts)
 
 app.use("/api/sellers", sellerRoutes);
+
+app.use("/catalog", catalogRoutes);
 
 app.listen(5000, () => {
   console.log('Server is running on port 5000');

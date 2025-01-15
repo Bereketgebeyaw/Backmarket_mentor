@@ -16,12 +16,7 @@ const SellerLayout = () => {
         <li style={{ marginTop: '3rem', listStyleType: 'none' }}>
               <Link to="/seller/product-management">Product Management</Link>
             </li>
-            <li style={{ marginTop: '2rem', listStyleType: 'none' }}>
-              <Link to="/seller/add-category">Add New Category</Link>
-            </li>
-            <li style={{ marginTop: '2rem', listStyleType: 'none' }}>
-              <Link to="/seller/add-subcategory">Add New Subcategory</Link>
-            </li>
+           
            
 
         </ul>

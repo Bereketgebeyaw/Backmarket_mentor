@@ -61,8 +61,7 @@ const App = () => {
           </Route>
           <Route path="/seller/*" element={<SellerLayout />}>
             <Route path="product-management" element={<ProductManagement />} />
-            <Route path="add-category" element={<AddCategory />} />
-            <Route path="add-subcategory" element={<AddSubcategory />} />
+           
           </Route>
          
         </Routes>

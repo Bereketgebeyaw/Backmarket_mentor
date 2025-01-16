@@ -3,16 +3,26 @@
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
+  padding-top: 8rem;
+ background-color:none;
+  padding-bottom: 8rem;
+  border-radius: 130px 0px 0px 0px;
 }
+ .top{
+   background-color: #f0f0f0;
+   
+ }
 
 .signup-title {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 20px;
+  margin-left: -2rem;
 }
 
 .form-section {
-  margin-bottom: 20px;
+ 
+   margin-bottom: 20px;
 }
 
 .signup-input {
@@ -26,7 +36,7 @@
 button {
   padding: 10px 20px;
   margin-top: 10px;
-  background-color: #007bff;
+  background-color: #00c04b;
   color: white;
   border: none;
   border-radius: 4px;
@@ -34,7 +44,7 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #00c04b;
 }
 
 .prev-button {

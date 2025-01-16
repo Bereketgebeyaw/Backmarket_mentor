@@ -4,6 +4,8 @@ import PersonalInformation from "./PersonalInformation";
 import BusinessInformation from "./BusinessInformation";
 import CategoriesAndSubcategories from "./CategoriesAndSubcategories";
 import AdditionalRequirements from "./AdditionalRequirements";
+import TopBar from "../../components/TopBar/TopBar";
+import Footer from "../../components/bottomBar/Footer";
 
 const SellerSignupPage = () => {
   const [currentStep, setCurrentStep] = useState(1); // Tracks the current step
@@ -107,6 +109,8 @@ const SellerSignupPage = () => {
 
 
   return (
+    <div className="top">
+      <div ><TopBar/></div>
     <div className="signup-container">
       <h2 className="signup-title">Seller Sign Up</h2>
       {currentStep === 1 && (
@@ -122,6 +126,7 @@ const SellerSignupPage = () => {
           updateFormData={updateFormData}
           nextStep={nextStep}
           prevStep={prevStep}
+         
         />
       )}
       {currentStep === 3 && (
@@ -140,6 +145,8 @@ const SellerSignupPage = () => {
           handleSubmit={handleSubmit}
         />
       )}
+    </div>
+    <Footer/>
     </div>
   );
 };

@@ -7,14 +7,15 @@ const BusinessInformation = ({
   prevStep,
 }) => {
   return (
-    <div className="form-section">
-      <h3>Business Information</h3>
+    <div className="form-section"  >
+      <h3 >Business Information</h3>
       <input
         type="text"
         placeholder="Business Name"
         value={formData.businessName}
         onChange={(e) => updateFormData({ businessName: e.target.value })}
         className="signup-input"
+        
       />
       <textarea
         placeholder="Store Description"

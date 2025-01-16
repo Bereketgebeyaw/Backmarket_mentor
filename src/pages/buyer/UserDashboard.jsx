@@ -45,7 +45,6 @@ const UserDashboard = () => {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
         body: JSON.stringify({
-          cartId,
           productId: product.id,
           quantity,
         }),

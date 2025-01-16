@@ -9,7 +9,7 @@ const BuyerDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [cartCount, setCartCount] = useState(0);
   const [cartMessage, setCartMessage] = useState(null);
-
+  const [favorites, setFavorites] = useState([]);
   useEffect(() => {
     const loadProducts = async () => {
       try {
@@ -57,14 +57,36 @@ const BuyerDashboard = () => {
       setCartCount(totalItems); // Update cart count
       setCartMessage("Product successfully added to cart!");
       setTimeout(() => setCartMessage(null), 3000);
+       const updatedFavorites = favorites.filter(
+         (fav) => fav.id !== product.id
+       );
+       localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+       setFavorites(updatedFavorites);
     } catch (error) {
       console.error("Error adding to cart:", error);
     }
   };
 
-  const handleFavorite = (productId) => {
-    console.log("Favorite product:", productId);
-  };
+ const handleFavorite = (product) => {
+   try {
+     const updatedFavorites = [...favorites];
+
+     const existingIndex = updatedFavorites.findIndex(
+       (fav) => fav.id === product.id
+     );
+
+     if (existingIndex !== -1) {
+       updatedFavorites.splice(existingIndex, 1);
+     } else {
+       updatedFavorites.push(product);
+     }
+
+     localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+     setFavorites(updatedFavorites);
+   } catch (error) {
+     console.error("Error handling favorite:", error);
+   }
+ };
 
   if (loading) return <p>Loading products...</p>;
 
@@ -84,7 +106,6 @@ const BuyerDashboard = () => {
           gap: "4.3rem",
           paddingLeft: "2rem",
           paddingRight: "1rem",
-          
         }}
       >
         {products.length > 0 ? (
@@ -92,25 +113,24 @@ const BuyerDashboard = () => {
             <ProductCard
               key={product.id}
               product={product}
-              onAddToCart={() => handleAddToCart(product)}
-              onFavorite={() => handleFavorite(product.id)}
+              isFavorite={favorites.some((fav) => fav.id === product.id)}
+              onAddToCart={handleAddToCart}
+              onFavorite={handleFavorite}
             />
           ))
         ) : (
           <p>No products available.</p>
         )}
       </div>
-      <div style={{
-         
+      <div
+        style={{
           position: "relative",
-          marginTop:"1rem",
-          
-        }}>
-      
-      <Footer/>
+          marginTop: "1rem",
+        }}
+      >
+        <Footer />
+      </div>
     </div>
-    </div>
-    
   );
 };
 

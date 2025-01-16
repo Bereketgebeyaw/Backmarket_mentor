@@ -219,7 +219,7 @@ export const loginUser = async (req, res) => {
     }
 
     // For regular users, handle cart items and favorites
-    if (user.role !== "seller") {
+    if (user.role == "user") {
       // Handle cart items
       if (cartItems && Array.isArray(cartItems) && cartItems.length > 0) {
         const { rows: cart } = await db.query(

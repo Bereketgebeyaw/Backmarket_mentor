@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import db from "../db.js";
 import jwt from "jsonwebtoken";
+import { console } from "node:inspector/promises";
+import { stdout } from "node:process";
 
 // Login for Buyer Dashboard
 
@@ -99,7 +101,7 @@ export const updateCartProductQuantity = async (req, res) => {
   
     // Validate inputs
     if (!productId || quantity == null) {
-      return res.status(400).json({ message: "Product ID and quantity are required." });
+      return res.status(400).json({ message: "Product ID and quantity are required.", id: productId, "hello": true});
     }
   
     try {

@@ -25,7 +25,7 @@ const UserTopbar = ({ cartCount }) => {
 
   const handleRemoveFromCart = async (index) => {
     const updatedCart = [...cartItems];
-    const removedItem = updatedCart.splice(index, 1)[0];
+    const removedItem = updatedCart.splice(index, 1);
 
     try {
       const response = await fetch("http://localhost:5000/api/dashboard/update-cart", {
@@ -35,7 +35,7 @@ const UserTopbar = ({ cartCount }) => {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
         body: JSON.stringify({
-          productId: removedItem.productId,
+          productId: removedItem[0].id,
           quantity: 0,
         }),
       });
@@ -55,6 +55,9 @@ const UserTopbar = ({ cartCount }) => {
     const updatedCart = [...cartItems];
     updatedCart[index].quantity += 1;
 
+    console.log(updatedCart[index].id)
+    
+    
     try {
       const response = await fetch("http://localhost:5000/api/dashboard/update-cart", {
         method: "PUT",
@@ -63,10 +66,11 @@ const UserTopbar = ({ cartCount }) => {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
         body: JSON.stringify({
-          productId: updatedCart[index].productId,
+          productId: updatedCart[index].id,
           quantity: updatedCart[index].quantity,
-        }),
+        }),  
       });
+      
 
       if (response.ok) {
         localStorage.setItem("cart", JSON.stringify(updatedCart));
@@ -92,7 +96,7 @@ const UserTopbar = ({ cartCount }) => {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           },
           body: JSON.stringify({
-            productId: updatedCart[index].productId,
+            productId: updatedCart[index].id,
             quantity: updatedCart[index].quantity,
           }),
         });
@@ -110,7 +114,7 @@ const UserTopbar = ({ cartCount }) => {
   };
 
   const handleCheckout = () => {
-    navigate("/user/");
+    navigate("/PaymentPage");
   };
 
   return (

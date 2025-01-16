@@ -4,23 +4,20 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import './ProductCard.css'; // Import the CSS file
 
 const ProductCard = ({ product, isFavorite, onAddToCart, onFavorite }) => {
-  const handleFavoriteClick = () => {
-    onFavorite(product); // Add or remove from favorites
-  };
+
 
   return (
     <div className="card">
-     
       {/* Product Image */}
       <div className="imageContainer">
-        <img src={product.image} alt={product.name} className="image" />
+        <img src={product.image} alt={product.product_name} className="image" />
       </div>
 
       {/* Product Name */}
-      <h3 className="name">{product.name}</h3>
+      <h3 className="name">{product.product_name}</h3>
 
       {/* Product Description */}
-      <p className="description">{product.description}</p>
+      <p className="description">{product.product_description}</p>
 
       {/* Product Price */}
       <p className="price">${product.price}</p>
@@ -30,11 +27,11 @@ const ProductCard = ({ product, isFavorite, onAddToCart, onFavorite }) => {
         <button className="cartButton" onClick={() => onAddToCart(product)}>
           Add to Cart 🛒
         </button>
-        
+
         <button
           className="favoriteButton"
           style={{ color: isFavorite ? "red" : "gray" }} // Keep dynamic style for favorite button
-          onClick={handleFavoriteClick}
+          onClick={() => onFavorite(product)}
         >
           <FontAwesomeIcon icon={faHeart} />
         </button>

@@ -75,7 +75,7 @@ router.post(
 router.get('/', async (req, res) => {
   try {
     const result = await db.query(
-      "SELECT * FROM products WHERE quantity_in_stock > 0"
+      "SELECT * FROM products p Join catalogs c on p.catalog_id = c.id WHERE p.quantity_in_stock > 0"
     );
 
     

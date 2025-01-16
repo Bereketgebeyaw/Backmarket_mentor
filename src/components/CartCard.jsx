@@ -7,9 +7,13 @@ const CartCard = ({ product, onQuantityChange }) => {
     <div style={styles.cartItem}>
       <div style={styles.cartItemContent}>
         {product.image && (
-          <img src={imageSrc} alt={product.name} style={styles.cartItemImage} />
+          <img
+            src={imageSrc}
+            alt={product.price}
+            style={styles.cartItemImage}
+          />
         )}
-        <h3 style={styles.cartItemTitle}>{product.name}</h3>
+        <h3 style={styles.cartItemTitle}>{product.price}</h3>
         <p style={styles.cartItemPrice}>Price: ${product.price}</p>
         <div style={styles.quantityControls}>
           <button
@@ -21,8 +25,7 @@ const CartCard = ({ product, onQuantityChange }) => {
           <span style={styles.quantity}>{product.quantity}</span>
           <button
             style={styles.quantityButton}
-            onClick={
-              () => onQuantityChange(product.id, 1)} // Increase quantity
+            onClick={() => onQuantityChange(product.id, 1)} // Increase quantity
           >
             +
           </button>

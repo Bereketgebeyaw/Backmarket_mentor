@@ -172,3 +172,20 @@
   .loginButton:hover{
     border: 2.5px solid #00c04b;
   }
+  .subMenu {
+  background-color: white;
+  border: 1px solid #ddd;
+  position: absolute;
+  margin-top: 5px;
+  padding: 10px;
+  z-index: 10;
+}
+.subMenuItem {
+  display: block;
+  padding: 5px;
+  text-decoration: none;
+  color: black;
+}
+.subMenuItem:hover {
+  background-color: #f0f0f0;
+}

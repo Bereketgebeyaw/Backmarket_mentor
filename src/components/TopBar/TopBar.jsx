@@ -1,46 +1,48 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; 
-import './TopBar.css'; // Import the external CSS file
+import { useNavigate } from "react-router-dom";
+import "./TopBar.css";
+import { fetchCategories } from "../../services/categoryService";
+import { fetchSubcategoriesByCategory } from "../../services/subcategoryService";
 
-const TopBar = ({ cartCount }) => {
+const TopBar = ({ cartCount, onSubcategorySelect }) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [cartItems, setCartItems] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
+  const [activeMenu, setActiveMenu] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isDropdownVisible) {
-      const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-      setCartItems(storedCart);
-    }
-  }, [isDropdownVisible]);
+    const fetchData = async () => {
+      const fetchedCategories = await fetchCategories();
+      setCategories(fetchedCategories);
+    };
+    fetchData();
+  }, []);
 
   const toggleDropdown = () => {
     setIsDropdownVisible(!isDropdownVisible);
-  }; 
+  };
 
   const handleLogin = () => {
     navigate("/login");
   };
 
+  const handleMenuClick = async (menuId) => {
+    setActiveMenu(activeMenu === menuId ? null : menuId);
+    if (activeMenu !== menuId) {
+      const fetchedSubcategories = await fetchSubcategoriesByCategory(menuId);
+      setSubcategories(fetchedSubcategories);
+    }
+  };
+
+  const handleSubcategoryClick = (subcategoryId) => {
+    onSubcategorySelect(subcategoryId); // Call the parent function with the subcategory ID
+  };
+
   const handleRemoveFromCart = (index) => {
     const updatedCart = [...cartItems];
     updatedCart.splice(index, 1);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-    setCartItems(updatedCart);
-  };
-
-  const handleIncreaseQuantity = (index) => {
-    const updatedCart = [...cartItems];
-    updatedCart[index].quantity += 1;
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-    setCartItems(updatedCart);
-  };
-
-  const handleDecreaseQuantity = (index) => {
-    const updatedCart = [...cartItems];
-    if (updatedCart[index].quantity > 1) {
-      updatedCart[index].quantity -= 1;
-    }
     localStorage.setItem("cart", JSON.stringify(updatedCart));
     setCartItems(updatedCart);
   };
@@ -62,22 +64,41 @@ const TopBar = ({ cartCount }) => {
   return (
     <div className="topBar">
       <div className="logoContainer">
-        <img
-          src=".png"
-          alt="Logo"
-          className="logo"
-        />
+        <img src=".png" alt="Logo" className="logo" />
         <span className="tagline">Our Marketplace</span>
       </div>
       <div className="menu">
-        <a href="/" className="menuItem">MEN</a>
-        <a href="/" className="menuItem">WOMEN</a>
-        <a href="/" className="menuItem">KIDS</a>
-        <a href="/" className="menuItem">Jewelry</a>
-        <a href="/" className="menuItem">Electronics</a>
-        <a href="/" className="menuItem">Perfume</a>
-        <a href="/" className="menuItem">Kitchen Item</a>
-        <a href="/wishlists" className="menuItem">WishList</a>
+        {categories.map((category) => (
+          <div key={category.id} className="menuItemContainer">
+            <a
+              href="#"
+              className="menuItem"
+              onClick={(e) => {
+                e.preventDefault();
+                handleMenuClick(category.id);
+              }}
+            >
+              {category.name}
+            </a>
+            {activeMenu === category.id && subcategories.length > 0 && (
+              <div className="subMenu">
+                {subcategories.map((sub) => (
+                  <a
+                    key={sub.id}
+                    href="#"
+                    className="subMenuItem"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleSubcategoryClick(sub.id); // Trigger product update
+                    }}
+                  >
+                    {sub.name}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
       </div>
       <div className="rightSection">
         <select className="currencyDropdown">
@@ -97,21 +118,6 @@ const TopBar = ({ cartCount }) => {
                       <li key={index} className="cartItem">
                         <div className="cartItemDetails">
                           <strong>{item.name}</strong> - ${item.price}
-                          <div className="quantityControls">
-                            <button
-                              className="quantityButton"
-                              onClick={() => handleDecreaseQuantity(index)}
-                            >
-                              -
-                            </button>
-                            <span>{item.quantity}</span>
-                            <button
-                              className="quantityButton"
-                              onClick={() => handleIncreaseQuantity(index)}
-                            >
-                              +
-                            </button>
-                          </div>
                         </div>
                         <button
                           className="removeButton"
@@ -135,7 +141,9 @@ const TopBar = ({ cartCount }) => {
             </div>
           )}
         </div>
-        <button className="loginButton" onClick={handleLogin}>Log In</button>
+        <button className="loginButton" onClick={handleLogin}>
+          Log In
+        </button>
       </div>
     </div>
   );

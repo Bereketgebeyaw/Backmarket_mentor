@@ -3,6 +3,7 @@ import multer from 'multer';
 import db from '../db.js';
 import mime from 'mime-types';
 import { authenticateToken } from "../middleware/authMiddleware.js";
+import { getProductsBySubCategory } from "../controllers/productController.js";
 
 const router = express.Router();
 
@@ -93,5 +94,7 @@ router.get('/', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+
+router.get("/:subcategoryId", getProductsBySubCategory);
 
 export default router;

@@ -263,6 +263,7 @@ export const loginUser = async (req, res) => {
       // Handle favorite items
       if (favorites && Array.isArray(favorites) && favorites.length > 0) {
         // Get the user's wishlist
+        console.log(favorites)
         const { rows: wishlist } = await db.query(
           "SELECT * FROM wishlists WHERE user_id = $1",
           [user.id]
@@ -273,10 +274,10 @@ export const loginUser = async (req, res) => {
         }
 
         const wishlistId = wishlist[0].id;
-
+        console.log(wishlist[0].id);
         for (const favorite of favorites) {
           const { id: productId } = favorite;
-
+          console.log(productId);
           if (!productId) {
             console.error("Invalid product ID in favorites:", favorite);
             continue;
@@ -289,6 +290,8 @@ export const loginUser = async (req, res) => {
           );
 
           if (existingWishlistProduct.length === 0) {
+            console.log('wishlistId' + wishlistId);
+            console.log('productId' + productId);
             await db.query(
               "INSERT INTO wishlist_products (wishlist_id, product_id) VALUES ($1, $2)",
               [wishlistId, productId]

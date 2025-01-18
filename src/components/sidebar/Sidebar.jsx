@@ -5,23 +5,25 @@ import './Sidebar.css';
 const Sidebar = ({ role }) => {
     const menuItems = {
         buyer: [
-            { name: 'Dashboard', path: '' }, // Match the default route
+            { name: 'Dashboard', path: '/user-dashboard' },
             { name: 'Orders', path: '/user-dashboard/orders' },
-            { name: 'Wishlist', path: '/buyer/wishlist' },
+            { name: 'Wishlist', path: '/user-dashboard/wishlist' },
             { name: 'Support', path: '/buyer/support' },
         ],
     };
 
     return (
-        <div style={{ width: '150px', background: '#f4f4f4', padding: '10px' , fontFamily: 'sans-serif' }} >
-            <ul style={{ listStyle: 'none', padding: 0 , position:'fixed'}} >
+        <div style={{ width: '200px', background: '#f4f4f4', padding: '20px', fontFamily: 'sans-serif' }}>
+            <ul style={{ listStyle: 'none', padding: 0, position: 'fixed' }}>
                 {menuItems[role]?.map((item, index) => (
-                    <li key={index} style={{ marginBottom: '20px' }} >
+                    <li key={index} style={{ marginBottom: '20px' }}>
                         <NavLink
                             to={item.path}
-                            style={{ textDecoration: 'none', }}
-                            activeStyle={{ fontWeight: 'bold', color: 'blue' }}
-                            className='menu'
+                            style={({ isActive }) => ({
+                                textDecoration: 'none',
+                                fontWeight: isActive ? 'bold' : 'normal',
+                                color: isActive ? 'blue' : 'black',
+                            })}
                         >
                             {item.name}
                         </NavLink>

@@ -1,17 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import './UserTopbar.css'; // Import the CSS file
+import axios from "axios"; // Import axios
+import './UserTopbar.css'; 
 
 const UserTopbar = ({ cartCount }) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
 
-  // Load cart items when dropdown is opened
+  // Load cart items from the API when dropdown is opened
   useEffect(() => {
     if (isDropdownVisible) {
-      const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-      setCartItems(storedCart);
+      const fetchCartItems = async () => {
+        try {
+          const token = localStorage.getItem("authToken"); // Get token from localStorage
+          const response = await axios.get("http://localhost:5000/api/dashboard/cart-products", {
+            headers: {
+              Authorization: `Bearer ${token}`, // Include token in the Authorization header
+            },
+          });
+          setCartItems(response.data.products); // Set cart items received from API
+        } catch (error) {
+          console.error("Error fetching cart products:", error);
+        }
+      };
+      
+
+      fetchCartItems();
     }
   }, [isDropdownVisible]);
 
@@ -28,20 +43,21 @@ const UserTopbar = ({ cartCount }) => {
     const removedItem = updatedCart.splice(index, 1);
 
     try {
-      const response = await fetch("http://localhost:5000/api/dashboard/update-cart", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-        body: JSON.stringify({
+      const response = await axios.put(
+        "http://localhost:5000/api/dashboard/update-cart",
+        {
           productId: removedItem[0].id,
           quantity: 0,
-        }),
-      });
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
 
-      if (response.ok) {
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
+      if (response.status === 200) {
         setCartItems(updatedCart);
       } else {
         console.error("Failed to remove item from cart.");
@@ -55,25 +71,22 @@ const UserTopbar = ({ cartCount }) => {
     const updatedCart = [...cartItems];
     updatedCart[index].quantity += 1;
 
-    console.log(updatedCart[index].id)
-    
-    
     try {
-      const response = await fetch("http://localhost:5000/api/dashboard/update-cart", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-        body: JSON.stringify({
+      const response = await axios.put(
+        "http://localhost:5000/api/dashboard/update-cart",
+        {
           productId: updatedCart[index].id,
           quantity: updatedCart[index].quantity,
-        }),  
-      });
-      
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
 
-      if (response.ok) {
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
+      if (response.status === 200) {
         setCartItems(updatedCart);
       } else {
         console.error("Failed to update cart.");
@@ -89,20 +102,21 @@ const UserTopbar = ({ cartCount }) => {
       updatedCart[index].quantity -= 1;
 
       try {
-        const response = await fetch("http://localhost:5000/api/dashboard/update-cart", {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-          body: JSON.stringify({
+        const response = await axios.put(
+          "http://localhost:5000/api/dashboard/update-cart",
+          {
             productId: updatedCart[index].id,
             quantity: updatedCart[index].quantity,
-          }),
-        });
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            },
+          }
+        );
 
-        if (response.ok) {
-          localStorage.setItem("cart", JSON.stringify(updatedCart));
+        if (response.status === 200) {
           setCartItems(updatedCart);
         } else {
           console.error("Failed to update cart.");

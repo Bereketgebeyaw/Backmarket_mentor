@@ -6,7 +6,6 @@ import BuyerWishlist from "./pages/buyer/buyerWishlist";
 import AdminLayout from './layouts/AdminLayout';
 import SellerLayout from "./layouts/SellerLayout";
 import ProductManagement from './pages/admin/ProductManagement';
-
 import LoginPage from './pages/Login/LoginPage';
 import SignupPage from './pages/Signup/SignupPage';
 import PasswordReset from './pages/Reset/passwordReset';
@@ -14,18 +13,14 @@ import PaymentPage from './components/PaymentPage';
 import PickupPage from './components/PickupPage';
 import FinalPaymentPage from './components/FinalPaymentPage';
 import AddCategory from './pages/admin/AddCategory';
-
 import UserCart from './pages/buyer/UserCart';
 import UserDashboard from './pages/buyer/UserDashboard';
-
 import AddSubcategory from './pages/admin/AddSubcategory';
-
-
 import SellerSignupPage from "./pages/Signup/sellerSignupPage";
 import Orders from './pages/buyer/Orders';
 import OnboardSupplier from './pages/admin/OnboardSupplier';
 import AddCatalog from './pages/admin/AddCatalog';
-
+import Wishlist from './pages/buyer/Wishlist';
 
 const App = () => {
    
@@ -34,7 +29,6 @@ const App = () => {
         <Routes>
           <Route path="" element={<BuyerLayout />}>
             <Route path="" element={<BuyerDashboard />} />
-            <Route path="/wishlists" element={<BuyerWishlist />} />
           </Route>
 
           <Route path="/login/*" element={<LoginPage />}></Route>
@@ -45,6 +39,7 @@ const App = () => {
           <Route path="/user/*" element={<UserCart />}></Route>
           <Route path="/user-dashboard" element={<UserDashboard />}>
             <Route path="orders" element={<Orders />} />{" "}
+            <Route path="wishlist" element={<Wishlist />} /> 
             {/* Nested Orders route */}
           </Route>
           <Route path="/PaymentPage" element={<PaymentPage />} />

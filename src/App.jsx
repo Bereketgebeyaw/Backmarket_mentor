@@ -5,6 +5,7 @@ import BuyerDashboard from './pages/buyer/Dashboard';
 import BuyerWishlist from "./pages/buyer/buyerWishlist";
 import AdminLayout from './layouts/AdminLayout';
 import SellerLayout from "./layouts/SellerLayout";
+import UserLayout from './layouts/UserLayout';
 import ProductManagement from './pages/admin/ProductManagement';
 import LoginPage from './pages/Login/LoginPage';
 import SignupPage from './pages/Signup/SignupPage';

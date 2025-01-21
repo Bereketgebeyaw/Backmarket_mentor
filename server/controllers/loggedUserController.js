@@ -21,11 +21,18 @@ export const getCartProductsForDashboard = async (req, res) => {
 
     const cartId = cart[0].id;
 
+    // Simplified query to fetch only the necessary fields
     const { rows: cartProducts } = await db.query(
       `
-      SELECT p.id, cp.quantity, p.name, p.price, encode(p.image, 'base64') AS image
+      SELECT 
+        p.id, 
+        cp.quantity, 
+        c.product_name, 
+        p.price, 
+        encode(p.image, 'base64') AS image
       FROM cart_products cp
       JOIN products p ON cp.product_id = p.id
+      JOIN catalogs c ON p.catalog_id = c.id
       WHERE cp.cart_id = $1
       `,
       [cartId]
@@ -40,6 +47,7 @@ export const getCartProductsForDashboard = async (req, res) => {
     res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
+
 
 export const addProductToCart = async (req, res) => {
     const { productId, quantity } = req.body;
@@ -152,4 +160,36 @@ export const updateCartProductQuantity = async (req, res) => {
 
   
 
+  export const getWishlistProducts = async (req, res) => {
+    const userId = req.userId; // Assumes `userId` is retrieved from authentication middleware
+  
+    try {
+      // Query to fetch wishlist products for the user
+      const { rows: wishlistProducts } = await db.query(
+        `
+        SELECT 
+          p.product_id, 
+          p.product_name, 
+          p.product_description, 
+          p.price, 
+          p.image_url 
+        FROM wishlist_products wp
+        INNER JOIN products p ON wp.product_id = p.product_id
+        WHERE wp.user_id = $1
+        `,
+        [userId]
+      );
+  
+      // Check if any products are found
+      if (wishlistProducts.length === 0) {
+        return res.status(404).json({ message: "No products found in the wishlist." });
+      }
+  
+      // Return the list of wishlist products
+      res.status(200).json(wishlistProducts);
+    } catch (error) {
+      console.error("Error fetching wishlist products:", error);
+      res.status(500).json({ message: "Internal server error." });
+    }
+  };
   

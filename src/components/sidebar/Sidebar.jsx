@@ -5,14 +5,15 @@ import './Sidebar.css';
 const Sidebar = ({ role }) => {
     const menuItems = {
         buyer: [
-            { name: 'Dashboard', path: '' }, // Match the default route
+            { name: 'Dashboard', path: '/user-dashboard' },
             { name: 'Orders', path: '/user-dashboard/orders' },
-            { name: 'Wishlist', path: '/buyer/wishlist' },
+            { name: 'Wishlist', path: '/user-dashboard/wishlist' },
             { name: 'Support', path: '/buyer/support' },
         ],
     };
 
     return (
+
         <div style={{ width: '150px', background: '#f4f4f4', padding: '10px' , fontFamily: 'sans-serif',  }} >
             <ul style={{ listStyle: 'none', padding: 0 , position:'fixed', marginTop: '-2rem',}} >
                 {menuItems[role]?.map((item, index) => (
@@ -22,6 +23,7 @@ const Sidebar = ({ role }) => {
                             style={{ textDecoration: 'none', }}
                             activeStyle={{ fontWeight: 'bold', color: 'blue' ,  }}
                             className='menub'
+x
                         >
                             {item.name}
                         </NavLink>

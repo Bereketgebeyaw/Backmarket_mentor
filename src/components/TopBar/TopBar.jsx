@@ -1,32 +1,68 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; 
-import './TopBar.css'; // Import the external CSS file
+import { useNavigate } from "react-router-dom";
+import "./TopBar.css";
+import { fetchCategories } from "../../services/categoryService";
+import { fetchSubcategoriesByCategory } from "../../services/subcategoryService";
 
-const TopBar = ({ cartCount }) => {
+const TopBar = ({ onSubcategorySelect, cartCount }) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [cartItems, setCartItems] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
+  const [activeMenu, setActiveMenu] = useState(null);
   const navigate = useNavigate();
 
+  // Fetch categories on component load
   useEffect(() => {
-    if (isDropdownVisible) {
-      const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-      setCartItems(storedCart);
-    }
-  }, [isDropdownVisible]);
+    const fetchData = async () => {
+      try {
+        const fetchedCategories = await fetchCategories();
+        setCategories(fetchedCategories);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Fetch cart items from localStorage on component load and when updated
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    setCartItems(storedCart);
+  }, []);
+
+  // Watch for localStorage changes to sync cart items dynamically
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const updatedCart = JSON.parse(localStorage.getItem("cart")) || [];
+      setCartItems(updatedCart);
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   const toggleDropdown = () => {
     setIsDropdownVisible(!isDropdownVisible);
-  }; 
+  };
 
-  const handleLogin = () => {
-    navigate("/login");
+  const handleMenuClick = async (menuId) => {
+    setActiveMenu(activeMenu === menuId ? null : menuId);
+    if (activeMenu !== menuId) {
+      const fetchedSubcategories = await fetchSubcategoriesByCategory(menuId);
+      setSubcategories(fetchedSubcategories);
+    }
+  };
+
+  const handleSubcategoryClick = (subcategoryId) => {
+    onSubcategorySelect(subcategoryId);
   };
 
   const handleRemoveFromCart = (index) => {
     const updatedCart = [...cartItems];
     updatedCart.splice(index, 1);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
-    setCartItems(updatedCart);
+    setCartItems(updatedCart); // Update state directly
   };
 
   const handleIncreaseQuantity = (index) => {
@@ -62,22 +98,46 @@ const TopBar = ({ cartCount }) => {
   return (
     <div className="topBar">
       <div className="logoContainer">
-        <img
-          src="/image/buna-bank-logo.png"
-          alt="Logo"
-          className="logo"
-        />
+
+        <img src="/image/buna-bank-logo.png" alt="Logo" className="logo" />
         <span className="tagline">Our Marketplace</span>
       </div>
-      <div className="menus">
-        <a href="/" className="menuItem">Men</a>
-        <a href="/" className="menuItem">Women</a>
-        <a href="/" className="menuItem">Kids</a>
-        <a href="/" className="menuItem">Jewelry</a>
-        <a href="/" className="menuItem">Electronics</a>
-        <a href="/" className="menuItem">Perfume</a>
-        <a href="/" className="menuItem">Kitchen Item</a>
-        <a href="/wishlists" className="menuItem">WishList</a>
+      <div className="menu">
+        {categories.map((category) => (
+          <div key={category.id} className="menuItemContainer">
+            <a
+              href="#"
+              className="menuItem"
+              onClick={(e) => {
+                e.preventDefault();
+                handleMenuClick(category.id);
+              }}
+            >
+              {category.name}
+            </a>
+            {activeMenu === category.id && subcategories.length > 0 && (
+              <div className="subMenu">
+                {subcategories.map((sub) => (
+                  <a
+                    key={sub.id}
+                    href="#"
+                    className="subMenuItem"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleSubcategoryClick(sub.id);
+                    }}
+                  >
+                    {sub.name}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+        <a href="/wishlists" className="menuItem">
+          WishList
+        </a>
+
       </div>
       <div className="rightSection">
         <select className="currencyDropdown">
@@ -86,7 +146,10 @@ const TopBar = ({ cartCount }) => {
         </select>
         <div className="cartContainer" onClick={toggleDropdown}>
           <span className="cartIcon">🛒</span>
-          {cartCount > 0 && <span className="cartCount">{cartCount}</span>}
+          {cartItems.length > 0 && (
+            <span className="cartCount">{cartCount}</span>
+          )}
+
           {isDropdownVisible && (
             <div className="dropdown">
               <h4>Cart Items</h4>
@@ -135,7 +198,9 @@ const TopBar = ({ cartCount }) => {
             </div>
           )}
         </div>
-        <button className="loginButton" onClick={handleLogin}>Log In</button>
+        <button className="loginButton" onClick={() => navigate("/login")}>
+          Log In
+        </button>
       </div>
     </div>
   );

@@ -219,7 +219,7 @@ export const loginUser = async (req, res) => {
     }
 
     // For regular users, handle cart items and favorites
-    if (user.role !== "seller") {
+    if (user.role == "user") {
       // Handle cart items
       if (cartItems && Array.isArray(cartItems) && cartItems.length > 0) {
         const { rows: cart } = await db.query(
@@ -263,6 +263,7 @@ export const loginUser = async (req, res) => {
       // Handle favorite items
       if (favorites && Array.isArray(favorites) && favorites.length > 0) {
         // Get the user's wishlist
+        console.log(favorites)
         const { rows: wishlist } = await db.query(
           "SELECT * FROM wishlists WHERE user_id = $1",
           [user.id]
@@ -273,10 +274,10 @@ export const loginUser = async (req, res) => {
         }
 
         const wishlistId = wishlist[0].id;
-
+        console.log(wishlist[0].id);
         for (const favorite of favorites) {
           const { id: productId } = favorite;
-
+          console.log(productId);
           if (!productId) {
             console.error("Invalid product ID in favorites:", favorite);
             continue;
@@ -289,6 +290,8 @@ export const loginUser = async (req, res) => {
           );
 
           if (existingWishlistProduct.length === 0) {
+            console.log('wishlistId' + wishlistId);
+            console.log('productId' + productId);
             await db.query(
               "INSERT INTO wishlist_products (wishlist_id, product_id) VALUES ($1, $2)",
               [wishlistId, productId]
@@ -344,9 +347,9 @@ export const getCartProducts = async (req, res) => {
 
     const { rows: cartProducts } = await db.query(
       `
-     SELECT p.id, cp.quantity, p.name, p.price, encode(p.image, 'base64') AS image
+    SELECT p.id, cp.quantity, c.product_name, p.price, encode(p.image, 'base64') AS image
     FROM cart_products cp
-    JOIN products p ON cp.product_id = p.id
+    JOIN products p ON cp.product_id = p.id Join catalogs c ON p.catalog_id = c.id
     WHERE cp.cart_id = $1
       `,
       [cartId]

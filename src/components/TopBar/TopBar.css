@@ -3,12 +3,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     background-color: rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(0.2rem);
     padding: 10px 20px;
+
     margin-left: 1rem;
     border-bottom: 2px solid #ccc;
-    position: fixed;
+
     
     width: 95%;
     border-radius: 1rem;
@@ -201,6 +203,8 @@
   }
 
   .loginButton:hover{
+
     background-color: #38170c;
     color: white;
   }
+

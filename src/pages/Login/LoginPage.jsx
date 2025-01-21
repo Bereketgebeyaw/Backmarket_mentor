@@ -67,7 +67,14 @@ const LoginPage = () => {
         }
 
        
-
+        if(data.user.role === "user"){
+                   if (mappedCartItems.length > 0) {
+                      // Clear cart from localStorage after login
+                     navigate("/user");
+                   } else {
+                     navigate("/user-dashboard"); // Redirect to user dashboard
+                   }
+        }
         // Remove the cart and favorites from localStorage after login
         localStorage.removeItem("cart");
         localStorage.removeItem("favorites");
@@ -97,9 +104,7 @@ const LoginPage = () => {
         else if (data.user.role === "admin") {
             navigate("/admin"); 
         } 
-        else {
-          navigate("/user-dashboard"); // Redirect to user dashboard
-        }
+        
       } else {
         setErrorMessage(data.message || "Invalid email or password.");
       }

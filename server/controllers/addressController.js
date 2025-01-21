@@ -242,19 +242,29 @@ export const getOrders = async (req, res) => {
     // Fetch products for each order
     const ordersWithDetails = await Promise.all(
       orders.map(async (order) => {
-        const productsResult = await db.query(
-          `SELECT 
-             op.product_id, 
-             op.quantity, 
-             p.name, 
-             p.price, 
-             p.description 
-           FROM order_products op
-           JOIN products p ON op.product_id = p.id
-           WHERE op.order_id = $1`,
-          [order.order_id]
-        );
+       const productsResult = await db.query(
+         `
+  SELECT 
+    op.product_id, 
+    op.quantity, 
+    c.product_name, 
+    p.price, 
+    c.product_description 
+  FROM 
+    order_products op
+  JOIN 
+    products p 
+    ON op.product_id = p.id
+  JOIN 
+    catalogs c 
+    ON p.catalog_id = c.id
+  WHERE 
+    op.order_id = $1
+  `,
+         [order.order_id]
+       );
 
+        console.log("Orders fetched successfully:", productsResult.rows);
         return {
           order_id: order.order_id,
           status: order.status,
@@ -273,6 +283,11 @@ export const getOrders = async (req, res) => {
     );
 
     console.log("Orders fetched successfully:", ordersWithDetails);
+    console.log(
+      "Orders fetched successfully:",
+      JSON.stringify(ordersWithDetails, null, 2)
+    );
+
 
     res.status(200).json({
       message: "Orders retrieved successfully.",

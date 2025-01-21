@@ -28,7 +28,7 @@ export const fetchOrders = async () => {
       },
       products: order.products.map((product) => ({
         id: product.product_id,
-        name: product.name,
+        name: product.product_name,
         quantity: product.quantity,
       })),
     }));

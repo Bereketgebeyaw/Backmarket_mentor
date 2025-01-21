@@ -97,4 +97,35 @@ router.get('/', async (req, res) => {
 
 router.get("/:subcategoryId", getProductsBySubCategory);
 
+router.get("/search", async (req, res) => {
+  const { query } = req.query; // Access the search query from the query parameters
+  if (!query) {
+    return res.status(400).send("Search query is required.");
+  }
+
+  try {
+    const result = await db.query(
+      `SELECT * FROM products p
+       JOIN catalogs c ON p.catalog_id = c.id
+       WHERE (LOWER(c.name) LIKE $1 OR LOWER(p.name) LIKE $1)
+       AND p.quantity_in_stock > 0`,
+      [`%${query.toLowerCase()}%`]
+    );
+
+    const products = result.rows.map((product) => {
+      if (product.image) {
+        const imageType = product.image_type || "jpeg";
+        product.image = `data:image/${imageType};base64,${product.image.toString("base64")}`;
+      }
+      return product;
+    });
+
+    res.json(products);
+  } catch (error) {
+    console.error("Error fetching searched products:", error);
+    res.status(500).send("Server error");
+  }
+});
+
+
 export default router;

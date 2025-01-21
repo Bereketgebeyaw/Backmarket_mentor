@@ -1,7 +1,15 @@
-.menu:hover{
-    color: #00c04b;
-   
+.menub:hover{
+    color: #38170c;
+    background-color: white;
+    
 }
-.menu{
-    color: black ;
+.menub{
+    color: white ;
+    background-color: #38170c;
+    padding: 1rem 3rem;
+    margin-left: -1rem;
+    padding-Left: 5rem;
+   
+    
+    
 }

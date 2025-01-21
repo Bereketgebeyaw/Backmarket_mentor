@@ -82,13 +82,17 @@ const AddCatalog = () => {
   };
 
   return (
-    <div style={{ backgroundColor: "#fff", padding: "20px", borderRadius: "8px" }}>
+    <div style={{ backgroundColor: "#fff", padding: "20px", borderRadius: "8px" , margin:'0rem 15rem', marginLeft: '22rem',  marginTop: '-25rem',  
+      backgroundColor: "rgba(255, 255, 255, 0.8)",
+      backdropFilter: "blur(10px)" ,
+      boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+      borderRadius: "130px 0px 0px 0px",}}>
       <h1 style={{ textAlign: "center", marginBottom: "20px" }}>Add New Catalog</h1>
       
       {message && <p style={{ color: message.includes("Error") ? "red" : "green", textAlign: "center" }}>{message}</p>} {/* Display message */}
 
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: "15px" }}>
+      <form onSubmit={handleSubmit} style={{margin:'5rem', }}>
+        <div style={{ marginBottom: "15px", }}>
           <label htmlFor="product_name">Product Name:</label>
           <input
             type="text"
@@ -198,7 +202,7 @@ const AddCatalog = () => {
             padding: "10px",
             border: "none",
             borderRadius: "4px",
-            backgroundColor: "#007BFF",
+            backgroundColor: "#38170c",
             color: "#fff",
             fontWeight: "bold",
             cursor: "pointer",

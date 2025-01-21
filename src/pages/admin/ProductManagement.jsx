@@ -5,7 +5,7 @@ import AddProductForm from '../../components/AddProductForm';
 const ProductManagement = () => {
   return (
     <div>
-      
+       
       <AddProductForm />
       
     </div>

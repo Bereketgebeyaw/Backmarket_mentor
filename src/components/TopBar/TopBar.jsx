@@ -63,16 +63,16 @@ const TopBar = ({ cartCount }) => {
     <div className="topBar">
       <div className="logoContainer">
         <img
-          src=".png"
+          src="/image/buna-bank-logo.png"
           alt="Logo"
           className="logo"
         />
         <span className="tagline">Our Marketplace</span>
       </div>
-      <div className="menu">
-        <a href="/" className="menuItem">MEN</a>
-        <a href="/" className="menuItem">WOMEN</a>
-        <a href="/" className="menuItem">KIDS</a>
+      <div className="menus">
+        <a href="/" className="menuItem">Men</a>
+        <a href="/" className="menuItem">Women</a>
+        <a href="/" className="menuItem">Kids</a>
         <a href="/" className="menuItem">Jewelry</a>
         <a href="/" className="menuItem">Electronics</a>
         <a href="/" className="menuItem">Perfume</a>
@@ -96,7 +96,7 @@ const TopBar = ({ cartCount }) => {
                     {cartItems.map((item, index) => (
                       <li key={index} className="cartItem">
                         <div className="cartItemDetails">
-                          <strong>{item.name}</strong> - ${item.price}
+                          <strong>{item.Name}</strong> - ${item.price}
                           <div className="quantityControls">
                             <button
                               className="quantityButton"

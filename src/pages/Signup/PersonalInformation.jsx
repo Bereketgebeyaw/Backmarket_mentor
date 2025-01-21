@@ -28,7 +28,7 @@ const PersonalInformation = ({ formData, updateFormData, nextStep }) => {
           className="signup-input"
         />
       </label>
-      <button type="button" onClick={nextStep} className="next-button">
+      <button type="button" c onClick={nextStep} className="next-button">
         Continue
       </button>
     </div>

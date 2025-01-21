@@ -33,34 +33,53 @@
   border-radius: 4px;
 }
 
-button {
+.next-button {
   padding: 10px 20px;
   margin-top: 10px;
-  background-color: #00c04b;
+  background-color:#38170c;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
-button:hover {
-  background-color: #00c04b;
+.next-button:hover{
+  background-color: white;
+  border: 0.1rem solid #38170c;
+  color: #38170c;
 }
 
 .prev-button {
-  background-color: #6c757d;
+  padding: 10px 20px;
+  margin-top: 10px;
+  margin-right: 1rem ;
+  background-color:#38170c;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .prev-button:hover {
-  background-color: #5a6268;
+  background-color: white;
+  border: 0.1rem solid #38170c;
+  color: #38170c;
 }
 
+
 .submit-button {
-  background-color: #28a745;
+  padding: 10px 20px;
+  margin-top: 10px;
+  margin-right: 1rem ;
+  background-color:#38170c;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .submit-button:hover {
-  background-color: #218838;
+  background-color: white;
+  border: 0.1rem solid #38170c;
+  color: #38170c;
 }
 
 label {

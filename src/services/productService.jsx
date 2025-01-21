@@ -24,3 +24,15 @@ export const fetchProductsBySubCategory = async (subcategoryId) => {
     throw new Error("Failed to fetch products");
   }
 };
+
+export const fetchProductsBySearch = async (query) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:5000/products/search?query=${query}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching searched products:", error);
+    throw error;
+  }
+};

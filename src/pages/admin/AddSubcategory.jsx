@@ -4,7 +4,7 @@ import SubcategoryForm from "../../components/SubcategoryForm"; // Adjust the pa
 const AddSubcategory = () => {
   return (
     <div>
-      <h1>Add New Subcategory</h1>
+      
       <SubcategoryForm />
     </div>
   );

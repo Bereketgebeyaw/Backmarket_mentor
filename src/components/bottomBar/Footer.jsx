@@ -6,7 +6,7 @@ const Footer = () => {
         <footer className="footer">
             <div className="footer-container">
                 <div className="footer-section">
-                    <img src="" alt="Logo" className="footer-logo" />
+                    <img src="/image/buna-bank-logo.png" alt="Logo" className="footer-logo" />
                     <h4>About Us</h4>
                     <p>
                         We are an online store dedicated to providing the best products and services.

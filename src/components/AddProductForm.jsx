@@ -121,7 +121,7 @@ const AddProductForm = () => {
           name="category_id" // Updated to category_id
           value={formData.category_id}
           onChange={handleCategoryChange}
-          style={styles.input}
+          style={styles.inputa}
         >
           <option value="">Select Category</option>
           {categories.map((category) => (
@@ -136,7 +136,7 @@ const AddProductForm = () => {
           name="subcategory_id" // Updated to subcategory_id
           value={formData.subcategory_id}
           onChange={handleSubCategoryChange}
-          style={styles.input}
+          style={styles.inputa}
           disabled={!formData.category_id}
         >
           <option value="">Select Subcategory</option>
@@ -152,7 +152,7 @@ const AddProductForm = () => {
           name="catalog_id"
           value={formData.catalog_id}
           onChange={handleChange}
-          style={styles.input}
+          style={styles.inputa}
           disabled={!formData.subcategory_id}
         >
           <option value="">Select Product</option>
@@ -195,7 +195,7 @@ const AddProductForm = () => {
           value={formData.shelf_life}
           onChange={handleChange}
           required
-          style={styles.input}
+          style={styles.inputa}
         >
           <option value="">Select Shelf Life</option>
           <option value="Perishables">Perishables</option>
@@ -211,14 +211,16 @@ const AddProductForm = () => {
 };
 
 const styles = {
-  formContainer: { padding: "20px" },
+  formContainer: { padding: "20px" ,backgroundColor: "rgba(255, 255, 255, 0.8)",
+    backdropFilter: "blur(10px)" , borderRadius: "130px 0px 0px 0px",  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", margin:'0rem 20rem' , marginTop:'-30rem'},
   form: { maxWidth: "500px", margin: "auto" },
-  header: { textAlign: "center", color: "#00c04b" },
-  input: { width: "100%", padding: "10px", margin: "10px 0" },
+  header: { textAlign: "center", color: "#38170c" },
+  input: { width: "30rem", padding: "10px", margin: "10px 0", border:"0.1rem dashed #38170c" },
   fileInput: { margin: "10px 0" },
+  inputa:{ border:"0.1rem dashed #38170c"},
   button: {
     padding: "10px 20px",
-    backgroundColor: "#00c04b",
+    backgroundColor: "#38170c",
     color: "#fff",
     border: "none",
     borderRadius: "5px",

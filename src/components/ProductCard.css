@@ -52,7 +52,7 @@
   font-weight: bold;
   color: white;
   text-align: left;
-  margin-top: -18rem;
+  margin-top: -14rem;
   margin-left: 4.5rem;
 }
 
@@ -63,14 +63,19 @@
 }
 
 .cartButton {
-  background-color: #00c04b;
-  color: #fff;
-  border: none;
+  background-color: white;
+  color:#38170c;
+  border: 0.01rem dashed #38170c;
   padding: 8px 15px;
-  width: 15rem;
+  width: 25rem;
   border-radius: 100px;
   cursor: pointer;
-  margin-top: 17rem ;
+  margin-right: -2rem;
+  margin-top: 16rem ;
+}
+.cartButton:hover{
+  background-color: #38170c;
+  color: white;
 }
 
 .favoriteButton {
@@ -81,3 +86,7 @@
   margin-top: -18rem;
   transition: color 0.3s ease;
 }
+.favoriteButton:hover{
+  background-color: none;
+}
+

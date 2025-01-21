@@ -98,7 +98,8 @@ const TopBar = ({ onSubcategorySelect, cartCount }) => {
   return (
     <div className="topBar">
       <div className="logoContainer">
-        <img src=".png" alt="Logo" className="logo" />
+
+        <img src="/image/buna-bank-logo.png" alt="Logo" className="logo" />
         <span className="tagline">Our Marketplace</span>
       </div>
       <div className="menu">
@@ -136,6 +137,7 @@ const TopBar = ({ onSubcategorySelect, cartCount }) => {
         <a href="/wishlists" className="menuItem">
           WishList
         </a>
+
       </div>
       <div className="rightSection">
         <select className="currencyDropdown">
@@ -157,7 +159,7 @@ const TopBar = ({ onSubcategorySelect, cartCount }) => {
                     {cartItems.map((item, index) => (
                       <li key={index} className="cartItem">
                         <div className="cartItemDetails">
-                          <strong>{item.name}</strong> - ${item.price}
+                          <strong>{item.Name}</strong> - ${item.price}
                           <div className="quantityControls">
                             <button
                               className="quantityButton"

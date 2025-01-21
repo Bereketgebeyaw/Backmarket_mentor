@@ -23,7 +23,7 @@
 .login-title {
   font-size: 2rem;
   font-weight: 600;
-  color: #00c04b;
+  color: #38170c;
   margin-bottom: 20px;
   margin-left: 11rem;
   
@@ -50,14 +50,14 @@
 }
 
 .login-input:focus {
-  border-color: #00c04b;
+  border-color: #38170c;
   outline: none;
 }
 
 .login-button {
   width: 100%;
   padding: 12px;
-  background-color: #00c04b;
+  background-color: #38170c;
   color: white;
   font-size: 1rem;
   border: none;
@@ -71,7 +71,11 @@
 
 .login-button:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 0.1rem solid #38170c ;
+  background-color: #f7f7f7;
+  color: #38170c;
 }
+
 
 .error-message {
   color: #ff4d4d;
@@ -86,7 +90,7 @@
 }
 
 .login-link a {
-  color: #00c04b;
+  color:limegreen;
   text-decoration: none;
 }
 

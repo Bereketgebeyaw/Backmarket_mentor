@@ -3,8 +3,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
+
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(0.2rem);
+    padding: 10px 20px;
 
     margin-left: 1rem;
     border-bottom: 2px solid #ccc;
@@ -27,25 +29,30 @@
   }
   
   .tagline {
-    color: #00c04b;
+    color:#38170c;
     font-size: 18px;
     font-weight: bold;
   }
   
-  .menu {
+  .menus {
     display: flex;
     gap: 15px;
+    font-family: "Poppins", sans-serif;
+    font-weight: normal;
   }
   .menuItem:hover{
-    color: #00c04b;
+    color: #00d9ff;
+    
+    
   }
+  
   .menuItem:active{
-    color: #00c04b;
+    color: #0d00c0;
   }
   .menuItem {
     text-decoration: none;
-    color: #333;
-    font-weight: bold;
+    color: black;
+    
     padding: 5px 10px;
     border-radius: 5px;
   }
@@ -53,14 +60,18 @@
   .rightSection {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap:15px;
+   
+
     
   }
   
   .currencyDropdown {
-    border: 1px solid #00c04b;
+    border: 1px solid #38170c;
     border-radius: 5px;
     padding: 5px;
+    width: 5rem;
+    
   }
   
   .cartContainer {
@@ -89,8 +100,8 @@
     top: 40px;
     right: 0;
     width: 300px;
-    background-color: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(0.2rem);
     border: 1px solid #ddd;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 10;
@@ -113,12 +124,15 @@
     align-items: center;
     padding: 5px 0;
     border-bottom: 1px solid #ddd;
+    
   }
   
   .cartItemDetails {
     display: flex;
     justify-content: space-between;
     width: 80%;
+    
+    
   }
   
   .quantityControls {
@@ -128,6 +142,7 @@
   
   .quantityButton {
     background-color: #ddd;
+    color: black;
     border: none;
     padding: 5px;
     cursor: pointer;
@@ -138,9 +153,9 @@
   .checkoutButton {
     margin-top: 10px;
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
-    color: #fff;
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(0.2rem);
+    color: black;
     padding: 8px;
     border: none;
     border-radius: 4px;
@@ -150,9 +165,9 @@
   }
   
   .removeButton {
-    background-color: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
-    color: #fff;
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(0.2rem);
+    color: black;
     border: none;
     padding: 4px 8px;
     border-radius: 4px;
@@ -160,32 +175,36 @@
     font-size: 12px;
   }
   
+  .removeButton:hover {
+  background-color: #38170c;
+  color: white;
+  }
+
+  .checkoutButton:hover {
+    background-color: #38170c;
+    color: white;
+    }
+
+    .quantityButton:hover {
+      background-color: #38170c;
+      color: white;
+      }
+
   .loginButton {
-    background-color: "";
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(0.2rem);
     color: black; 
-    border: 1px solid #00c04b;
+    border: 1px solid #38170c;
     padding: 8px 15px;
     border-radius: 5px;
     cursor: pointer;
+    width: 5rem;
+    margin-bottom: 1rem;
   }
 
   .loginButton:hover{
-    border: 2.5px solid #00c04b;
+
+    background-color: #38170c;
+    color: white;
   }
-  .subMenu {
-  background-color: white;
-  border: 1px solid #ddd;
-  position: absolute;
-  margin-top: 5px;
-  padding: 10px;
-  z-index: 10;
-}
-.subMenuItem {
-  display: block;
-  padding: 5px;
-  text-decoration: none;
-  color: black;
-}
-.subMenuItem:hover {
-  background-color: #f0f0f0;
-}
+

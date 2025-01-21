@@ -57,7 +57,7 @@ const SignupPage = () => {
   };
 
   return (
-    <div>
+    <div className='contain'>
       <TopBar/>
       
     <div className="signup-container">

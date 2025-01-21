@@ -135,16 +135,16 @@ const UserTopbar = ({ cartCount }) => {
     <div className="topBara">
       <div className="logoContainera">
         <img
-          src=".png"
+          src="/image/buna-bank-logo.png"
           alt="Logo"
           className="logo"
         />
         <span className="taglinea">Our Marketplace</span>
       </div>
       <div className="menua">
-        <a href="#men" className="menuItema">MEN</a>
-        <a href="#women" className="menuItema">WOMEN</a>
-        <a href="#kids" className="menuItema">KIDS</a>
+        <a href="#men" className="menuItema">Men</a>
+        <a href="#women" className="menuItema">Women</a>
+        <a href="#kids" className="menuItema">Kids</a>
         <a href="#jewelry" className="menuItema">Jewelry</a>
         <a href="#electronics" className="menuItema">Electronics</a>
         <a href="#perfume" className="menuItema">Perfume</a>

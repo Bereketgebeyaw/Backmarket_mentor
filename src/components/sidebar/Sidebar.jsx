@@ -13,17 +13,17 @@ const Sidebar = ({ role }) => {
     };
 
     return (
-        <div style={{ width: '200px', background: '#f4f4f4', padding: '20px', fontFamily: 'sans-serif' }}>
-            <ul style={{ listStyle: 'none', padding: 0, position: 'fixed' }}>
+
+        <div style={{ width: '150px', background: '#f4f4f4', padding: '10px' , fontFamily: 'sans-serif',  }} >
+            <ul style={{ listStyle: 'none', padding: 0 , position:'fixed', marginTop: '-2rem',}} >
                 {menuItems[role]?.map((item, index) => (
-                    <li key={index} style={{ marginBottom: '20px' }}>
+                    <li key={index} style={{ marginBottom: '10px' , marginTop: '3rem', width: "1px"}} >
                         <NavLink
                             to={item.path}
-                            style={({ isActive }) => ({
-                                textDecoration: 'none',
-                                fontWeight: isActive ? 'bold' : 'normal',
-                                color: isActive ? 'blue' : 'black',
-                            })}
+                            style={{ textDecoration: 'none', }}
+                            activeStyle={{ fontWeight: 'bold', color: 'blue' ,  }}
+                            className='menub'
+x
                         >
                             {item.name}
                         </NavLink>

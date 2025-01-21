@@ -141,7 +141,7 @@ const styles = {
     transition: 'background 0.3s',
   },
   continueButton: {
-    background: '#28a745', // Green color for continue button
+    background: '#38170c', // Green color for continue button
     color: '#fff',
     border: 'none',
     padding: '10px 15px',

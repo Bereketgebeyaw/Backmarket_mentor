@@ -20,17 +20,20 @@
 .logo {
   height: 50px;
   margin-right: 10px;
+  margin-left: -1rem;
 }
 
 .taglinea {
-  color: #00c04b;
+  color: #38170c;
   font-size: 18px;
   font-weight: bold;
+  margin-left: -1.4rem;
+  margin-right: 2.5rem;
 }
 
 .menua {
   display: flex;
-  gap: 15px;
+  
   font-family: sans-serif;
 }
 
@@ -42,17 +45,18 @@
 }
 
 .menuItema:hover{
-  color: #00c04b;
+  color: #00d9ff;
 }
 
 .rightSectiona {
   display: flex;
   align-items: center;
   gap: 15px;
+  margin-left: 2rem;
 }
 
 .currencyDropdowna {
-  border: 1px solid #00c04b;
+  border: 1px solid #38170c;
   border-radius: 5px;
   padding: 5px;
 }
@@ -83,13 +87,13 @@
   top: 40px;
   right: 0;
   width: 300px;
-  background-color: #00c04b;
+  background-color: #38170c;
   border: 1px solid #ddd;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 10;
   padding: 10px;
   border-radius: 8px;
-  color: #333;
+  color: white;
 }
 
 .cartLista {
@@ -105,13 +109,15 @@
   justify-content: space-between;
   align-items: center;
   padding: 5px 0;
-  border-bottom: 1px solid #00c04b;
+  border-bottom: 1px solid #38170c;
+  color: white;
 }
 
 .cartItemDetailsa {
   display: flex;
   justify-content: space-between;
   width: 80%;
+  
 }
 
 .quantityControlsa {
@@ -127,11 +133,15 @@
   font-size: 16px;
   margin: 0 5px;
 }
+.quantityButtona:hover{
+  background-color: #38170c;
+  color: white;
+}
 
 .checkoutButtona {
   margin-top: 10px;
   width: 100%;
-  background-color: #00c04b;
+  background-color: #38170c;
   color: #fff;
   padding: 8px;
   border: none;
@@ -140,9 +150,13 @@
   font-size: 14px;
   font-weight: bold;
 }
+.checkoutButtona:hover {
+  background-color: white;
+  color: #38170c;
+}
 
 .removeButtona {
-  background-color: #00c04b;
+  background-color: #38170c;
   color: #fff;
   border: none;
   padding: 4px 8px;
@@ -150,15 +164,21 @@
   cursor: pointer;
   font-size: 12px;
 }
+.removeButtona:hover{
+  background-color: white;
+  color:#38170c;
+}
 
 .loginButtona {
   color: black;
-  border: 0.1rem solid #00c04b;
+
+  border: 0.1rem solid 38170c;
   padding: 8px 15px;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
-  background-color: none;
+  background-color:none ;
 }
 .loginButtona:hover {
-  border: 0.2rem solid #00c04b;
+  background-color: #38170c;
+  color: white;
 }

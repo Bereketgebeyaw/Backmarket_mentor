@@ -44,11 +44,16 @@ const SubcategoryForm = () => {
   const containerStyle = {
     maxWidth: "600px",
     margin: "0 auto",
-    padding: "20px",
+    marginLeft: '25rem',
+    marginTop: '-28rem',
+    padding: "70px",
     border: "1px solid #ddd",
-    borderRadius: "8px",
-    backgroundColor: "#f9f9f9",
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+   
+    
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    backdropFilter: "blur(10px)" ,
+    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+    borderRadius: "130px 0px 0px 0px",
   };
 
   const labelStyle = {
@@ -70,7 +75,7 @@ const SubcategoryForm = () => {
     display: "block",
     width: "100%",
     padding: "10px",
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#38170c",
     color: "white",
     border: "none",
     borderRadius: "4px",
@@ -88,7 +93,7 @@ const SubcategoryForm = () => {
 
   return (
     <div style={containerStyle}>
-      <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Add Subcategory</h2>
+      <h2 style={{ textAlign: "center", marginBottom: "20px" , color:'#38170c'}}>Add Subcategory</h2>
       {message && <p style={messageStyle}>{message}</p>}
       <form onSubmit={handleSubmit}>
         <div>

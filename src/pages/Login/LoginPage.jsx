@@ -64,6 +64,7 @@ const LoginPage = () => {
         const token = data.token; // Assuming the token is returned as data.token
         if (token) {
           localStorage.setItem("authToken", token); // Store the token in localStorage
+          window.location.href = '/user-dashboard';
         }
 
        

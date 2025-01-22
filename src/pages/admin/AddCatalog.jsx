@@ -82,7 +82,7 @@ const AddCatalog = () => {
   };
 
   return (
-    <div style={{ backgroundColor: "#fff", padding: "20px", borderRadius: "8px" , margin:'0rem 15rem', marginLeft: '22rem',  marginTop: '-25rem',  
+    <div style={{  padding: "20px",  margin:'0rem 15rem', marginLeft: '22rem',  marginTop: '-25rem',  
       backgroundColor: "rgba(255, 255, 255, 0.8)",
       backdropFilter: "blur(10px)" ,
       boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",

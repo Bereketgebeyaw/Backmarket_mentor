@@ -16,6 +16,9 @@ const BuyerDashboard = () => {
   const [favorites, setFavorites] = useState([]);
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
 
+
+ 
+  
   useEffect(() => {
     const loadProducts = async () => {
       try {
@@ -35,6 +38,8 @@ const BuyerDashboard = () => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     setCartCount(cart.reduce((total, item) => total + item.quantity, 0));
   }, []);
+
+  
 
   useEffect(() => {
     // Filter products based on search query
@@ -80,6 +85,14 @@ const BuyerDashboard = () => {
     }
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+    
+      window.location.href = '/user-dashboard';
+    }
+  }, );
+  
   const handleFavorite = (product) => {
     try {
       const updatedFavorites = [...favorites];

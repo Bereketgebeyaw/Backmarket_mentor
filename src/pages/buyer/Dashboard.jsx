@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import {
   fetchProducts,
   fetchProductsBySubCategory,
-} from "../../services/productService"; // Add fetchProductsBySubCategory
+  fetchProductsBySearch, // Add this import
+} from "../../services/productService"; 
 import ProductCard from "../../components/ProductCard";
 import TopBar from "../../components/TopBar/TopBar";
 import Footer from "../../components/bottomBar/Footer";
@@ -37,12 +38,23 @@ const BuyerDashboard = () => {
   }, []);
 
   useEffect(() => {
-    // Filter products based on search query
-    const result = products.filter((product) =>
-      product.product_name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredProducts(result);
-  }, [searchQuery, products]); // Re-run the filter whenever the query or products change
+    // Fetch products by search query
+    if (searchQuery.trim()) {
+      const loadSearchedProducts = async () => {
+        try {
+          const data = await fetchProductsBySearch(searchQuery);
+          setFilteredProducts(data); // Update filtered products based on search
+        } catch (error) {
+          console.error("Failed to search products:", error);
+        }
+      };
+
+      loadSearchedProducts();
+    } else {
+      // If no search query, show all products
+      setFilteredProducts(products);
+    }
+  }, [searchQuery, products]);
 
   const handleAddToCart = (product) => {
     try {
@@ -114,87 +126,85 @@ const BuyerDashboard = () => {
   };
 
   const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
+    setSearchQuery(event.target.value); // Trigger search on input change
   };
 
   if (loading) return <p>Loading products...</p>;
 
- return (
-  <div >
-    <TopBar
-      cartCount={cartCount}
-      onSubcategorySelect={handleSubcategorySelect}
-    />
+  return (
+    <div>
+      <TopBar
+        cartCount={cartCount}
+        onSubcategorySelect={handleSubcategorySelect}
+      />
 
-    {/* Main Container */}
-    <div
-      style={{
-        margin: "20px auto",
-        padding: "20px",
-        maxWidth: "1200px",
-        backgroundColor: "#ffffff",
-        borderRadius: "8px",
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-      }}
-    >
-      {/* Search Input */}
-      <div style={{ textAlign: "center", marginBottom: "20px" }}>
-  <input
-    type="text"
-    placeholder="Search for products..."
-    value={searchQuery}
-    onChange={handleSearchChange}
-    style={{
-      padding: "10px",
-      fontSize: "16px",
-      width: "100%",
-      maxWidth: "500px",
-      borderRadius: "5px",
-      border: "1px solid #ccc",
-    }}
-  />
-</div>
-
-
-      {/* Cart Message */}
-      {cartMessage && (
-        <p style={{ color: "green", fontWeight: "bold", textAlign: "center" }}>
-          {cartMessage}
-        </p>
-      )}
-
-      {/* Product Cards */}
+      {/* Main Container */}
       <div
         style={{
-          display: "grid",
-          backgroundColor: "#f0f0f0",
-          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-          gap: "20px",
+          margin: "20px auto",
+          padding: "20px",
+          maxWidth: "1200px",
+          backgroundColor: "#ffffff",
+          borderRadius: "8px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
         }}
       >
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              isFavorite={favorites.some((fav) => fav.id === product.id)}
-              onAddToCart={handleAddToCart}
-              onFavorite={handleFavorite}
-            />
-          ))
-        ) : (
-          <p style={{ textAlign: "center", width: "100%" }}>
-            No products available.
+        {/* Search Input */}
+        <div style={{ textAlign: "center", marginBottom: "20px" }}>
+          <input
+            type="text"
+            placeholder="Search for products..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            style={{
+              padding: "10px",
+              fontSize: "16px",
+              width: "100%",
+              maxWidth: "500px",
+              borderRadius: "5px",
+              border: "1px solid #ccc",
+            }}
+          />
+        </div>
+
+        {/* Cart Message */}
+        {cartMessage && (
+          <p style={{ color: "green", fontWeight: "bold", textAlign: "center" }}>
+            {cartMessage}
           </p>
         )}
+
+        {/* Product Cards */}
+        <div
+          style={{
+            display: "grid",
+            backgroundColor: "#f0f0f0",
+            gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+            gap: "20px",
+          }}
+        >
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                isFavorite={favorites.some((fav) => fav.id === product.id)}
+                onAddToCart={handleAddToCart}
+                onFavorite={handleFavorite}
+              />
+            ))
+          ) : (
+            <p style={{ textAlign: "center", width: "100%" }}>
+              No products available.
+            </p>
+          )}
+        </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
-
-    {/* Footer */}
-    <Footer />
-  </div>
-);
-
+  );
 };
 
 export default BuyerDashboard;

@@ -95,37 +95,48 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get("/:subcategoryId", getProductsBySubCategory);
+
 
 router.get("/search", async (req, res) => {
-  const { query } = req.query; // Access the search query from the query parameters
+  const { query } = req.query;
+
+  console.log("Received search query:", query); // Log the received query
+
   if (!query) {
+    console.log("Query parameter missing"); // Log missing query
     return res.status(400).send("Search query is required.");
   }
 
   try {
-    const result = await db.query(
-      `SELECT * FROM products p
-       JOIN catalogs c ON p.catalog_id = c.id
-       WHERE (LOWER(c.name) LIKE $1 OR LOWER(p.name) LIKE $1)
-       AND p.quantity_in_stock > 0`,
-      [`%${query.toLowerCase()}%`]
-    );
+    // Ensure the query is a valid string and avoid mixing with other params.
+    const searchQuery = `
+      SELECT p.*, c.product_name
+      FROM products p
+      JOIN catalogs c ON p.catalog_id = c.id
+      WHERE LOWER(c.product_name) LIKE $1
+      AND p.quantity_in_stock > 0
+    `;
 
+    console.log("Executing search query:", searchQuery); // Log the query
+    const result = await db.query(searchQuery, [`%${query.toLowerCase()}%`]);
+
+    // Process each product and convert image to base64
     const products = result.rows.map((product) => {
       if (product.image) {
-        const imageType = product.image_type || "jpeg";
-        product.image = `data:image/${imageType};base64,${product.image.toString("base64")}`;
+        const imageType = product.image_type || 'jpeg'; // Default to 'jpeg' if null
+        product.image = `data:image/${imageType};base64,${product.image.toString('base64')}`;
       }
       return product;
     });
 
-    res.json(products);
+    console.log("Query results:", products); // Log query results
+    res.json(products); // Return processed products with base64 image data
   } catch (error) {
-    console.error("Error fetching searched products:", error);
+    console.error("Error executing search query:", error); // Log the error
     res.status(500).send("Server error");
   }
 });
 
 
+router.get("/:subcategoryId", getProductsBySubCategory);
 export default router;

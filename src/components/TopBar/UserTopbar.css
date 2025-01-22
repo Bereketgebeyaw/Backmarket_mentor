@@ -7,7 +7,7 @@
   backdrop-filter: blur(10px);
   padding: 10px 20px;
   border-bottom: 2px solid #ccc;
-  position: fixed;
+  
   font-family: sans-serif;
   z-index: 1000;
 }

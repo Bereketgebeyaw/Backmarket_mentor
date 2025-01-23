@@ -18,7 +18,7 @@ const AdminLayout = () => {
         {/* Sidebar */}
         <nav style={{ width: '250px', padding: '20px', borderRight: '1px solid #ddd', position: 'sticky', top: 0, }}>
           <ul style={{ margin: '3rem 0', padding: 0, }} >
-            <li style={{ marginTop: '3rem', listStyleType: 'none', backgroundColor:'#38170c' ,color: 'white' , padding:'1rem 2rem' ,}}>
+            <li style={{ marginTop: '-3rem', listStyleType: 'none', backgroundColor:'#38170c' ,color: 'white' , padding:'1rem 2rem' ,}}>
               <Link style={{color: 'white' , textDecoration: 'none'  }} to="/admin/product-management">Product Management</Link>
             </li>
             <li style={{ marginTop: '2rem', listStyleType: 'none' , backgroundColor:'#38170c' ,padding:'1rem 2rem'}}>

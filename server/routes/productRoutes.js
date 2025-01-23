@@ -100,15 +100,11 @@ router.get('/', async (req, res) => {
 router.get("/search", async (req, res) => {
   const { query } = req.query;
 
-  console.log("Received search query:", query); // Log the received query
-
   if (!query) {
-    console.log("Query parameter missing"); // Log missing query
     return res.status(400).send("Search query is required.");
   }
 
   try {
-    // Ensure the query is a valid string and avoid mixing with other params.
     const searchQuery = `
       SELECT p.*, c.product_name
       FROM products p
@@ -116,26 +112,25 @@ router.get("/search", async (req, res) => {
       WHERE LOWER(c.product_name) LIKE $1
       AND p.quantity_in_stock > 0
     `;
-
-    console.log("Executing search query:", searchQuery); // Log the query
     const result = await db.query(searchQuery, [`%${query.toLowerCase()}%`]);
 
-    // Process each product and convert image to base64
     const products = result.rows.map((product) => {
       if (product.image) {
-        const imageType = product.image_type || 'jpeg'; // Default to 'jpeg' if null
-        product.image = `data:image/${imageType};base64,${product.image.toString('base64')}`;
+        const imageType = product.image_type || "jpeg"; // Default image type
+        product.image = `data:image/${imageType};base64,${product.image.toString(
+          "base64"
+        )}`;
       }
       return product;
     });
 
-    console.log("Query results:", products); // Log query results
-    res.json(products); // Return processed products with base64 image data
+    res.json(products);
   } catch (error) {
-    console.error("Error executing search query:", error); // Log the error
+    console.error("Error executing search query:", error);
     res.status(500).send("Server error");
   }
 });
+
 
 
 router.get("/:subcategoryId", getProductsBySubCategory);

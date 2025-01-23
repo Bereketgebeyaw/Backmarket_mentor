@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
   fetchProducts,
-  fetchProductsBySearch, // Search API function
+  fetchProductsBySearch,
+  fetchProductsBySubCategory, // Added this import
 } from "../../services/productService";
 import ProductCard from "../../components/ProductCard";
 import TopBar from "../../components/TopBar/TopBar";
@@ -58,6 +59,19 @@ const BuyerDashboard = () => {
     fetchSearchResults();
   }, [searchQuery, products]);
 
+  const handleSubcategorySelect = async (subcategoryId) => {
+    setLoading(true);
+    try {
+      const data = await fetchProductsBySubCategory(subcategoryId);
+      setProducts(data);
+      setFilteredProducts(data); // Update filtered products when subcategory changes
+    } catch (error) {
+      console.error("Failed to load products for subcategory:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -91,7 +105,7 @@ const BuyerDashboard = () => {
 
   return (
     <div>
-      <TopBar cartCount={cartCount} />
+      <TopBar cartCount={cartCount} onSubcategorySelect={handleSubcategorySelect} />
       <div style={{ margin: "20px auto", padding: "20px", maxWidth: "1200px" }}>
         {/* Search Input */}
         <div style={{ textAlign: "center", marginBottom: "20px" }}>

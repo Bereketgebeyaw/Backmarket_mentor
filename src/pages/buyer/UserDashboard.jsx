@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchProducts, fetchProductsBySearch } from "../../services/productService";
+import { fetchProducts ,fetchProductsBySubCategory, fetchProductsBySearch } from "../../services/productService";
 import ProductCard from "../../components/ProductCard";
 
 import UserTopbar from "../../components/TopBar/UserTopbar";
@@ -50,8 +50,20 @@ const UserDashboard = () => {
       }
     };
 
+  
     handleSearch();
   }, [searchQuery, products]); // Trigger search when query changes
+const handleSubcategorySelect = async (subcategoryId) => {
+  setLoading(true);
+  try {
+    const data = await fetchProductsBySubCategory(subcategoryId);
+    setProducts(data);
+  } catch (error) {
+    console.error("Failed to load products for subcategory:", error);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleAddToCart = async (product) => {
     try {
@@ -110,8 +122,11 @@ const UserDashboard = () => {
 
         {/* Main Content */}
         <div style={{ flex: 1, padding: "20px" }}>
-          <UserTopbar cartCount={cartCount} />
-          
+          <UserTopbar
+            cartCount={cartCount}
+            onSubcategorySelect={handleSubcategorySelect}
+          />
+        
           {/* Search Bar */}
           <div style={{ marginBottom: "20px" }}>
             <input
@@ -128,15 +143,18 @@ const UserDashboard = () => {
               }}
             />
           </div>
-
           {cartMessage && (
-            <p style={{ color: "green", fontWeight: "bold", textAlign: "center" }}>
+            <p
+              style={{
+                color: "green",
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+            >
               {cartMessage}
             </p>
           )}
-          
           <Outlet /> {/* This will render child routes */}
-          
           <div
             style={{
               display: "grid",
@@ -144,7 +162,7 @@ const UserDashboard = () => {
               paddingLeft: "1rem",
               paddingRight: "1rem",
               gap: "1.3rem",
-              backgroundColor:"#f0f0f0",
+              backgroundColor: "#f0f0f0",
             }}
           >
             {searchResults.length > 0 ? (

@@ -2,11 +2,28 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Import axios
 import './UserTopbar.css'; 
+import { fetchCategories } from "../../services/categoryService";
+import { fetchSubcategoriesByCategory } from "../../services/subcategoryService";
 
-const UserTopbar = ({ cartCount }) => {
+const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [cartItems, setCartItems] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
+  const [activeMenu, setActiveMenu] = useState(null);
+
   const navigate = useNavigate();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const fetchedCategories = await fetchCategories();
+        setCategories(fetchedCategories);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   // Load cart items from the API when dropdown is opened
   useEffect(() => {
@@ -14,17 +31,19 @@ const UserTopbar = ({ cartCount }) => {
       const fetchCartItems = async () => {
         try {
           const token = localStorage.getItem("authToken"); // Get token from localStorage
-          const response = await axios.get("http://localhost:5000/api/dashboard/cart-products", {
-            headers: {
-              Authorization: `Bearer ${token}`, // Include token in the Authorization header
-            },
-          });
+          const response = await axios.get(
+            "http://localhost:5000/api/dashboard/cart-products",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`, // Include token in the Authorization header
+              },
+            }
+          );
           setCartItems(response.data.products); // Set cart items received from API
         } catch (error) {
           console.error("Error fetching cart products:", error);
         }
       };
-      
 
       fetchCartItems();
     }
@@ -37,7 +56,17 @@ const UserTopbar = ({ cartCount }) => {
   const handleLogin = () => {
     navigate("/login"); // Navigate to the login page
   };
+  const handleMenuClick = async (menuId) => {
+    setActiveMenu(activeMenu === menuId ? null : menuId);
+    if (activeMenu !== menuId) {
+      const fetchedSubcategories = await fetchSubcategoriesByCategory(menuId);
+      setSubcategories(fetchedSubcategories);
+    }
+  };
 
+  const handleSubcategoryClick = (subcategoryId) => {
+    onSubcategorySelect(subcategoryId);
+  };
   const handleRemoveFromCart = async (index) => {
     const updatedCart = [...cartItems];
     const removedItem = updatedCart.splice(index, 1);
@@ -134,22 +163,44 @@ const UserTopbar = ({ cartCount }) => {
   return (
     <div className="topBara">
       <div className="logoContainera">
-        <img
-          src="/image/buna-bank-logo.png"
-          alt="Logo"
-          className="logo"
-        />
+        <img src="/image/buna-bank-logo.png" alt="Logo" className="logo" />
         <span className="taglinea">Our Marketplace</span>
       </div>
-      <div className="menua">
-        <a href="#men" className="menuItema">Men</a>
-        <a href="#women" className="menuItema">Women</a>
-        <a href="#kids" className="menuItema">Kids</a>
-        <a href="#jewelry" className="menuItema">Jewelry</a>
-        <a href="#electronics" className="menuItema">Electronics</a>
-        <a href="#perfume" className="menuItema">Perfume</a>
-        <a href="#kitchen" className="menuItema">Kitchen Item</a>
-        <a href="#gift" className="menuItema">Gift Card</a>
+      <div className="menu">
+        {categories.map((category) => (
+          <div key={category.id} className="menuItemContainer">
+            <a
+              href="#"
+              className="menuItem"
+              onClick={(e) => {
+                e.preventDefault();
+                handleMenuClick(category.id);
+              }}
+            >
+              {category.name}
+            </a>
+            {activeMenu === category.id && subcategories.length > 0 && (
+              <div className="subMenu">
+                {subcategories.map((sub) => (
+                  <a
+                    key={sub.id}
+                    href="#"
+                    className="subMenuItem"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleSubcategoryClick(sub.id);
+                    }}
+                  >
+                    {sub.name}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+        <a href="/wishlists" className="menuItem">
+          WishList
+        </a>
       </div>
       <div className="rightSectiona">
         <select className="currencyDropdowna">
@@ -207,7 +258,9 @@ const UserTopbar = ({ cartCount }) => {
             </div>
           )}
         </div>
-        <button className="loginButtona" onClick={handleLogin}>Log out</button>
+        <button className="loginButtona" onClick={handleLogin}>
+          Log out
+        </button>
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ const SellerLayout = () => {
         }}
       >
         <ul>
-        <li style={{ marginTop: '3rem', listStyleType: 'none' }}>
+        <li style={{ marginTop: '-3rem', listStyleType: 'none' }}>
               <Link to="/seller/product-management">Product Management</Link>
             </li>
            

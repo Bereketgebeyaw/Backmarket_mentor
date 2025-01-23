@@ -211,13 +211,13 @@ const AddProductForm = () => {
 };
 
 const styles = {
-  formContainer: { padding: "20px" ,backgroundColor: "rgba(255, 255, 255, 0.8)",
-    backdropFilter: "blur(10px)" , borderRadius: "130px 0px 0px 0px",  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", margin:'0rem 20rem' , marginTop:'-30rem'},
+  formContainer: { marginTop:"-30px", padding: "20px" ,backgroundColor: "rgba(255, 255, 255, 0.8)",
+    backdropFilter: "blur(10px)" , borderRadius: "130px 0px 0px 0px",  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", margin:'0rem 20rem' },
   form: { maxWidth: "500px", margin: "auto" },
   header: { textAlign: "center", color: "#38170c" },
   input: { width: "30rem", padding: "10px", margin: "10px 0", border:"0.1rem dashed #38170c" },
   fileInput: { margin: "10px 0" },
-  inputa:{ border:"0.1rem dashed #38170c"},
+  inputa:{ border:"0.1rem dashed #38170c", },
   button: {
     padding: "10px 20px",
     backgroundColor: "#38170c",

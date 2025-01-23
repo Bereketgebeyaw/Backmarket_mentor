@@ -80,7 +80,7 @@ const LoginPage = () => {
         localStorage.removeItem("cart");
         localStorage.removeItem("favorites");
 
-        // Check if the user is a seller and navigate accordingly
+        // Check if the user is a seller and navi accordingly
         if (data.user.role === "seller") {
             if (data.seller.status === "approved") {
                if (data.user.password_reset === "yes") {

@@ -30,12 +30,20 @@ const UserTopbar = ({ cartCount }) => {
     }
   }, [isDropdownVisible]);
 
+   
+
   const toggleDropdown = () => {
     setIsDropdownVisible(!isDropdownVisible);
   };
 
+
+ 
+
   const handleLogin = () => {
-    navigate("/login"); // Navigate to the login page
+    alert("Are you sure you want to log out?")
+    // navigate("/login"); // Navigate to the login page
+    window.location.href = ' /'
+
   };
 
   const handleRemoveFromCart = async (index) => {

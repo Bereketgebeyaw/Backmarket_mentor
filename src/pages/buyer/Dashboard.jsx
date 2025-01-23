@@ -97,14 +97,7 @@ const BuyerDashboard = () => {
     }
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-    
-      window.location.href = '/user-dashboard';
-    }
-  }, );
-  
+ 
   const handleFavorite = (product) => {
     try {
       const updatedFavorites = [...favorites];

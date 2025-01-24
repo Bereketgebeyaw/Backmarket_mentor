@@ -62,7 +62,10 @@ const LoginPage = () => {
       if (response.ok) {
         // If login is successful, store the token in localStorage
         const token = data.token; // Assuming the token is returned as data.token
-        
+        if (token) {
+          localStorage.setItem("authToken", token); // Store the token in localStorage
+          
+        }
 
        
         if(data.user.role === "user"){

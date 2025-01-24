@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { fetchProducts ,fetchProductsBySubCategory, fetchProductsBySearch } from "../../services/productService";
+import {
+  fetchProducts,
+  fetchProductsBySearch,
+  fetchProductsBySubCategory,
+} from "../../services/productService";
 import ProductCard from "../../components/ProductCard";
-
 import UserTopbar from "../../components/TopBar/UserTopbar";
 import { Outlet } from "react-router-dom";
 import Sidebar from "../../components/Sidebar/Sidebar";
@@ -9,11 +12,11 @@ import Footer from "../../components/bottomBar/Footer";
 
 const UserDashboard = () => {
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]); // State for filtered products
   const [loading, setLoading] = useState(true);
   const [cartCount, setCartCount] = useState(0);
   const [cartMessage, setCartMessage] = useState(null);
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
-  const [searchResults, setSearchResults] = useState([]); // State for search results
 
   const userRole = "buyer";
 
@@ -22,6 +25,7 @@ const UserDashboard = () => {
       try {
         const data = await fetchProducts();
         setProducts(data);
+        setFilteredProducts(data); // Initialize filtered products
       } catch (error) {
         console.error("Failed to load products:", error);
       } finally {
@@ -33,83 +37,66 @@ const UserDashboard = () => {
 
     // Initialize cart count
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    setCartCount(cart.reduce((total, item) => total + item.quantity, 0)); // Initialize with total quantity of items in cart
+    setCartCount(cart.reduce((total, item) => total + item.quantity, 0));
   }, []);
 
   useEffect(() => {
-    const handleSearch = async () => {
+    const fetchSearchResults = async () => {
       if (searchQuery.trim()) {
+        setLoading(true);
         try {
           const data = await fetchProductsBySearch(searchQuery);
-          setSearchResults(data);
+          setFilteredProducts(data);
         } catch (error) {
           console.error("Error during search:", error);
+        } finally {
+          setLoading(false);
         }
       } else {
-        setSearchResults(products); // If search query is empty, show all products
+        setFilteredProducts(products); // Reset to all products if search is empty
       }
     };
 
-  
-    handleSearch();
-  }, [searchQuery, products]); // Trigger search when query changes
-const handleSubcategorySelect = async (subcategoryId) => {
-  setLoading(true);
-  try {
-    const data = await fetchProductsBySubCategory(subcategoryId);
-    setProducts(data);
-  } catch (error) {
-    console.error("Failed to load products for subcategory:", error);
-  } finally {
-    setLoading(false);
-  }
-};
+    fetchSearchResults();
+  }, [searchQuery, products]);
 
-  const handleAddToCart = async (product) => {
+  const handleSubcategorySelect = async (subcategoryId) => {
+    setLoading(true);
     try {
-      const cartId = JSON.parse(localStorage.getItem("cartId"));
-      const quantity = 1;
-
-      const response = await fetch("http://localhost:5000/api/dashboard/add-to-cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-        body: JSON.stringify({
-          productId: product.id,
-          quantity,
-        }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-
-        // Update cart count locally
-        setCartCount((prevCount) => prevCount + quantity);
-
-        // Save cart details to localStorage for persistence
-        const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
-        const updatedCart = [
-          ...currentCart,
-          { id: product.id, quantity, name: product.name, price: product.price },
-        ];
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
-
-        // Provide feedback to the user
-        setCartMessage(`Added ${product.name} to your cart!`);
-        setTimeout(() => setCartMessage(null), 3000); // Clear message after 3 seconds
-      } else {
-        const errorData = await response.json();
-        console.error("Error adding product to cart:", errorData);
-      }
+      const data = await fetchProductsBySubCategory(subcategoryId);
+      setProducts(data);
+      setFilteredProducts(data); // Update filtered products for the selected subcategory
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Failed to load products for subcategory:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleFavorite = (productId) => {
-    console.log("Favorite product:", productId);
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleAddToCart = async (product) => {
+    try {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const existingProductIndex = cart.findIndex((item) => item.id === product.id);
+
+      if (existingProductIndex !== -1) {
+        cart[existingProductIndex].quantity += 1;
+      } else {
+        cart.push({ id: product.id, name: product.name, price: product.price, quantity: 1 });
+      }
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+      const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+      setCartCount(totalItems);
+
+      setCartMessage("Product successfully added to cart!");
+      setTimeout(() => setCartMessage(null), 3000);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
   };
 
   if (loading) return <p>Loading products...</p>;
@@ -126,56 +113,51 @@ const handleSubcategorySelect = async (subcategoryId) => {
             cartCount={cartCount}
             onSubcategorySelect={handleSubcategorySelect}
           />
-        
-          {/* Search Bar */}
-          <div style={{ marginBottom: "20px" }}>
+
+          {/* Search Input */}
+          <div style={{ marginBottom: "20px", textAlign: "center" }}>
             <input
               type="text"
               placeholder="Search products..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearchChange}
               style={{
                 padding: "10px",
+                fontSize: "16px",
                 width: "100%",
-                maxWidth: "400px",
-                margin: "0 auto",
-                display: "block",
+                maxWidth: "500px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
               }}
             />
           </div>
+
+          {/* Cart Message */}
           {cartMessage && (
-            <p
-              style={{
-                color: "green",
-                fontWeight: "bold",
-                textAlign: "center",
-              }}
-            >
+            <p style={{ color: "green", fontWeight: "bold", textAlign: "center" }}>
               {cartMessage}
             </p>
           )}
-          <Outlet /> {/* This will render child routes */}
+
+          {/* Product Cards */}
           <div
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-              paddingLeft: "1rem",
-              paddingRight: "1rem",
-              gap: "1.3rem",
-              backgroundColor: "#f0f0f0",
+              gap: "20px",
+              backgroundColor: "#f9f9f9",
             }}
           >
-            {searchResults.length > 0 ? (
-              searchResults.map((product) => (
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map((product) => (
                 <ProductCard
                   key={product.id}
                   product={product}
                   onAddToCart={() => handleAddToCart(product)}
-                  onFavorite={() => handleFavorite(product.id)}
                 />
               ))
             ) : (
-              <p>No products available.</p>
+              <p style={{ textAlign: "center", width: "100%" }}>No products found.</p>
             )}
           </div>
         </div>

@@ -17,6 +17,7 @@ const UserDashboard = () => {
   const [cartCount, setCartCount] = useState(0);
   const [cartMessage, setCartMessage] = useState(null);
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
+  const [sortOrder, setSortOrder] = useState("");
 
   const userRole = "buyer";
 
@@ -60,6 +61,20 @@ const UserDashboard = () => {
     fetchSearchResults();
   }, [searchQuery, products]);
 
+  useEffect(() => {
+      // Apply sorting when sortOrder changes
+      const sortedProducts = [...filteredProducts].sort((a, b) => {
+        if (sortOrder === "low-to-high") {
+          return a.price - b.price;
+        } else if (sortOrder === "high-to-low") {
+          return b.price - a.price;
+        }
+        return 0; // Default, no sorting
+      });
+  
+      setFilteredProducts(sortedProducts);
+    }, [sortOrder]);
+
   const handleSubcategorySelect = async (subcategoryId) => {
     setLoading(true);
     try {
@@ -76,6 +91,10 @@ const UserDashboard = () => {
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
+  const handleSortChange = (event) => {
+    setSortOrder(event.target.value); // Update sortOrder state
+  };
+
 
   const handleAddToCart = async (product) => {
     try {
@@ -115,22 +134,44 @@ const UserDashboard = () => {
           />
 
           {/* Search Input */}
-          <div style={{ marginBottom: "20px", textAlign: "center" }}>
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={searchQuery}
-              onChange={handleSearchChange}
+          <div style={{ textAlign: "center", marginBottom: "20px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <input
+            type="text"
+            placeholder="Search for products..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            style={{
+              padding: "10px",
+              fontSize: "16px",
+              width: "100%",
+              maxWidth: "500px",
+              borderRadius: "5px",
+              border: "1px solid #ccc",
+            }}
+            autoFocus
+          />
+
+          {/* Sort Dropdown - Visible only when searchQuery has a value */}
+          {searchQuery.trim() && (
+            <select
+              value={sortOrder}
+              onChange={handleSortChange}
               style={{
-                padding: "10px",
-                fontSize: "16px",
-                width: "100%",
-                maxWidth: "500px",
+                padding: "5px 10px",
+                fontSize: "14px",
+                marginLeft: "10px",
                 borderRadius: "5px",
                 border: "1px solid #ccc",
+                height: "40px",
               }}
-            />
-          </div>
+            >
+              <option value="">Sort by Price</option>
+              <option value="low-to-high">Price: Low to High</option>
+              <option value="high-to-low">Price: High to Low</option>
+            </select>
+          )}
+        </div>
+
 
           {/* Cart Message */}
           {cartMessage && (

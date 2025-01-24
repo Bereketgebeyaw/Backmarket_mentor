@@ -108,22 +108,24 @@ const BuyerDashboard = () => {
       <TopBar cartCount={cartCount} onSubcategorySelect={handleSubcategorySelect} />
       <div style={{ margin: "20px auto", padding: "20px", maxWidth: "1200px" }}>
         {/* Search Input */}
-        <div style={{ textAlign: "center", marginBottom: "20px" }}>
-          <input
-            type="text"
-            placeholder="Search for products..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-            style={{
-              padding: "10px",
-              fontSize: "16px",
-              width: "100%",
-              maxWidth: "500px",
-              borderRadius: "5px",
-              border: "1px solid #ccc",
-            }}
-          />
-        </div>
+        {/* Search Input */}
+<div style={{ textAlign: "center", marginBottom: "20px" }}>
+  <input
+    type="text"
+    placeholder="Search for products..."
+    value={searchQuery}
+    onChange={handleSearchChange}
+    style={{
+      padding: "10px",
+      fontSize: "16px",
+      width: "100%",
+      maxWidth: "500px",
+      borderRadius: "5px",
+      border: "1px solid #ccc",
+    }}
+    autoFocus // Ensures the search box is focused
+  />
+</div>
 
         {/* Cart Message */}
         {cartMessage && <p style={{ color: "green", fontWeight: "bold" }}>{cartMessage}</p>}

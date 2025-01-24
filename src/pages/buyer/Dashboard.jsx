@@ -101,31 +101,6 @@ const BuyerDashboard = () => {
     }
   };
 
-
- 
-  const handleFavorite = (product) => {
-    try {
-      const updatedFavorites = [...favorites];
-
-      const existingIndex = updatedFavorites.findIndex(
-        (fav) => fav.id === product.id
-      );
-
-      if (existingIndex !== -1) {
-        updatedFavorites.splice(existingIndex, 1);
-      } else {
-        updatedFavorites.push(product);
-      }
-
-      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
-      setFavorites(updatedFavorites);
-    } catch (error) {
-      console.error("Error handling favorite:", error);
-    }
-  };
-
- 
-
   if (loading) return <p>Loading products...</p>;
 
   return (

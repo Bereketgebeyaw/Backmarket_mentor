@@ -55,7 +55,7 @@ const BuyerWishlist = () => {
       } else {
         cart.push({
           id: product.id,
-          name: product.name,
+          name: product.product_name,
           price: product.price,
           quantity: 1,
         });

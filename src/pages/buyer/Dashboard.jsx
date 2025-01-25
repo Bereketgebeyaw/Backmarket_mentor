@@ -103,8 +103,9 @@ const BuyerDashboard = () => {
       if (existingProductIndex !== -1) {
         cart[existingProductIndex].quantity += 1;
       } else {
-        cart.push({ id: product.id, name: product.name, price: product.price, quantity: 1 });
+        cart.push({ id: product.id, name: product.product_name, price: product.price, quantity: 1 });
       }
+      
 
       localStorage.setItem("cart", JSON.stringify(cart));
       const totalItems = cart.reduce((total, item) => total + item.quantity, 0);

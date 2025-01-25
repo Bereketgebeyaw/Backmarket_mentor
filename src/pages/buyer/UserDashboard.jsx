@@ -98,25 +98,52 @@ const UserDashboard = () => {
 
   const handleAddToCart = async (product) => {
     try {
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
-      const existingProductIndex = cart.findIndex((item) => item.id === product.id);
-
-      if (existingProductIndex !== -1) {
-        cart[existingProductIndex].quantity += 1;
+      const cartId = JSON.parse(localStorage.getItem("cartId"));
+      const quantity = 1;
+  
+      const response = await fetch("http://localhost:5000/api/dashboard/add-to-cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+        body: JSON.stringify({
+          cartId,
+          productId: product.id,
+          quantity,
+        }),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+  
+        // Update cart count locally
+        setCartCount((prevCount) => prevCount + quantity);
+  
+        // Save cart details to localStorage for persistence
+        const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
+        const updatedCart = [
+          ...currentCart,
+          { productId: product.id, quantity, productName: product.name },
+        ];
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+  
+        // Provide feedback to the user
+        setCartMessage(`Added ${product.name} to your cart!`);
+        setTimeout(() => setCartMessage(null), 3000); // Clear message after 3 seconds
       } else {
-        cart.push({ id: product.id, name: product.name, price: product.price, quantity: 1 });
+        const errorData = await response.json();
+        console.error("Error adding product to cart:", errorData);
       }
-
-      localStorage.setItem("cart", JSON.stringify(cart));
-      const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-      setCartCount(totalItems);
-
-      setCartMessage("Product successfully added to cart!");
-      setTimeout(() => setCartMessage(null), 3000);
     } catch (error) {
-      console.error("Error adding to cart:", error);
+      console.error("Error:", error);
     }
   };
+
+  const handleFavorite = (productId) => {
+    console.log("Favorite product:", productId);
+  };
+
 
   if (loading) return <p>Loading products...</p>;
 
@@ -195,6 +222,7 @@ const UserDashboard = () => {
                   key={product.id}
                   product={product}
                   onAddToCart={() => handleAddToCart(product)}
+                  onFavorite={() => handleFavorite(product.id)}
                 />
               ))
             ) : (

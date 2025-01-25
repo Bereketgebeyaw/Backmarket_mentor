@@ -73,6 +73,26 @@ const BuyerDashboard = () => {
 
     setFilteredProducts(sortedProducts);
   }, [sortOrder]);
+    const handleFavorite = (product) => {
+      try {
+        const updatedFavorites = [...favorites];
+
+        const existingIndex = updatedFavorites.findIndex(
+          (fav) => fav.id === product.id
+        );
+
+        if (existingIndex !== -1) {
+          updatedFavorites.splice(existingIndex, 1);
+        } else {
+          updatedFavorites.push(product);
+        }
+
+        localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+        setFavorites(updatedFavorites);
+      } catch (error) {
+        console.error("Error handling favorite:", error);
+      }
+    };
 
   const handleSubcategorySelect = async (subcategoryId) => {
     setLoading(true);
@@ -124,10 +144,21 @@ const BuyerDashboard = () => {
 
   return (
     <div>
-      <TopBar cartCount={cartCount} onSubcategorySelect={handleSubcategorySelect} />
+      <TopBar
+        cartCount={cartCount}
+        onSubcategorySelect={handleSubcategorySelect}
+      />
       <div style={{ margin: "20px auto", padding: "20px", maxWidth: "1200px" }}>
         {/* Search Input */}
-        <div style={{ textAlign: "center", marginBottom: "20px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div
+          style={{
+            textAlign: "center",
+            marginBottom: "20px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <input
             type="text"
             placeholder="Search for products..."
@@ -166,7 +197,9 @@ const BuyerDashboard = () => {
         </div>
 
         {/* Cart Message */}
-        {cartMessage && <p style={{ color: "green", fontWeight: "bold" }}>{cartMessage}</p>}
+        {cartMessage && (
+          <p style={{ color: "green", fontWeight: "bold" }}>{cartMessage}</p>
+        )}
 
         {/* Product Cards */}
         <div
@@ -183,10 +216,13 @@ const BuyerDashboard = () => {
                 product={product}
                 isFavorite={favorites.some((fav) => fav.id === product.id)}
                 onAddToCart={handleAddToCart}
+                onFavorite={handleFavorite}
               />
             ))
           ) : (
-            <p style={{ textAlign: "center", width: "100%" }}>No products found.</p>
+            <p style={{ textAlign: "center", width: "100%" }}>
+              No products found.
+            </p>
           )}
         </div>
       </div>

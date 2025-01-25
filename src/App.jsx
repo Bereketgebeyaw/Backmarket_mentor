@@ -34,14 +34,14 @@ const App = () => {
 
           <Route path="/login/*" element={<LoginPage />}></Route>
           <Route path="/reset/*" element={<PasswordReset />}></Route>
-
+          <Route path="wishlists" element={<BuyerWishlist />} />
           <Route path="/signup/*" element={<SignupPage />}></Route>
           <Route path="/register/*" element={<SellerSignupPage />}></Route>
           <Route path="/user/*" element={<UserCart />}></Route>
           <Route path="/user-dashboard" element={<UserDashboard />}>
             <Route path="orders" element={<Orders />} />{" "}
-            <Route path="wishlist" element={<Wishlist />} /> 
             {/* Nested Orders route */}
+            <Route path="wishlist" element={<Wishlist />} />
           </Route>
           <Route path="/PaymentPage" element={<PaymentPage />} />
           <Route path="/PickupPage" element={<PickupPage />} />
@@ -53,13 +53,10 @@ const App = () => {
             <Route path="onboard-supplier" element={<OnboardSupplier />} />
 
             <Route path="add-catalog" element={<AddCatalog />} />
-
           </Route>
           <Route path="/seller/*" element={<SellerLayout />}>
             <Route path="product-management" element={<ProductManagement />} />
-           
           </Route>
-         
         </Routes>
       </BrowserRouter>
     );

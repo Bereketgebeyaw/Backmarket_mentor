@@ -174,7 +174,7 @@ const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
         <img src="/image/buna-bank-logo.png" alt="Logo" className="logo" />
         <span className="taglinea">Our Marketplace</span>
       </div>
-      <div className="menu">
+      <div className="menus">
         {categories.map((category) => (
           <div key={category.id} className="menuItemContainer">
             <a

@@ -245,7 +245,7 @@ const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
                     {cartItems.map((item, index) => (
                       <li key={index} className="cartItema">
                         <div className="cartItemDetailsa">
-                          <strong>{item.product_name}</strong>  ${item.price}
+                          <strong>{item.product.product_name}</strong>  ${item.price}
                           <div className="quantityControlsa">
                             <button
                               className="quantityButtona"

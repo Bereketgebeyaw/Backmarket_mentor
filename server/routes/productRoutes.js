@@ -76,9 +76,9 @@ router.post(
 router.get('/', async (req, res) => {
   try {
     const result = await db.query(
-      "SELECT * FROM products p Join catalogs c on p.catalog_id = c.id WHERE p.quantity_in_stock > 0"
+      "SELECT p.id AS product_id,p.catalog_id,p.price,p.image,p.image_type, p.owner_id,p.quantity_in_stock, p.shelf_life, p.created_at AS product_created_at, p.updated_at AS product_updated_at,c.id AS catalog_id,c.product_name,c.product_description,c.category_id,c.subcategory_id,c.brand,c.model,c.size,c.created_at AS catalog_created_at,c.updated_at AS catalog_updated_at FROM products p JOIN catalogs c ON p.catalog_id = c.id WHERE p.quantity_in_stock > 0"
     );
-
+    console.log(result);
     
     const products = result.rows.map((product) => {
       if (product.image) {
@@ -87,7 +87,7 @@ router.get('/', async (req, res) => {
       }
       return product;
     });
-
+    console.log(products);
     res.json(products);
   } catch (error) {
     console.error('Error fetching products:', error);

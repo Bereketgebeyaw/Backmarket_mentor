@@ -160,7 +160,7 @@ const TopBar = ({ onSubcategorySelect, cartCount }) => {
                     {cartItems.map((item, index) => (
                       <li key={index} className="cartItem">
                         <div className="cartItemDetails">
-                          <strong>{item.Name}</strong> - ${item.price}
+                          <strong>{item.name}</strong>  ${item.price}
                           <div className="quantityControls">
                             <button
                               className="quantityButton"

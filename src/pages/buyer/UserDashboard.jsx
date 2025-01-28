@@ -17,10 +17,8 @@ const UserDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [cartCount, setCartCount] = useState(0);
   const [cartMessage, setCartMessage] = useState(null);
-
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchActive, setIsSearchActive] = useState(false);
-
 
   const userRole = "buyer";
 
@@ -46,7 +44,8 @@ const UserDashboard = () => {
 
     loadProductsAndSellers();
   }, []);
-
+    
+  
    useEffect(() => {
      const fetchSearchResults = async () => {
        setLoading(true);
@@ -70,20 +69,6 @@ const UserDashboard = () => {
    }, [searchQuery, products]);
 
 
-  useEffect(() => {
-      // Apply sorting when sortOrder changes
-      const sortedProducts = [...filteredProducts].sort((a, b) => {
-        if (sortOrder === "low-to-high") {
-          return a.price - b.price;
-        } else if (sortOrder === "high-to-low") {
-          return b.price - a.price;
-        }
-        return 0; // Default, no sorting
-      });
-  
-      setFilteredProducts(sortedProducts);
-    }, [sortOrder]);
-
   const handleSubcategorySelect = async (subcategoryId) => {
     setLoading(true);
     try {
@@ -100,60 +85,28 @@ const UserDashboard = () => {
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
-  const handleSortChange = (event) => {
-    setSortOrder(event.target.value); // Update sortOrder state
-  };
-
 
   const handleAddToCart = async (product) => {
     try {
-      const cartId = JSON.parse(localStorage.getItem("cartId"));
-      const quantity = 1;
-  
-      const response = await fetch("http://localhost:5000/api/dashboard/add-to-cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-        body: JSON.stringify({
-          cartId,
-         
-          productId: product.id,
-          quantity,
-        }),
-      });
-  
-      if (response.ok) {
-        const data = await response.json();
-  
-        // Update cart count locally
-        setCartCount((prevCount) => prevCount + quantity);
-  
-        // Save cart details to localStorage for persistence
-        const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
-        const updatedCart = [
-          ...currentCart,
-          { productId: product.id, quantity, productName: product.name },
-        ];
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
-  
-        // Provide feedback to the user
-        setCartMessage(`Added ${product.name} to your cart!`);
-        setTimeout(() => setCartMessage(null), 3000); // Clear message after 3 seconds
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const existingProductIndex = cart.findIndex((item) => item.id === product.id);
+
+      if (existingProductIndex !== -1) {
+        cart[existingProductIndex].quantity += 1;
       } else {
-        const errorData = await response.json();
-        console.error("Error adding product to cart:", errorData);
+        cart.push({ id: product.id, name: product.name, price: product.price, quantity: 1 });
       }
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+      const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+      setCartCount(totalItems);
+
+      setCartMessage("Product successfully added to cart!");
+      setTimeout(() => setCartMessage(null), 3000);
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error adding to cart:", error);
     }
   };
-
-  const handleFavorite = (productId) => {
-    console.log("Favorite product:", productId);
-  };
-
 
   if (loading) return <p>Loading products...</p>;
 
@@ -182,23 +135,15 @@ const UserDashboard = () => {
                 borderRadius: "5rem",
                 border: "1px solid #ccc",
                 backgroundColor: "#f9f9f9"
-
               }}
-            >
-              <option value="">Sort by Price</option>
-              <option value="low-to-high">Price: Low to High</option>
-              <option value="high-to-low">Price: High to Low</option>
-            </input>
-          
-        </div>
-
+            />
+          </div>
 
           {cartMessage && (
             <p style={{ color: "green", fontWeight: "bold", textAlign: "center" }}>
               {cartMessage}
             </p>
           )}
-
           <div
             style={{
               display: "grid",
@@ -208,7 +153,6 @@ const UserDashboard = () => {
             }}
           >
             {filteredProducts.length > 0 ? (
-
               filteredProducts.map((product) => {
                 const seller = sellers.find(seller => seller.user_id === product.owner_id);
 

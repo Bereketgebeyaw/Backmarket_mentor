@@ -7,10 +7,21 @@
   backdrop-filter: blur(10px);
   padding: 10px 20px;
   border-bottom: 2px solid #ccc;
-  
+  position:fixed;
   font-family: sans-serif;
   z-index: 1000;
+  width: 80%;
 }
+
+.subMenuItem{
+  margin: 1rem;
+  width: 10rem;
+  text-decoration: none;
+  color: black;
+ } 
+ .subMenuItem:hover{
+  color: #00d9ff;
+ }
 
 .logoContainera {
   display: flex;
@@ -31,7 +42,7 @@
   margin-right: 2.5rem;
 }
 
-.menua {
+.menus {
   display: flex;
   
   font-family: sans-serif;

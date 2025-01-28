@@ -7,53 +7,58 @@ import {
 import ProductCard from "../../components/ProductCard";
 import TopBar from "../../components/TopBar/TopBar";
 import Footer from "../../components/bottomBar/Footer";
+import axios from "axios";
 
 const BuyerDashboard = () => {
   const [products, setProducts] = useState([]);
+  const [sellers, setSellers] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cartCount, setCartCount] = useState(0);
   const [cartMessage, setCartMessage] = useState(null);
   const [favorites, setFavorites] = useState([]);
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
-  const [sortOrder, setSortOrder] = useState(""); // State for sorting
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortOrder, setSortOrder] = useState("");
+  const [isSearchActive, setIsSearchActive] = useState(false);
 
   useEffect(() => {
-    // Load all products initially
-    const loadProducts = async () => {
+    const loadProductsAndSellers = async () => {
       try {
-        const data = await fetchProducts();
-        setProducts(data);
-        setFilteredProducts(data); // Set filtered products to all initially
+        const productData = await fetchProducts();
+        setProducts(productData);
+        setFilteredProducts(productData);
+
+        const sellerResponse = await axios.get('http://localhost:5000/api/sellers/sellers');
+        setSellers(sellerResponse.data);
       } catch (error) {
-        console.error("Failed to load products:", error);
+        console.error("Failed to load products or sellers:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    loadProducts();
+    loadProductsAndSellers();
 
-    // Initialize cart count
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     setCartCount(cart.reduce((total, item) => total + item.quantity, 0));
   }, []);
 
   useEffect(() => {
-    // Fetch products by search query or show all
     const fetchSearchResults = async () => {
-      if (searchQuery.trim()) {
-        setLoading(true);
-        try {
+      setLoading(true);
+      setIsSearchActive(!!searchQuery.trim());
+
+      try {
+        if (searchQuery.trim()) {
           const data = await fetchProductsBySearch(searchQuery);
           setFilteredProducts(data);
-        } catch (error) {
-          console.error("Failed to fetch search results:", error);
-        } finally {
-          setLoading(false);
+        } else {
+          setFilteredProducts(products);
         }
-      } else {
-        setFilteredProducts(products); // Reset to all products if search is empty
+      } catch (error) {
+        console.error("Failed to fetch search results:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -61,14 +66,10 @@ const BuyerDashboard = () => {
   }, [searchQuery, products]);
 
   useEffect(() => {
-    // Apply sorting when sortOrder changes
     const sortedProducts = [...filteredProducts].sort((a, b) => {
-      if (sortOrder === "low-to-high") {
-        return a.price - b.price;
-      } else if (sortOrder === "high-to-low") {
-        return b.price - a.price;
-      }
-      return 0; // Default, no sorting
+      if (sortOrder === "low-to-high") return a.price - b.price;
+      if (sortOrder === "high-to-low") return b.price - a.price;
+      return 0;
     });
 
     setFilteredProducts(sortedProducts);
@@ -79,7 +80,7 @@ const BuyerDashboard = () => {
     try {
       const data = await fetchProductsBySubCategory(subcategoryId);
       setProducts(data);
-      setFilteredProducts(data); // Update filtered products when subcategory changes
+      setFilteredProducts(data);
     } catch (error) {
       console.error("Failed to load products for subcategory:", error);
     } finally {
@@ -92,7 +93,7 @@ const BuyerDashboard = () => {
   };
 
   const handleSortChange = (event) => {
-    setSortOrder(event.target.value); // Update sortOrder state
+    setSortOrder(event.target.value);
   };
 
   const handleAddToCart = (product) => {
@@ -123,11 +124,10 @@ const BuyerDashboard = () => {
   if (loading) return <p>Loading products...</p>;
 
   return (
-    <div>
+    <div style={{ background: "#eeeeee" }}>
       <TopBar cartCount={cartCount} onSubcategorySelect={handleSubcategorySelect} />
-      <div style={{ margin: "20px auto", padding: "20px", maxWidth: "1200px" }}>
-        {/* Search Input */}
-        <div style={{ textAlign: "center", marginBottom: "20px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+      <div style={{ margin: "20px auto", padding: "20px", maxWidth: "1200px", marginTop: "6rem" }}>
+        <div style={{ textAlign: "center", marginBottom: "20px" }}>
           <input
             type="text"
             placeholder="Search for products..."
@@ -138,13 +138,12 @@ const BuyerDashboard = () => {
               fontSize: "16px",
               width: "100%",
               maxWidth: "500px",
-              borderRadius: "5px",
+              borderRadius: "10rem",
               border: "1px solid #ccc",
+              marginTop: "-1rem",
             }}
             autoFocus
           />
-
-          {/* Sort Dropdown - Visible only when searchQuery has a value */}
           {searchQuery.trim() && (
             <select
               value={sortOrder}
@@ -152,7 +151,8 @@ const BuyerDashboard = () => {
               style={{
                 padding: "5px 10px",
                 fontSize: "14px",
-                marginLeft: "10px",
+                marginLeft: "0rem",
+                width: "10%",
                 borderRadius: "5px",
                 border: "1px solid #ccc",
                 height: "40px",
@@ -165,26 +165,29 @@ const BuyerDashboard = () => {
           )}
         </div>
 
-        {/* Cart Message */}
         {cartMessage && <p style={{ color: "green", fontWeight: "bold" }}>{cartMessage}</p>}
 
-        {/* Product Cards */}
         <div
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-            gap: "20px",
+            gap: "3.1rem",
           }}
         >
           {filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                isFavorite={favorites.some((fav) => fav.id === product.id)}
-                onAddToCart={handleAddToCart}
-              />
-            ))
+            filteredProducts.map((product) => {
+              const seller = sellers.find(seller => seller.user_id === product.owner_id);
+              return (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  seller={seller}
+                  isFavorite={favorites.some((fav) => fav.id === product.id)}
+                  onAddToCart={handleAddToCart}
+                  showSeller={isSearchActive} // Pass whether to show seller
+                />
+              );
+            })
           ) : (
             <p style={{ textAlign: "center", width: "100%" }}>No products found.</p>
           )}

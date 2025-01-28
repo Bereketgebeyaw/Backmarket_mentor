@@ -96,13 +96,14 @@ const TopBar = ({ onSubcategorySelect, cartCount }) => {
   };
 
   return (
+    
     <div className="topBar">
       <div className="logoContainer">
 
         <img src="/image/buna-bank-logo.png" alt="Logo" className="logo" />
         <span className="tagline">Our Marketplace</span>
       </div>
-      <div className="menu">
+      <div className="menus">
         {categories.map((category) => (
           <div key={category.id} className="menuItemContainer">
             <a

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import {
   fetchProducts,
   fetchProductsBySearch,
@@ -6,66 +7,73 @@ import {
 } from "../../services/productService";
 import ProductCard from "../../components/ProductCard";
 import UserTopbar from "../../components/TopBar/UserTopbar";
-import { Outlet } from "react-router-dom";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Footer from "../../components/bottomBar/Footer";
 
 const UserDashboard = () => {
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]); // State for filtered products
+  const [sellers, setSellers] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cartCount, setCartCount] = useState(0);
   const [cartMessage, setCartMessage] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchActive, setIsSearchActive] = useState(false);
 
   const userRole = "buyer";
 
   useEffect(() => {
-    const loadProducts = async () => {
+    const loadProductsAndSellers = async () => {
+      setLoading(true);
       try {
-        const data = await fetchProducts();
-        setProducts(data);
-        setFilteredProducts(data); // Initialize filtered products
+        const productsData = await fetchProducts();
+        setProducts(productsData);
+        setFilteredProducts(productsData);
+
+        const sellerResponse = await axios.get('http://localhost:5000/api/sellers/sellers');
+        setSellers(sellerResponse.data);
       } catch (error) {
-        console.error("Failed to load products:", error);
+        console.error("Failed to load products or sellers:", error);
       } finally {
         setLoading(false);
       }
+
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      setCartCount(cart.reduce((total, item) => total + item.quantity, 0));
     };
 
-    loadProducts();
-
-    // Initialize cart count
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    setCartCount(cart.reduce((total, item) => total + item.quantity, 0));
+    loadProductsAndSellers();
   }, []);
 
-  useEffect(() => {
-    const fetchSearchResults = async () => {
-      if (searchQuery.trim()) {
-        setLoading(true);
-        try {
-          const data = await fetchProductsBySearch(searchQuery);
-          setFilteredProducts(data);
-        } catch (error) {
-          console.error("Error during search:", error);
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        setFilteredProducts(products); // Reset to all products if search is empty
-      }
-    };
+   useEffect(() => {
+     const fetchSearchResults = async () => {
+       setLoading(true);
+       setIsSearchActive(!!searchQuery.trim());
+ 
+       try {
+         if (searchQuery.trim()) {
+           const data = await fetchProductsBySearch(searchQuery);
+           setFilteredProducts(data);
+         } else {
+           setFilteredProducts(products);
+         }
+       } catch (error) {
+         console.error("Failed to fetch search results:", error);
+       } finally {
+         setLoading(false);
+       }
+     };
+ 
+     fetchSearchResults();
+   }, [searchQuery, products]);
 
-    fetchSearchResults();
-  }, [searchQuery, products]);
 
   const handleSubcategorySelect = async (subcategoryId) => {
     setLoading(true);
     try {
       const data = await fetchProductsBySubCategory(subcategoryId);
       setProducts(data);
-      setFilteredProducts(data); // Update filtered products for the selected subcategory
+      setFilteredProducts(data);
     } catch (error) {
       console.error("Failed to load products for subcategory:", error);
     } finally {
@@ -104,18 +112,15 @@ const UserDashboard = () => {
   return (
     <div>
       <div style={{ display: "flex", minHeight: "100vh" }}>
-        {/* Sidebar */}
         <Sidebar role={userRole} />
 
-        {/* Main Content */}
         <div style={{ flex: 1, padding: "20px" }}>
           <UserTopbar
             cartCount={cartCount}
             onSubcategorySelect={handleSubcategorySelect}
           />
 
-          {/* Search Input */}
-          <div style={{ marginBottom: "20px", textAlign: "center" }}>
+          <div style={{ marginBottom: "20px", textAlign: "center", marginTop: "6rem" }}>
             <input
               type="text"
               placeholder="Search products..."
@@ -126,20 +131,19 @@ const UserDashboard = () => {
                 fontSize: "16px",
                 width: "100%",
                 maxWidth: "500px",
-                borderRadius: "5px",
+                borderRadius: "5rem",
                 border: "1px solid #ccc",
+                backgroundColor: "#f9f9f9"
               }}
             />
           </div>
 
-          {/* Cart Message */}
           {cartMessage && (
             <p style={{ color: "green", fontWeight: "bold", textAlign: "center" }}>
               {cartMessage}
             </p>
           )}
 
-          {/* Product Cards */}
           <div
             style={{
               display: "grid",
@@ -149,13 +153,19 @@ const UserDashboard = () => {
             }}
           >
             {filteredProducts.length > 0 ? (
-              filteredProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  onAddToCart={() => handleAddToCart(product)}
-                />
-              ))
+              filteredProducts.map((product) => {
+                const seller = sellers.find(seller => seller.user_id === product.owner_id);
+
+                return (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    seller={seller}
+                    onAddToCart={() => handleAddToCart(product)}
+                     showSeller={isSearchActive} // Pass whether to show seller
+                  />
+                );
+              })
             ) : (
               <p style={{ textAlign: "center", width: "100%" }}>No products found.</p>
             )}

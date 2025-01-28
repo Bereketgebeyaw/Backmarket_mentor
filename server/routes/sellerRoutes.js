@@ -1,6 +1,6 @@
 // routes/sellerRoutes.js
 import express from "express";
-import { getPendingSellers,approveSeller, denySeller } from "../controllers/sellerController.js";
+import { getPendingSellers,approveSeller, denySeller, getSellers } from "../controllers/sellerController.js";
 
 
 const router = express.Router();
@@ -9,5 +9,6 @@ const router = express.Router();
 router.get("/pending", getPendingSellers);
 router.put('/:id/approve', approveSeller);
 router.put('/:id/deny', denySeller);
+router.get("/sellers" , getSellers);
 
 export default router;

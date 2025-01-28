@@ -139,4 +139,15 @@ export const approveSeller = async (req, res) => {
    }
  };
 
+export const getSellers = async (req, res) => {
+  try {
+    const result = await db.query(`SELECT business_name , user_id FROM sellers`);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Error fetching sellers:", err.message);
+    res.status(500).send("Server Error");
+  }
+};
+
+
   

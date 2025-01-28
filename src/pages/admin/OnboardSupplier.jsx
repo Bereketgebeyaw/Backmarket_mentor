@@ -75,6 +75,7 @@ const OnboardSupplier = () => {
   const containerStyle = {
     padding: "20px",
     marginTop: '-30rem',
+    marginLeft: '17rem'
   };
 
   const headerStyle = {

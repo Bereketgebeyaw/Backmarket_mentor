@@ -17,8 +17,13 @@ const UserDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [cartCount, setCartCount] = useState(0);
   const [cartMessage, setCartMessage] = useState(null);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchActive, setIsSearchActive] = useState(false);
+
+
+  const [sortOrder, setSortOrder] = useState("");
+
 
   const userRole = "buyer";
 
@@ -88,11 +93,40 @@ const UserDashboard = () => {
 
   const handleAddToCart = async (product) => {
     try {
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
-      const existingProductIndex = cart.findIndex((item) => item.id === product.id);
-
-      if (existingProductIndex !== -1) {
-        cart[existingProductIndex].quantity += 1;
+      const cartId = JSON.parse(localStorage.getItem("cartId"));
+      const quantity = 1;
+  
+      const response = await fetch("http://localhost:5000/api/dashboard/add-to-cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+        body: JSON.stringify({
+          cartId,
+         
+          productId: product.product_id,
+          quantity,
+        }),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+  
+        // Update cart count locally
+        setCartCount((prevCount) => prevCount + quantity);
+  
+        // Save cart details to localStorage for persistence
+        const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
+        const updatedCart = [
+          ...currentCart,
+          { productId: product.product_id, quantity, productName: product.product_name },
+        ];
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+  
+        // Provide feedback to the user
+        setCartMessage(`Added ${product.name} to your cart!`);
+        setTimeout(() => setCartMessage(null), 3000); // Clear message after 3 seconds
       } else {
         cart.push({ id: product.id, name: product.name, price: product.price, quantity: 1 });
       }
@@ -135,9 +169,16 @@ const UserDashboard = () => {
                 borderRadius: "5rem",
                 border: "1px solid #ccc",
                 backgroundColor: "#f9f9f9"
+
               }}
-            />
-          </div>
+           />
+           <select style={{width:"15%"}}>
+              <option value="">Sort by Price</option>
+              <option value="low-to-high">Price: Low to High</option>
+              <option value="high-to-low">Price: High to Low</option>
+            </select>
+        </div>
+
 
           {cartMessage && (
             <p style={{ color: "green", fontWeight: "bold", textAlign: "center" }}>

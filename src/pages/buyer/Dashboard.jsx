@@ -99,12 +99,12 @@ const BuyerDashboard = () => {
   const handleAddToCart = (product) => {
     try {
       const cart = JSON.parse(localStorage.getItem("cart")) || [];
-      const existingProductIndex = cart.findIndex((item) => item.id === product.id);
+      const existingProductIndex = cart.findIndex((item) => item.id === product.product_id);
 
       if (existingProductIndex !== -1) {
         cart[existingProductIndex].quantity += 1;
       } else {
-        cart.push({ id: product.id, name: product.name, price: product.price, quantity: 1 });
+        cart.push({ id: product.product_id, name: product.product_name, price: product.price, quantity: 1 });
       }
 
       localStorage.setItem("cart", JSON.stringify(cart));
@@ -165,7 +165,9 @@ const BuyerDashboard = () => {
           )}
         </div>
 
+
         {cartMessage && <p style={{ color: "green", fontWeight: "bold" }}>{cartMessage}</p>}
+
 
         <div
           style={{

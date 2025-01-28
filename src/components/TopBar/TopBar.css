@@ -47,25 +47,39 @@
   }
   
   .menuItem:active{
-    color: #0d00c0;
+    color: white;
   }
   .menuItem {
     text-decoration: none;
     color: black;
-    
+    position: relative; /* Needed for absolute positioning of subMenu */
     padding: 5px 10px;
     border-radius: 5px;
   }
 
- .subMenuItem{
-  margin: 1rem;
-  width: 10rem;
-  text-decoration: none;
-  color: black;
- } 
- .subMenuItem:hover{
-  color: #00d9ff;
- }
+  .subMenuItem {
+    text-decoration: none;
+    color: black;
+    padding: 10px 15px; /* Padding for clickable area */
+    display: block; /* Make the entire area clickable */
+}
+.subMenuItem:hover {
+  background-color: #38170c; /* Change background on hover */
+  color: white; /* Change text color on hover */
+}
+ .subMenu {
+  display: none; /* Hide by default */
+  position: absolute; /* Position below the menu item */
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  z-index: 1000;
+  padding: 5px 0; /* Add padding */
+}
+
+.menuItemContainer:hover .subMenu {
+  display: block; /* Show on hover */
+}
   
   .rightSection {
     display: flex;

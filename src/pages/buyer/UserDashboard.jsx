@@ -49,7 +49,8 @@ const UserDashboard = () => {
 
     loadProductsAndSellers();
   }, []);
-
+    
+  
    useEffect(() => {
      const fetchSearchResults = async () => {
        setLoading(true);
@@ -73,20 +74,6 @@ const UserDashboard = () => {
    }, [searchQuery, products]);
 
 
-  useEffect(() => {
-      // Apply sorting when sortOrder changes
-      const sortedProducts = [...filteredProducts].sort((a, b) => {
-        if (sortOrder === "low-to-high") {
-          return a.price - b.price;
-        } else if (sortOrder === "high-to-low") {
-          return b.price - a.price;
-        }
-        return 0; // Default, no sorting
-      });
-  
-      setFilteredProducts(sortedProducts);
-    }, [sortOrder]);
-
   const handleSubcategorySelect = async (subcategoryId) => {
     setLoading(true);
     try {
@@ -103,10 +90,6 @@ const UserDashboard = () => {
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
-  const handleSortChange = (event) => {
-    setSortOrder(event.target.value); // Update sortOrder state
-  };
-
 
   const handleAddToCart = async (product) => {
     try {
@@ -145,18 +128,19 @@ const UserDashboard = () => {
         setCartMessage(`Added ${product.name} to your cart!`);
         setTimeout(() => setCartMessage(null), 3000); // Clear message after 3 seconds
       } else {
-        const errorData = await response.json();
-        console.error("Error adding product to cart:", errorData);
+        cart.push({ id: product.id, name: product.name, price: product.price, quantity: 1 });
       }
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+      const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+      setCartCount(totalItems);
+
+      setCartMessage("Product successfully added to cart!");
+      setTimeout(() => setCartMessage(null), 3000);
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error adding to cart:", error);
     }
   };
-
-  const handleFavorite = (productId) => {
-    console.log("Favorite product:", productId);
-  };
-
 
   if (loading) return <p>Loading products...</p>;
 
@@ -170,7 +154,6 @@ const UserDashboard = () => {
             cartCount={cartCount}
             onSubcategorySelect={handleSubcategorySelect}
           />
-
 
           <div style={{ marginBottom: "20px", textAlign: "center", marginTop: "6rem" }}>
             <input
@@ -202,7 +185,6 @@ const UserDashboard = () => {
               {cartMessage}
             </p>
           )}
-
           <div
             style={{
               display: "grid",
@@ -212,7 +194,6 @@ const UserDashboard = () => {
             }}
           >
             {filteredProducts.length > 0 ? (
-
               filteredProducts.map((product) => {
                 const seller = sellers.find(seller => seller.user_id === product.owner_id);
 
@@ -226,7 +207,6 @@ const UserDashboard = () => {
                   />
                 );
               })
-
             ) : (
               <p style={{ textAlign: "center", width: "100%" }}>No products found.</p>
             )}

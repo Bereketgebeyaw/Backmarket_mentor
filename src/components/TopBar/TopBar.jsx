@@ -31,6 +31,26 @@ const TopBar = ({ onSubcategorySelect, cartCount }) => {
     setCartItems(storedCart);
   }, []);
 
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const fetchedCategories = await fetchCategories();
+        setCategories(fetchedCategories);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    loadCategories();
+  }, []);
+  
+  const handleCartUpdate = (index) => {
+    const updatedCart = [...cartItems];
+    updatedCart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    setCartItems(updatedCart);
+  };
+  
+
   // Watch for localStorage changes to sync cart items dynamically
   useEffect(() => {
     const handleStorageChange = () => {
@@ -105,7 +125,8 @@ const TopBar = ({ onSubcategorySelect, cartCount }) => {
       </div>
       <div className="menus">
         {categories.map((category) => (
-          <div key={category.id} className="menuItemContainer">
+          <div key={category.id} className="menuItemContainer" onMouseEnter={() => handleMenuClick(category.id)}
+          onMouseLeave={() => setActiveMenu(null)}>
             <a
               href="#"
               className="menuItem"
@@ -113,7 +134,9 @@ const TopBar = ({ onSubcategorySelect, cartCount }) => {
                 e.preventDefault();
                 handleMenuClick(category.id);
               }}
+
             >
+                
               {category.name}
             </a>
             {activeMenu === category.id && subcategories.length > 0 && (

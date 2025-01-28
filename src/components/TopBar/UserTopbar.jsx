@@ -24,7 +24,24 @@ const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
     };
     fetchData();
   }, []);
-
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const fetchedCategories = await fetchCategories();
+        setCategories(fetchedCategories);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    loadCategories();
+  }, []);
+  
+  const handleCartUpdate = (index) => {
+    const updatedCart = [...cartItems];
+    updatedCart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    setCartItems(updatedCart);
+  }
   // Load cart items from the API when dropdown is opened
   useEffect(() => {
     if (isDropdownVisible) {
@@ -176,7 +193,8 @@ const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
       </div>
       <div className="menus">
         {categories.map((category) => (
-          <div key={category.id} className="menuItemContainer">
+          <div key={category.id} className="menuItemContainer"  onMouseEnter={() => handleMenuClick(category.id)}
+          onMouseLeave={() => setActiveMenu(null)}>
             <a
               href="#"
               className="menuItem"

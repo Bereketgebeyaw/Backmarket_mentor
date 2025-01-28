@@ -44,7 +44,8 @@ const UserDashboard = () => {
 
     loadProductsAndSellers();
   }, []);
-
+    
+  
    useEffect(() => {
      const fetchSearchResults = async () => {
        setLoading(true);
@@ -143,7 +144,6 @@ const UserDashboard = () => {
               {cartMessage}
             </p>
           )}
-{/* hslfhlhfsdhk */}
           <div
             style={{
               display: "grid",

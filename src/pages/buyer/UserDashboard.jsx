@@ -168,6 +168,7 @@ const UserDashboard = () => {
             onSubcategorySelect={handleSubcategorySelect}
           />
 
+
           <div style={{ marginBottom: "20px", textAlign: "center", marginTop: "6rem" }}>
             <input
               type="text"
@@ -222,6 +223,7 @@ const UserDashboard = () => {
                   />
                 );
               })
+
             ) : (
               <p style={{ textAlign: "center", width: "100%" }}>No products found.</p>
             )}

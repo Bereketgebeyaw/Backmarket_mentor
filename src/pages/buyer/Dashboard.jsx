@@ -74,6 +74,26 @@ const BuyerDashboard = () => {
 
     setFilteredProducts(sortedProducts);
   }, [sortOrder]);
+    const handleFavorite = (product) => {
+      try {
+        const updatedFavorites = [...favorites];
+
+        const existingIndex = updatedFavorites.findIndex(
+          (fav) => fav.id === product.id
+        );
+
+        if (existingIndex !== -1) {
+          updatedFavorites.splice(existingIndex, 1);
+        } else {
+          updatedFavorites.push(product);
+        }
+
+        localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+        setFavorites(updatedFavorites);
+      } catch (error) {
+        console.error("Error handling favorite:", error);
+      }
+    };
 
   const handleSubcategorySelect = async (subcategoryId) => {
     setLoading(true);
@@ -104,8 +124,9 @@ const BuyerDashboard = () => {
       if (existingProductIndex !== -1) {
         cart[existingProductIndex].quantity += 1;
       } else {
-        cart.push({ id: product.id, name: product.name, price: product.price, quantity: 1 });
+        cart.push({ id: product.id, name: product.product_name, price: product.price, quantity: 1 });
       }
+      
 
       localStorage.setItem("cart", JSON.stringify(cart));
       const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
@@ -124,10 +145,12 @@ const BuyerDashboard = () => {
   if (loading) return <p>Loading products...</p>;
 
   return (
+
     <div style={{ background: "#eeeeee" }}>
       <TopBar cartCount={cartCount} onSubcategorySelect={handleSubcategorySelect} />
       <div style={{ margin: "20px auto", padding: "20px", maxWidth: "1200px", marginTop: "6rem" }}>
         <div style={{ textAlign: "center", marginBottom: "20px" }}>
+
           <input
             type="text"
             placeholder="Search for products..."
@@ -165,7 +188,9 @@ const BuyerDashboard = () => {
           )}
         </div>
 
+
         {cartMessage && <p style={{ color: "green", fontWeight: "bold" }}>{cartMessage}</p>}
+
 
         <div
           style={{
@@ -175,6 +200,7 @@ const BuyerDashboard = () => {
           }}
         >
           {filteredProducts.length > 0 ? (
+
             filteredProducts.map((product) => {
               const seller = sellers.find(seller => seller.user_id === product.owner_id);
               return (
@@ -188,8 +214,11 @@ const BuyerDashboard = () => {
                 />
               );
             })
+
           ) : (
-            <p style={{ textAlign: "center", width: "100%" }}>No products found.</p>
+            <p style={{ textAlign: "center", width: "100%" }}>
+              No products found.
+            </p>
           )}
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; // Import axios
+import axios from "axios"; 
 import './UserTopbar.css'; 
 import { fetchCategories } from "../../services/categoryService";
 import { fetchSubcategoriesByCategory } from "../../services/subcategoryService";
@@ -227,7 +227,7 @@ const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
                     {cartItems.map((item, index) => (
                       <li key={index} className="cartItema">
                         <div className="cartItemDetailsa">
-                          <strong>{item.name}</strong> - ${item.price}
+                          <strong>{item.product_name}</strong>  ${item.price}
                           <div className="quantityControlsa">
                             <button
                               className="quantityButtona"

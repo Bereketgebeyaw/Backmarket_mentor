@@ -188,12 +188,12 @@ const UserDashboard = () => {
                 backgroundColor: "#f9f9f9"
 
               }}
-            >
+           />
+           <select style={{width:"15%"}}>
               <option value="">Sort by Price</option>
               <option value="low-to-high">Price: Low to High</option>
               <option value="high-to-low">Price: High to Low</option>
             </select>
-          )}
         </div>
 
 

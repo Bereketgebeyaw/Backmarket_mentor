@@ -122,7 +122,7 @@ const UserDashboard = () => {
         body: JSON.stringify({
           cartId,
          
-          productId: product.id,
+          productId: product.product_id,
           quantity,
         }),
       });
@@ -137,7 +137,7 @@ const UserDashboard = () => {
         const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
         const updatedCart = [
           ...currentCart,
-          { productId: product.id, quantity, productName: product.name },
+          { productId: product.product_id, quantity, productName: product.product_name },
         ];
         localStorage.setItem("cart", JSON.stringify(updatedCart));
   

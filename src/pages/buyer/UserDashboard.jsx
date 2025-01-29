@@ -17,13 +17,8 @@ const UserDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [cartCount, setCartCount] = useState(0);
   const [cartMessage, setCartMessage] = useState(null);
-
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchActive, setIsSearchActive] = useState(false);
-
-
-  const [sortOrder, setSortOrder] = useState("");
-
 
   const userRole = "buyer";
 
@@ -49,8 +44,7 @@ const UserDashboard = () => {
 
     loadProductsAndSellers();
   }, []);
-    
-  
+
    useEffect(() => {
      const fetchSearchResults = async () => {
        setLoading(true);
@@ -99,42 +93,13 @@ const UserDashboard = () => {
 
   const handleAddToCart = async (product) => {
     try {
-      const cartId = JSON.parse(localStorage.getItem("cartId"));
-      const quantity = 1;
-  
-      const response = await fetch("http://localhost:5000/api/dashboard/add-to-cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-        body: JSON.stringify({
-          cartId,
-         
-          productId: product.product_id,
-          quantity,
-        }),
-      });
-  
-      if (response.ok) {
-        const data = await response.json();
-  
-        // Update cart count locally
-        setCartCount((prevCount) => prevCount + quantity);
-  
-        // Save cart details to localStorage for persistence
-        const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
-        const updatedCart = [
-          ...currentCart,
-          { productId: product.product_id, quantity, productName: product.product_name },
-        ];
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
-  
-        // Provide feedback to the user
-        setCartMessage(`Added ${product.name} to your cart!`);
-        setTimeout(() => setCartMessage(null), 3000); // Clear message after 3 seconds
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const existingProductIndex = cart.findIndex((item) => item.id === product.id);
+
+      if (existingProductIndex !== -1) {
+        cart[existingProductIndex].quantity += 1;
       } else {
-        cart.push({ id: product.id, name: product.name, price: product.price, quantity: 1 });
+        cart.push({ id: product.id, name: product.product_name, price: product.price, quantity: 1 });
       }
 
       localStorage.setItem("cart", JSON.stringify(cart));
@@ -189,6 +154,7 @@ const UserDashboard = () => {
                 width: "10%",
                 borderRadius: "5px",
                 border: "1px solid #ccc",
+
                 height: "40px",
               }}
             >
@@ -198,6 +164,7 @@ const UserDashboard = () => {
             </select>
           )}
         </div>
+
 
 
           {cartMessage && (

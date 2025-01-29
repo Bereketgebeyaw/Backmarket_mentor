@@ -18,7 +18,7 @@ export const fetchOrders = async () => {
     const orders = response.data.orders.map((order) => ({
       id: order.id,
       status: order.status,
-      createdAt: order.created_at,
+      createdAt: order.order.created_at,
       address: {
         street: order.address.street,
         city: order.address.city,

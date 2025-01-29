@@ -1,5 +1,5 @@
 import db from "../db.js";
-
+import jwt from "jsonwebtoken";
 export const getOrderProductsOfaSeller = async (req, res) => {
   try {
     const sellerId = req.userId; // Assuming req.userId contains the seller's ID

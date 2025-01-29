@@ -39,8 +39,8 @@ const App = () => {
           <Route path="/register/*" element={<SellerSignupPage />}></Route>
           <Route path="/user/*" element={<UserCart />}></Route>
           <Route path="/user-dashboard" element={<UserDashboard />}>
-            <Route path="orders" element={<Orders />} />{" "}
-            {/* Nested Orders route */}
+            <Route path="orders" element={<Orders />} />
+            
             <Route path="wishlist" element={<Wishlist />} />
           </Route>
           <Route path="/PaymentPage" element={<PaymentPage />} />

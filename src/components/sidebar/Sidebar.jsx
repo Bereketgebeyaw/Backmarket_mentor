@@ -5,13 +5,12 @@ import './Sidebar.css';
 const Sidebar = ({ role }) => {
     const menuItems = {
         buyer: [
-            { name: 'Dashboard', path: '/user-dashboard' },
+            { name: 'Dashboard', path: '' }, // Match the default route
             { name: 'Orders', path: '/user-dashboard/orders' },
-            { name: 'Wishlist', path: '/user-dashboard/wishlist' },
+            { name: 'Wishlist', path: '/buyer/wishlist' },
             { name: 'Support', path: '/buyer/support' },
         ],
     };
-
     return (
 
         <div style={{ width: '150px', background: '#f4f4f4', padding: '10px' , fontFamily: 'sans-serif',  }} >
@@ -23,7 +22,7 @@ const Sidebar = ({ role }) => {
                             style={{ textDecoration: 'none', }}
                             activeStyle={{ fontWeight: 'bold', color: 'blue' ,  }}
                             className='menub'
-x
+
                         >
                             {item.name}
                         </NavLink>

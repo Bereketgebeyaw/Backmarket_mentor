@@ -9,6 +9,8 @@ import ProductCard from "../../components/ProductCard";
 import UserTopbar from "../../components/TopBar/UserTopbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Footer from "../../components/bottomBar/Footer";
+import { Outlet } from "react-router-dom";
+
 
 const UserDashboard = () => {
   const [products, setProducts] = useState([]);
@@ -157,7 +159,7 @@ const UserDashboard = () => {
             cartCount={cartCount}
             onSubcategorySelect={handleSubcategorySelect}
           />
-
+           <Outlet />
           <div style={{ marginBottom: "20px", textAlign: "center", marginTop: "6rem" }}>
           <input
             type="text"

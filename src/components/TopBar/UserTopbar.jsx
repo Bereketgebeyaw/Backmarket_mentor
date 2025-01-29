@@ -194,7 +194,7 @@ const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
       <div className="menus">
         {categories.map((category) => (
           <div key={category.id} className="menuItemContainer"  onMouseEnter={() => handleMenuClick(category.id)}
-          onMouseLeave={() => setActiveMenu(null)}>
+  onMouseLeave={() => setActiveMenu(null)}>
             <a
               href="#"
               className="menuItem"
@@ -245,7 +245,7 @@ const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
                     {cartItems.map((item, index) => (
                       <li key={index} className="cartItema">
                         <div className="cartItemDetailsa">
-                          <strong>{item.product.product_name}</strong>  ${item.price}
+                          <strong>{item.product_name}</strong>  ${item.price}
                           <div className="quantityControlsa">
                             <button
                               className="quantityButtona"

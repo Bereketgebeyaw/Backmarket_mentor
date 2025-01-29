@@ -90,6 +90,9 @@ const UserDashboard = () => {
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
+  const handleSortChange = (event) => {
+    setSortOrder(event.target.value);
+  };
 
   const handleAddToCart = async (product) => {
     try {
@@ -156,28 +159,41 @@ const UserDashboard = () => {
           />
 
           <div style={{ marginBottom: "20px", textAlign: "center", marginTop: "6rem" }}>
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={searchQuery}
-              onChange={handleSearchChange}
+          <input
+            type="text"
+            placeholder="Search for products..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            style={{
+              padding: "10px",
+              fontSize: "16px",
+              width: "100%",
+              maxWidth: "500px",
+              borderRadius: "10rem",
+              border: "1px solid #ccc",
+              marginTop: "-1rem",
+            }}
+            autoFocus
+          />
+          {searchQuery.trim() && (
+            <select
+              value={sortOrder}
+              onChange={handleSortChange}
               style={{
-                padding: "10px",
-                fontSize: "16px",
-                width: "100%",
-                maxWidth: "500px",
-                borderRadius: "5rem",
+                padding: "5px 10px",
+                fontSize: "14px",
+                marginLeft: "0rem",
+                width: "10%",
+                borderRadius: "5px",
                 border: "1px solid #ccc",
-                backgroundColor: "#f9f9f9"
-
+                height: "40px",
               }}
-              // jkflsad
-           />
-           <select style={{width:"15%"}}>
+            >
               <option value="">Sort by Price</option>
               <option value="low-to-high">Price: Low to High</option>
               <option value="high-to-low">Price: High to Low</option>
             </select>
+          )}
         </div>
 
 

@@ -11,6 +11,7 @@ const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [activeMenu, setActiveMenu] = useState(null);
+  const [showAllItems, setShowAllItems] = useState(false); // Track if all items are shown
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -24,6 +25,7 @@ const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
     };
     fetchData();
   }, []);
+  
   useEffect(() => {
     const loadCategories = async () => {
       try {
@@ -41,7 +43,8 @@ const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
     updatedCart.splice(index, 1);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
     setCartItems(updatedCart);
-  }
+  };
+
   // Load cart items from the API when dropdown is opened
   useEffect(() => {
     if (isDropdownVisible) {
@@ -66,21 +69,15 @@ const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
     }
   }, [isDropdownVisible]);
 
-   
-
   const toggleDropdown = () => {
     setIsDropdownVisible(!isDropdownVisible);
   };
 
-
- 
-
   const handleLogin = () => {
-    alert("Are you sure you want to log out?")
-    // navigate("/login"); // Navigate to the login page
-    window.location.href = ' /'
-
+    alert("Are you sure you want to log out?");
+    window.location.href = '/'; // Redirect to home or login page
   };
+
   const handleMenuClick = async (menuId) => {
     setActiveMenu(activeMenu === menuId ? null : menuId);
     if (activeMenu !== menuId) {
@@ -92,6 +89,7 @@ const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
   const handleSubcategoryClick = (subcategoryId) => {
     onSubcategorySelect(subcategoryId);
   };
+
   const handleRemoveFromCart = async (index) => {
     const updatedCart = [...cartItems];
     const removedItem = updatedCart.splice(index, 1);
@@ -242,7 +240,7 @@ const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
               {cartItems.length > 0 ? (
                 <>
                   <ul className="cartLista">
-                    {cartItems.map((item, index) => (
+                    {cartItems.slice(0, showAllItems ? cartItems.length : 3).map((item, index) => (
                       <li key={index} className="cartItema">
                         <div className="cartItemDetailsa">
                           <strong>{item.product_name}</strong>  ${item.price}
@@ -274,6 +272,11 @@ const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
                       </li>
                     ))}
                   </ul>
+                  {!showAllItems && (
+                    <button className="viewMoreButtona" onClick={() => setShowAllItems(true)}>
+                      View More
+                    </button>
+                  )}
                   <button className="checkoutButtona" onClick={handleCheckout}>
                     Checkout
                   </button>

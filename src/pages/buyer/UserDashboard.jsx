@@ -91,6 +91,12 @@ const UserDashboard = () => {
     setSearchQuery(event.target.value);
   };
 
+  const handleSortChange = (event) => {
+    setSortOrder(event.target.value);
+  };
+
+
+
   const handleAddToCart = async (product) => {
     try {
       const cartId = JSON.parse(localStorage.getItem("cartId"));
@@ -172,11 +178,25 @@ const UserDashboard = () => {
             }}
             autoFocus
           />
-           <select style={{width:"15%"}}>
+           {searchQuery.trim() && (
+            <select
+              value={sortOrder}
+              onChange={handleSortChange}
+              style={{
+                padding: "5px 10px",
+                fontSize: "14px",
+                marginLeft: "0rem",
+                width: "10%",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+                height: "40px",
+              }}
+            >
               <option value="">Sort by Price</option>
               <option value="low-to-high">Price: Low to High</option>
               <option value="high-to-low">Price: High to Low</option>
             </select>
+          )}
         </div>
 
 

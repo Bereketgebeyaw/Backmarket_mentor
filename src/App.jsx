@@ -6,7 +6,8 @@ import BuyerWishlist from "./pages/buyer/buyerWishlist";
 import AdminLayout from './layouts/AdminLayout';
 import SellerLayout from "./layouts/SellerLayout";
 import UserLayout from './layouts/UserLayout';
-import ProductManagement from './pages/admin/ProductManagement';
+import SellerOrders from './pages/seller/sellerOrders';
+import ProductManagement from "./pages/admin/ProductManagement";
 import LoginPage from './pages/Login/LoginPage';
 import SignupPage from './pages/Signup/SignupPage';
 import PasswordReset from './pages/Reset/passwordReset';
@@ -56,6 +57,7 @@ const App = () => {
           </Route>
           <Route path="/seller/*" element={<SellerLayout />}>
             <Route path="product-management" element={<ProductManagement />} />
+            <Route path="orders" element={<SellerOrders />} />
           </Route>
         </Routes>
       </BrowserRouter>

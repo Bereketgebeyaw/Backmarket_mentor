@@ -2,7 +2,7 @@ import db from "../db.js"; // Replace with your actual database connection
 import { sendApprovalEmail, sendDenialEmail } from "./mailer.js";
 import crypto from "crypto";
 import bcrypt from "bcrypt";
-
+import jwt from "jsonwebtoken";
 
 export const getPendingSellers = async (req, res) => {
   try {
@@ -54,6 +54,91 @@ export const getPendingSellers = async (req, res) => {
   }
 };
 
+
+export const getOrders = async (req, res) => {
+  const userId = req.userId; // Retrieved from the middleware
+
+  try {
+    console.log("Fetching orders of seller:", userId);
+
+   
+    const orderProductsResult = await db.query(
+      `SELECT 
+    op.product_id, 
+    op.quantity, 
+    op.order_id,
+    op.status,
+    c.product_name, 
+    p.price, 
+    c.product_description 
+  FROM 
+    order_products op
+  JOIN 
+    products p 
+    ON op.product_id = p.id
+  JOIN 
+    catalogs c 
+    ON p.catalog_id = c.id
+  WHERE 
+    p.owner_id = $1
+  `,
+      [userId]
+    );
+
+  
+const orders = orderProductsResult.rows;
+
+    if (orders.length === 0) {
+      console.log("No orders found for the seller.");
+      return res.status(200).json({ message: "No orders found.", orders: [] });
+    }
+  const ordersWithDetails = await Promise.all(
+    orders.map(async (order) => {
+      const result = await db.query(
+        `SELECT 
+         o.id AS order_id, 
+       
+         o.created_at, 
+         a.id AS address_id, 
+         a.street, 
+         a.city, 
+         a.state, 
+         a.zip_code, 
+         a.country
+       FROM orders o
+       JOIN addresses a ON o.address_id = a.id
+       WHERE o.id = $1
+       ORDER BY o.created_at DESC`,
+        [order.order_id]
+      );
+
+      
+      return {
+        product_id: order.product_id,
+        quantity: order.quantity,
+        order_id: order.order_id,
+        product_name: order.product_name,
+        price: order.price,
+        status: order.status,
+        product_description: order.product_description,
+        order: result.rows,
+      };
+    })
+  );
+
+ 
+ 
+
+  res.status(200).json({
+    message: "Orders retrieved successfully.",
+    orders: ordersWithDetails,
+  });
+   
+  } catch (error) {
+    console.error("Error fetching orders:", error.message);
+    res.status(500).json({ message: "Server error. Please try again later." });
+  }
+};
 
 
 
@@ -151,3 +236,4 @@ export const getSellers = async (req, res) => {
 
 
   
+ 

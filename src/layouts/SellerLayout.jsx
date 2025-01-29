@@ -12,6 +12,9 @@ const SellerLayout = () => {
         <li style={{ marginTop: '-3rem', listStyleType: 'none', backgroundColor:'#38170c' ,color: 'white' , padding:'1rem 2rem' ,}}>
                       <Link style={{color: 'white' , textDecoration: 'none'  }} to="/seller/product-management">Product Management</Link>
                     </li>
+                    <li style={{ marginTop: '1rem', listStyleType: 'none', backgroundColor:'#38170c' ,color: 'white' , padding:'1rem 2rem' ,}}>
+                      <Link style={{color: 'white' , textDecoration: 'none'  }} to="/seller/orders">Your Orders</Link>
+                    </li>
            
            
 

@@ -58,14 +58,15 @@ const SellerOrders = () => {
                 </p>
               </>
             )}
-            <h4>Products:</h4>
+            <h4>Product:</h4>
             <ul>
               <li>
                 {order.product_name} - Quantity: {order.quantity}
               </li>
+
+              <li>Price: ${order.price}</li>
+              <li>Description: {order.product_description}</li>
             </ul>
-            <p>Price: ${order.price}</p>
-            <p>Description: {order.product_description}</p>
           </div>
         ))
       )}

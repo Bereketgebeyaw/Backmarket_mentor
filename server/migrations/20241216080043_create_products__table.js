@@ -48,6 +48,7 @@ export const up = function (knex) {
         table.string("brand").notNullable(); // Brand name
         table.string("model").notNullable(); // Model
         table.decimal("size", 10, 2).notNullable(); // Size in grams
+        table.jsonb("index_terms").notNullable().defaultTo("[]");
         table.timestamps(true, true); // Adds created_at and updated_at
       })
       // Products Table

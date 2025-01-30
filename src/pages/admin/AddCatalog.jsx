@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { fetchCategories } from '../../services/categoryService';
-import { fetchSubcategoriesByCategory } from '../../services/subcategoryService'; // Import the subcategory service
+import { fetchCategories } from "../../services/categoryService";
+import { fetchSubcategoriesByCategory } from "../../services/subcategoryService"; // Import the subcategory service
 
 const AddCatalog = () => {
   const [formData, setFormData] = useState({
@@ -11,28 +11,27 @@ const AddCatalog = () => {
     brand: "",
     model: "",
     size: "",
+    index_terms: [], // New field for index terms
   });
-  
+
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [message, setMessage] = useState("");  // Define the message state
+  const [message, setMessage] = useState("");
+  const [termInput, setTermInput] = useState(""); // Temporary input for new term
 
   useEffect(() => {
-    // Fetch categories when the component mounts
     const loadCategories = async () => {
       const fetchedCategories = await fetchCategories();
       setCategories(fetchedCategories);
     };
-
     loadCategories();
   }, []);
 
   const handleCategoryChange = async (e) => {
     const categoryId = e.target.value;
     setFormData({ ...formData, category_id: categoryId });
-    
-    // Fetch subcategories when category is selected
+
     const fetchedSubcategories = await fetchSubcategoriesByCategory(categoryId);
     setSubcategories(fetchedSubcategories);
   };
@@ -42,6 +41,25 @@ const AddCatalog = () => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  // Handle adding index terms
+  const handleAddTerm = () => {
+    if (termInput.trim() !== "" && !formData.index_terms.includes(termInput)) {
+      setFormData((prevData) => ({
+        ...prevData,
+        index_terms: [...prevData.index_terms, termInput.trim()],
+      }));
+      setTermInput(""); // Clear input field
+    }
+  };
+
+  // Handle removing an index term
+  const handleRemoveTerm = (term) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      index_terms: prevData.index_terms.filter((t) => t !== term),
     }));
   };
 
@@ -63,7 +81,7 @@ const AddCatalog = () => {
       }
 
       const data = await response.json();
-      setMessage(data.message);  // Set success message
+      setMessage(data.message);
       setFormData({
         product_name: "",
         product_description: "",
@@ -72,27 +90,47 @@ const AddCatalog = () => {
         brand: "",
         model: "",
         size: "",
-      }); // Reset the form
+        index_terms: [], // Reset index terms
+      });
     } catch (error) {
       console.error("Error:", error);
-      setMessage("Error adding catalog item");  // Set error message
+      setMessage("Error adding catalog item");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div style={{  padding: "20px",  margin:'0rem 15rem', marginLeft: '22rem',  marginTop: '-25rem',  
-      backgroundColor: "rgba(255, 255, 255, 0.8)",
-      backdropFilter: "blur(10px)" ,
-      boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-      borderRadius: "130px 0px 0px 0px",}}>
-      <h1 style={{ textAlign: "center", marginBottom: "20px" }}>Add New Catalog</h1>
-      
-      {message && <p style={{ color: message.includes("Error") ? "red" : "green", textAlign: "center" }}>{message}</p>} {/* Display message */}
+    <div
+      style={{
+        padding: "20px",
+        margin: "0rem 15rem",
+        marginLeft: "22rem",
+        marginTop: "-25rem",
+        backgroundColor: "rgba(255, 255, 255, 0.8)",
+        backdropFilter: "blur(10px)",
+        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+        borderRadius: "130px 0px 0px 0px",
+      }}
+    >
+      <h1 style={{ textAlign: "center", marginBottom: "20px" }}>
+        Add New Catalog
+      </h1>
 
-      <form onSubmit={handleSubmit} style={{margin:'5rem', }}>
-        <div style={{ marginBottom: "15px", }}>
+      {message && (
+        <p
+          style={{
+            color: message.includes("Error") ? "red" : "green",
+            textAlign: "center",
+          }}
+        >
+          {message}
+        </p>
+      )}
+
+      <form onSubmit={handleSubmit} style={{ margin: "5rem" }}>
+        {/* Product Name */}
+        <div style={{ marginBottom: "15px" }}>
           <label htmlFor="product_name">Product Name:</label>
           <input
             type="text"
@@ -101,10 +139,16 @@ const AddCatalog = () => {
             value={formData.product_name}
             onChange={handleChange}
             required
-            style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #ddd" }}
+            style={{
+              width: "100%",
+              padding: "8px",
+              borderRadius: "4px",
+              border: "1px solid #ddd",
+            }}
           />
         </div>
-        
+
+        {/* Product Description */}
         <div style={{ marginBottom: "15px" }}>
           <label htmlFor="product_description">Product Description:</label>
           <textarea
@@ -113,10 +157,16 @@ const AddCatalog = () => {
             value={formData.product_description}
             onChange={handleChange}
             rows="4"
-            style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #ddd" }}
+            style={{
+              width: "100%",
+              padding: "8px",
+              borderRadius: "4px",
+              border: "1px solid #ddd",
+            }}
           ></textarea>
         </div>
 
+        {/* Category & Subcategory */}
         <div style={{ marginBottom: "15px" }}>
           <label htmlFor="category_id">Category:</label>
           <select
@@ -125,7 +175,12 @@ const AddCatalog = () => {
             value={formData.category_id}
             onChange={handleCategoryChange}
             required
-            style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #ddd" }}
+            style={{
+              width: "100%",
+              padding: "8px",
+              borderRadius: "4px",
+              border: "1px solid #ddd",
+            }}
           >
             <option value="">Select Category</option>
             {categories.map((category) => (
@@ -144,7 +199,12 @@ const AddCatalog = () => {
             value={formData.subcategory_id}
             onChange={handleChange}
             required
-            style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #ddd" }}
+            style={{
+              width: "100%",
+              padding: "8px",
+              borderRadius: "4px",
+              border: "1px solid #ddd",
+            }}
           >
             <option value="">Select Subcategory</option>
             {subcategories.map((subcategory) => (
@@ -155,6 +215,7 @@ const AddCatalog = () => {
           </select>
         </div>
 
+        {/* Brand & Model */}
         <div style={{ marginBottom: "15px" }}>
           <label htmlFor="brand">Brand:</label>
           <input
@@ -164,7 +225,12 @@ const AddCatalog = () => {
             value={formData.brand}
             onChange={handleChange}
             required
-            style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #ddd" }}
+            style={{
+              width: "100%",
+              padding: "8px",
+              borderRadius: "4px",
+              border: "1px solid #ddd",
+            }}
           />
         </div>
 
@@ -177,10 +243,16 @@ const AddCatalog = () => {
             value={formData.model}
             onChange={handleChange}
             required
-            style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #ddd" }}
+            style={{
+              width: "100%",
+              padding: "8px",
+              borderRadius: "4px",
+              border: "1px solid #ddd",
+            }}
           />
         </div>
 
+        {/* Size */}
         <div style={{ marginBottom: "15px" }}>
           <label htmlFor="size">Size (grams):</label>
           <input
@@ -190,25 +262,46 @@ const AddCatalog = () => {
             value={formData.size}
             onChange={handleChange}
             required
-            style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #ddd" }}
+            style={{
+              width: "100%",
+              padding: "8px",
+              borderRadius: "4px",
+              border: "1px solid #ddd",
+            }}
           />
         </div>
 
-        <button
-          type="submit"
-          style={{
-            display: "block",
-            width: "100%",
-            padding: "10px",
-            border: "none",
-            borderRadius: "4px",
-            backgroundColor: "#38170c",
-            color: "#fff",
-            fontWeight: "bold",
-            cursor: "pointer",
-          }}
-          disabled={isSubmitting}  // Disable the button while submitting
-        >
+        {/* Index Terms */}
+        <div style={{ marginBottom: "15px" }}>
+          <label>Index Terms:</label>
+          <input
+            type="text"
+            value={termInput}
+            onChange={(e) => setTermInput(e.target.value)}
+            placeholder="Enter term and press Add"
+            style={{
+              width: "80%",
+              padding: "8px",
+              borderRadius: "4px",
+              border: "1px solid #ddd",
+            }}
+          />
+          <button type="button" onClick={handleAddTerm}>
+            Add
+          </button>
+          <ul>
+            {formData.index_terms.map((term, index) => (
+              <li key={index}>
+                {term}{" "}
+                <button type="button" onClick={() => handleRemoveTerm(term)}>
+                  Remove
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Adding..." : "Add Catalog"}
         </button>
       </form>

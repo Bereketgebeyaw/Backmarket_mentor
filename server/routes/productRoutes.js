@@ -109,8 +109,8 @@ router.get("/search", async (req, res) => {
       SELECT p.*, c.product_name
       FROM products p
       JOIN catalogs c ON p.catalog_id = c.id
-      WHERE LOWER(c.product_name) LIKE $1
-      AND p.quantity_in_stock > 0
+      WHERE c.product_name ILIKE $1 OR c.index_terms::text ILIKE $1
+      AND p.quantity_in_stock > 0 
     `;
     const result = await db.query(searchQuery, [`%${query.toLowerCase()}%`]);
 

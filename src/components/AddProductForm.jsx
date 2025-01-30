@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // For navigation
 import axios from "axios";
 import { fetchCategories } from "../services/categoryService";
 import { fetchSubcategoriesByCategory } from "../services/subcategoryService";
 import { fetchCatalogsBySubCategory } from "../services/catalogService";
 
 const AddProductForm = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     catalog_id: "",
     price: "",
@@ -34,7 +37,7 @@ const AddProductForm = () => {
     const categoryId = e.target.value;
     setFormData((prev) => ({
       ...prev,
-      category_id: categoryId, // Updated to category_id for consistency
+      category_id: categoryId,
       subcategory_id: "",
       catalog_id: "",
     }));
@@ -54,7 +57,7 @@ const AddProductForm = () => {
     const subcategoryId = e.target.value;
     setFormData((prev) => ({
       ...prev,
-      subcategory_id: subcategoryId, // Updated to subcategory_id
+      subcategory_id: subcategoryId,
       catalog_id: "",
     }));
 
@@ -75,14 +78,17 @@ const AddProductForm = () => {
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
+
+    // Redirect when "Request Admin to Add" is selected
+    if (name === "catalog_id" && value === "request_new_product") {
+      navigate("/request-catalog");
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const data = new FormData();
 
-    // Conditionally append only non-empty fields
     if (formData.catalog_id) data.append("catalog_id", formData.catalog_id);
     if (formData.price) data.append("price", formData.price);
     if (formData.quantity_in_stock)
@@ -118,10 +124,10 @@ const AddProductForm = () => {
 
         {/* Category Dropdown */}
         <select
-          name="category_id" // Updated to category_id
+          name="category_id"
           value={formData.category_id}
           onChange={handleCategoryChange}
-          style={styles.inputa}
+          style={styles.input}
         >
           <option value="">Select Category</option>
           {categories.map((category) => (
@@ -133,10 +139,10 @@ const AddProductForm = () => {
 
         {/* Subcategory Dropdown */}
         <select
-          name="subcategory_id" // Updated to subcategory_id
+          name="subcategory_id"
           value={formData.subcategory_id}
           onChange={handleSubCategoryChange}
-          style={styles.inputa}
+          style={styles.input}
           disabled={!formData.category_id}
         >
           <option value="">Select Subcategory</option>
@@ -152,7 +158,7 @@ const AddProductForm = () => {
           name="catalog_id"
           value={formData.catalog_id}
           onChange={handleChange}
-          style={styles.inputa}
+          style={styles.input}
           disabled={!formData.subcategory_id}
         >
           <option value="">Select Product</option>
@@ -161,6 +167,10 @@ const AddProductForm = () => {
               {`${catalog.product_name} (Model: ${catalog.model}, Size: ${catalog.size}g)`}
             </option>
           ))}
+          {/* Special option to request a new product */}
+          <option value="request_new_product" style={styles.specialOption}>
+            Product Not Found? Request Admin to Add
+          </option>
         </select>
 
         <input
@@ -195,7 +205,7 @@ const AddProductForm = () => {
           value={formData.shelf_life}
           onChange={handleChange}
           required
-          style={styles.inputa}
+          style={styles.input}
         >
           <option value="">Select Shelf Life</option>
           <option value="Perishables">Perishables</option>
@@ -211,13 +221,26 @@ const AddProductForm = () => {
 };
 
 const styles = {
-  formContainer: { marginTop:"-30px", padding: "20px" ,backgroundColor: "rgba(255, 255, 255, 0.8)",
-    backdropFilter: "blur(10px)" , borderRadius: "130px 0px 0px 0px",  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", margin:'0rem 20rem' },
+  formContainer: {
+    marginTop: "-30px",
+    padding: "20px",
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    backdropFilter: "blur(10px)",
+    borderRadius: "130px 0px 0px 0px",
+    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+    margin: "0rem 20rem",
+  },
   form: { maxWidth: "500px", margin: "auto" },
   header: { textAlign: "center", color: "#38170c" },
-  input: { width: "30rem", padding: "10px", margin: "10px 0", border:"0.1rem dashed #38170c" },
+  input: {
+    width: "30rem",
+    padding: "10px",
+    margin: "10px 0",
+    border: "0.1rem dashed #38170c",
+    backgroundColor: "white",
+    borderRadius: "5px",
+  },
   fileInput: { margin: "10px 0" },
-  inputa:{ border:"0.1rem dashed #38170c", },
   button: {
     padding: "10px 20px",
     backgroundColor: "#38170c",
@@ -225,6 +248,10 @@ const styles = {
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
+  },
+  specialOption: {
+    color: "red",
+    fontWeight: "bold",
   },
 };
 

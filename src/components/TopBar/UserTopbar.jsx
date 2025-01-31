@@ -5,6 +5,7 @@ import './UserTopbar.css';
 import { fetchCategories } from "../../services/categoryService";
 import { fetchSubcategoriesByCategory } from "../../services/subcategoryService";
 
+
 const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [cartItems, setCartItems] = useState([]);
@@ -12,7 +13,12 @@ const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
   const [subcategories, setSubcategories] = useState([]);
   const [activeMenu, setActiveMenu] = useState(null);
   const [showAllItems, setShowAllItems] = useState(false); // Track if all items are shown
+  const navigates = useNavigate();
 
+  const handleViewMore = () => {
+    // Redirect to the desired page
+    navigate('/user-dashboard/veiw'); // Replace with your actual path
+};
   const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
@@ -273,7 +279,7 @@ const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
                     ))}
                   </ul>
                   {!showAllItems && (
-                    <button className="viewMoreButtona" onClick={() => setShowAllItems(true)}>
+                    <button className="viewMoreButtona" onClick={handleViewMore} >
                       View More
                     </button>
                   )}

@@ -89,6 +89,7 @@ const styles = {
     textAlign: "left",
     maxWidth: "900px", // Reduced max width for a compact layout
     margin: "0 auto",
+    marginTop: "3rem"
   },
   cartContainer: {
     display: "flex",

@@ -344,10 +344,17 @@ export const getCartProducts = async (req, res) => {
 
     const { rows: cartProducts } = await db.query(
       `
-     SELECT p.id, cp.quantity, p.name, p.price, encode(p.image, 'base64') AS image
-    FROM cart_products cp
-    JOIN products p ON cp.product_id = p.id
-    WHERE cp.cart_id = $1
+     SELECT 
+    p.id, cp.quantity, p.price, encode(p.image, 'base64') AS image, c.product_name AS category_name
+FROM 
+    cart_products cp 
+JOIN 
+    products p ON cp.product_id = p.id 
+JOIN 
+     catalogs c ON p.catalog_id = c.id  
+WHERE 
+    cp.cart_id = $1;
+   
       `,
       [cartId]
     );

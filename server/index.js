@@ -13,9 +13,9 @@ import subcatgoryRouts from './routes/subcatgoryRouts.js'
 import sellerRoutes from "./routes/sellerRoutes.js";
 import orderProductRoutes from "./routes/orderProductRoutes.js";
 
-
 import catalogRoutes from "./routes/catalogRoutes.js";
 
+import requestRoutes from "./routes/requestRoutes.js";
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -29,6 +29,7 @@ app.use(express.json({ limit: "10mb" }));
 
 // Routes
 app.use('/products', productRoutes);
+app.use('/request', requestRoutes);
 // Serve static files from 'uploads' directory
 
 app.use('/cart', cartRoutes);

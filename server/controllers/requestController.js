@@ -50,3 +50,40 @@ export const Request= async (req, res) => {
     res.status(500).json({ message: "Failed to create request", error });
   }
 };
+
+
+
+export const getRequests = async (req, res) => {
+  
+  
+    try {
+      const query = `
+          SELECT 
+    requests.*, 
+    categories.name AS category_name, 
+    subcategories.name AS subcategory_name
+FROM 
+    requests
+JOIN 
+    categories ON requests.category_id = categories.id
+JOIN 
+    subcategories ON requests.subcategory_id = subcategories.id
+WHERE 
+    requests.status = 'pending';
+
+        `;
+      const result = await db.query(query);
+  
+      if (result.rows.length === 0) {
+        return res
+          .status(404)
+          .json({ message: "No pending request found." });
+      }
+  console.log(result.rows)
+      res.status(200).json(result.rows);
+    } catch (error) {
+      console.error("Error fetching requests:", error);
+      res.status(500).json({ message: "Server error. Please try again later." });
+    }
+  };
+  

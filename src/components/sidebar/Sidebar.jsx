@@ -19,7 +19,7 @@ const Sidebar = ({ role }) => {
                     <li key={index} style={{ marginBottom: '10px' , marginTop: '3rem', width: "1px"}} >
                         <NavLink
                             to={item.path}
-                            style={{ textDecoration: 'none', }}
+                            style={{ textDecoration: 'none',padding: "1rem 3rem", overflow:"hidden" }}
                             activeStyle={{ fontWeight: 'bold', color: 'blue' ,  }}
                             className='menub'
 

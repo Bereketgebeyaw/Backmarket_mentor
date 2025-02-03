@@ -108,7 +108,7 @@ const styles = {
   paymentButton: {
     marginTop: "16px",
     padding: "10px 20px",
-    background: "#27ae60",
+    background: "#38170c",
     color: "#fff",
     border: "none",
     borderRadius: "8px",

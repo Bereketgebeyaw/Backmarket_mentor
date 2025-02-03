@@ -7,6 +7,7 @@ const BusinessInformation = ({
   prevStep,
 }) => {
   return (
+    <div className="form-sections" >
     <div className="form-section"  >
       <h3 >Business Information</h3>
       <input
@@ -73,6 +74,7 @@ const BusinessInformation = ({
       <button type="button" onClick={nextStep} className="next-button">
         Continue
       </button>
+    </div>
     </div>
   );
 };

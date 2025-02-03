@@ -157,6 +157,7 @@ const UserDashboard = () => {
         <div style={{ flex: 1, padding: "20px" }}>
           <UserTopbar
             cartCount={cartCount}
+            setCartCount={setCartCount} 
             onSubcategorySelect={handleSubcategorySelect}
           />
            <Outlet />

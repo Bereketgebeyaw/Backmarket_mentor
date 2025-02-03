@@ -1,7 +1,43 @@
+import React from 'react';
+import axios from 'axios';
+
 const CartCard = ({ product, onQuantityChange }) => {
-  const imageSrc = product.image
-    ? `data:image/png;base64,${product.image}`
-    : "";
+  const imageSrc = product.image ? `data:image/png;base64,${product.image}` : "";
+
+  const handleIncreaseQuantity = async () => {
+    const updatedQuantity = product.quantity + 1;
+    await updateCart(product.id, updatedQuantity);
+    onQuantityChange(product.id, 1); // Update the local state
+  };
+
+  const handleDecreaseQuantity = async () => {
+    if (product.quantity > 1) {
+      const updatedQuantity = product.quantity - 1;
+      await updateCart(product.id, updatedQuantity);
+      onQuantityChange(product.id, -1); // Update the local state
+    }
+  };
+
+  const updateCart = async (productId, quantity) => {
+    try {
+      const response = await axios.put(
+        "http://localhost:5000/api/dashboard/update-cart",
+        { productId, quantity },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+
+      if (response.status !== 200) {
+        console.error("Failed to update cart.");
+      }
+    } catch (error) {
+      console.error("Error updating cart:", error);
+    }
+  };
 
   return (
     <div style={styles.cartItem}>
@@ -18,14 +54,14 @@ const CartCard = ({ product, onQuantityChange }) => {
         <div style={styles.quantityControls}>
           <button
             style={styles.quantityButton}
-            onClick={() => onQuantityChange(product.id, -1)} // Decrease quantity
+            onClick={handleDecreaseQuantity} // Decrease quantity
           >
             -
           </button>
           <span style={styles.quantity}>{product.quantity}</span>
           <button
             style={styles.quantityButton}
-            onClick={() => onQuantityChange(product.id, 1)} // Increase quantity
+            onClick={handleIncreaseQuantity} // Increase quantity
           >
             +
           </button>
@@ -86,7 +122,7 @@ const styles = {
     marginTop: "10px",
   },
   quantityButton: {
-    background: "#3498db",
+    background: "#38170c",
     color: "#fff",
     border: "none",
     borderRadius: "50%",
@@ -102,8 +138,5 @@ const styles = {
     color: "#555",
   },
 };
-
-
-
 
 export default CartCard;

@@ -2,9 +2,9 @@ import React from 'react';
 import AddProductForm from '../../components/AddProductForm';
 
 
-const ProductManagement = () => {
+const ProductManagements = () => {
   return (
-    <div style={{marginTop: "-25rem"}}>
+    <div >
        
       <AddProductForm />
       
@@ -12,4 +12,4 @@ const ProductManagement = () => {
   );
 };
 
-export default ProductManagement;
+export default ProductManagements;

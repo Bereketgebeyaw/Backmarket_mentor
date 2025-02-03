@@ -23,6 +23,9 @@ import Orders from './pages/buyer/Orders';
 import OnboardSupplier from './pages/admin/OnboardSupplier';
 import AddCatalog from './pages/admin/AddCatalog';
 import Wishlist from './pages/buyer/Wishlist';
+
+import ProductManagements from './pages/seller/ProductManagement';
+
 import Request from './pages/seller/Request.JSX';
 
 const App = () => {
@@ -58,7 +61,7 @@ const App = () => {
             <Route path="add-catalog" element={<AddCatalog />} />
           </Route>
           <Route path="/seller/*" element={<SellerLayout />}>
-            <Route path="product-management" element={<ProductManagement />} />
+            <Route path="product-management" element={<ProductManagements/>} />
             <Route path="orders" element={<SellerOrders />} />
             
           </Route>

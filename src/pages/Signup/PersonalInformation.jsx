@@ -2,7 +2,7 @@ import React from "react";
 
 const PersonalInformation = ({ formData, updateFormData, nextStep }) => {
   return (
-    <div className="form-section">
+    <div className="form-section"  style={{marginTop:"-8rem"}}>
       <h3>Personal Information</h3>
       <input
         type="text"

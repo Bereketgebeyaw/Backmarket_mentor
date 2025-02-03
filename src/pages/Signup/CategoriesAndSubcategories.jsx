@@ -7,7 +7,7 @@ const CategoriesAndSubcategories = ({
   prevStep,
 }) => {
   return (
-    <div className="form-section">
+    <div className="form-section" style={{marginTop:"-10rem"}}>
       <h3>Categories and Subcategories</h3>
       <select
         value={formData.categories}

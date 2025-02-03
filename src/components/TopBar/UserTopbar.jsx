@@ -6,7 +6,7 @@ import { fetchCategories } from "../../services/categoryService";
 import { fetchSubcategoriesByCategory } from "../../services/subcategoryService";
 
 
-const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
+const UserTopbar = ({ cartCount, onSubcategorySelect, setCartCount }) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -16,7 +16,7 @@ const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
   const navigates = useNavigate();
 
   const handleViewMore = () => {
-    // Redirect to the desired page
+   
     navigate('/user-dashboard/veiw'); // Replace with your actual path
 };
   const navigate = useNavigate();
@@ -31,6 +31,12 @@ const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
     };
     fetchData();
   }, []);
+
+   useEffect(() => {
+      const total = cartItems.reduce((total, item) => total + item.quantity, 0);
+      setCartCount(total);
+    }, [cartItems]);
+    
   
   useEffect(() => {
     const loadCategories = async () => {
@@ -79,7 +85,9 @@ const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
     setIsDropdownVisible(!isDropdownVisible);
   };
 
-  const handleLogin = () => {
+  const handleLogout = () => {
+    console.log("Logging out..."); // Debugging log
+    localStorage.removeItem("cart"); // Ensure this is executed
     alert("Are you sure you want to log out?");
     window.location.href = '/'; // Redirect to home or login page
   };
@@ -189,6 +197,8 @@ const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
     navigate("/PaymentPage");
   };
 
+  // cartCount = cartItems.reduce((total, item) => total + item.quantity, cartCount);
+
   return (
     <div className="topBara">
       <div className="logoContainera">
@@ -293,7 +303,7 @@ const UserTopbar = ({ cartCount, onSubcategorySelect }) => {
             </div>
           )}
         </div>
-        <button className="loginButtona" onClick={handleLogin}>
+        <button className="loginButtona" onClick={handleLogout}>
           Log out
         </button>
       </div>

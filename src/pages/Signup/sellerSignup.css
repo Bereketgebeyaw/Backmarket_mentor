@@ -7,10 +7,20 @@
  background-color:none;
   padding-bottom: 8rem;
   border-radius: 130px 0px 0px 0px;
+  margin-top: -3rem;
+ 
+ 
+  
+}
+.forms{
+
 }
  .top{
    background-color: #f0f0f0;
    
+ }
+ h3{
+  text-align: center;
  }
 
 .signup-title {
@@ -18,12 +28,21 @@
   font-size: 2rem;
   margin-bottom: 20px;
   margin-left: -2rem;
+  padding: 10rem;
+  margin-top: -15rem;
 }
 
 .form-section {
  
-   margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 130px 0px 0px 0px;
+  padding: 1.5rem ;
+  padding-bottom: 3rem;
+
 }
+
 
 .signup-input {
   width: 100%;

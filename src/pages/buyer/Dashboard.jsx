@@ -122,10 +122,11 @@ const BuyerDashboard = () => {
   };
 
   if (loading) return <p>Loading products...</p>;
-
+ 
+  
   return (
     <div style={{ background: "#eeeeee" }}>
-      <TopBar cartCount={cartCount} onSubcategorySelect={handleSubcategorySelect} />
+      <TopBar cartCount={cartCount} setCartCount={setCartCount} onSubcategorySelect={handleSubcategorySelect} />
       <div style={{ margin: "20px auto", padding: "20px", maxWidth: "1200px", marginTop: "6rem" }}>
         <div style={{ textAlign: "center", marginBottom: "20px" }}>
           <input

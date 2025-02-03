@@ -110,8 +110,9 @@ const SellerSignupPage = () => {
 
   return (
     <div className="top">
-      <div ><TopBar/></div>
+      
     <div className="signup-container">
+      <div className="forms">
       <h2 className="signup-title">Seller Sign Up</h2>
       {currentStep === 1 && (
         <PersonalInformation
@@ -145,8 +146,9 @@ const SellerSignupPage = () => {
           handleSubmit={handleSubmit}
         />
       )}
+      </div>
     </div>
-    <Footer/>
+    
     </div>
   );
 };

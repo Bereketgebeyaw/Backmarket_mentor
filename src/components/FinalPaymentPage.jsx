@@ -155,7 +155,7 @@ const handleSubmit = async () => {
                   onClick={() => handleBankSelect(bank.name)}
                   style={{
                     ...styles.bankCard,
-                    border: selectedBank === bank.name ? '3px solid #28a745' : '1px solid #ddd',
+                    border: selectedBank === bank.name ? '3px solid #38170c' : '1px solid #38170c',
                   }}
                 >
                   <img src={bank.logo} alt={bank.name} style={styles.bankLogo} />
@@ -249,7 +249,7 @@ const styles = {
     fontWeight: 'bold',
   },
   submitButton: {
-    background: '#28a745',
+    background: '#38170c',
     color: '#fff',
     border: 'none',
     padding: '14px 24px',

@@ -58,7 +58,7 @@ const SignupPage = () => {
 
   return (
     <div className='contain'>
-      <TopBar/>
+     
       
     <div className="signup-container">
     <div className='container1'>
@@ -106,7 +106,7 @@ const SignupPage = () => {
       </p>
       </div>
       </div>
-      <Footer/>
+      
     </div>
   );
 };

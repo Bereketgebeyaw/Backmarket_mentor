@@ -7,7 +7,7 @@ const AdditionalRequirements = ({
   handleSubmit,
 }) => {
   return (
-    <div className="form-section">
+    <div className="form-section" style={{marginTop:"-10rem"}}>
       <h3>Additional Requirements</h3>
       <label>
         <input

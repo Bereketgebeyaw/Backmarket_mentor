@@ -24,7 +24,7 @@ import OnboardSupplier from './pages/admin/OnboardSupplier';
 import AddCatalog from './pages/admin/AddCatalog';
 import Wishlist from './pages/buyer/Wishlist';
 import Request from './pages/seller/Request.JSX';
-
+import  RequestList  from './pages/admin/requestedProducts';
 const App = () => {
    
     return (
@@ -54,6 +54,7 @@ const App = () => {
             <Route path="add-category" element={<AddCategory />} />
             <Route path="add-subcategory" element={<AddSubcategory />} />
             <Route path="onboard-supplier" element={<OnboardSupplier />} />
+            <Route path="requested-products" element={<RequestList />} />
 
             <Route path="add-catalog" element={<AddCatalog />} />
           </Route>

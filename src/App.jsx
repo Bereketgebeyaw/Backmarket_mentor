@@ -27,6 +27,8 @@ import Wishlist from './pages/buyer/Wishlist';
 import ProductManagements from './pages/seller/ProductManagement';
 
 import Request from './pages/seller/Request.JSX';
+import About from './components/about/about';
+import Contact from './components/contact/contact';
 
 const App = () => {
    
@@ -38,6 +40,8 @@ const App = () => {
           </Route>
 
           <Route path="/login/*" element={<LoginPage />}></Route>
+          <Route path="/about/*" element={<About/>}></Route>
+          <Route path="/contact/*" element={<Contact/>}></Route>
           <Route path="/reset/*" element={<PasswordReset />}></Route>
           <Route path="wishlists" element={<BuyerWishlist />} />
           <Route path="/signup/*" element={<SignupPage />}></Route>

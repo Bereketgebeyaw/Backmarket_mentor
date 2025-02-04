@@ -29,6 +29,7 @@ import ProductManagements from './pages/seller/ProductManagement';
 import Request from './pages/seller/Request.JSX';
 import About from './components/about/about';
 import Contact from './components/contact/contact';
+import Requests from './pages/admin/request';
 
 const App = () => {
    
@@ -61,8 +62,8 @@ const App = () => {
             <Route path="add-category" element={<AddCategory />} />
             <Route path="add-subcategory" element={<AddSubcategory />} />
             <Route path="onboard-supplier" element={<OnboardSupplier />} />
-
             <Route path="add-catalog" element={<AddCatalog />} />
+            <Route path="request" element={<Requests/>} />
           </Route>
           <Route path="/seller/*" element={<SellerLayout />}>
             <Route path="product-management" element={<ProductManagements/>} />

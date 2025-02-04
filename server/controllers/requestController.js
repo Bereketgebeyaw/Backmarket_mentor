@@ -1,6 +1,7 @@
 import db from "../db.js";
 import { authenticateToken } from "../middleware/authMiddleware.js";
 // Controller to handle adding a catalog item
+import { sendRequestApprovalEmail,sendRequestDenialEmail } from "./mailer.js";
 export const Request= async (req, res) => {
   const {
     product_name,
@@ -87,3 +88,72 @@ WHERE
     }
   };
   
+  export const approveRequest = async (req, res) => {
+    const { id } = req.params;
+   
+    try {
+      
+      const result = await db.query(
+        `UPDATE requests SET status = 'approved' WHERE id = $1 RETURNING id, requester, status`,
+        [id]
+      );
+ 
+      if (result.rowCount === 0) {
+        return res.status(404).json({ error: "request not found" });
+      }
+ 
+      const request = result.rows[0];
+ 
+      // Get user email
+      const userResult = await db.query(
+        "SELECT email FROM users WHERE id = $1",
+        [request.requester]
+      );
+      const user = userResult.rows[0];
+ 
+      if (user) {
+        // Send denial email
+        sendRequestApprovalEmail(user.email,request.id);
+      }
+ 
+      res.status(200).json({ message: "request approved", request });
+    } catch (error) {
+      console.error("Error approving seller:", error.message);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
+  
+  export const rejectRequest = async (req, res) => {
+    const { id } = req.params;
+   
+    try {
+      
+      const result = await db.query(
+        `UPDATE requests SET status = 'rejected' WHERE id = $1 RETURNING id, requester, status`,
+        [id]
+      );
+ 
+      if (result.rowCount === 0) {
+        return res.status(404).json({ error: "request not found" });
+      }
+ 
+      const request = result.rows[0];
+ 
+      // Get user email
+      const userResult = await db.query(
+        "SELECT email FROM users WHERE id = $1",
+        [request.requester]
+      );
+      const user = userResult.rows[0];
+ 
+      if (user) {
+        // Send denial email
+        sendRequestDenialEmail(user.email,request.id);
+      }
+ 
+      res.status(200).json({ message: "request rejected", request });
+    } catch (error) {
+      console.error("Error rejecting seller:", error.message);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };

@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { fetchRequests } from '../../services/requestService'; // Import the fetch function for requests
+import { fetchRequests } from '../../services/requestService';
 import axios from 'axios';
 
 const RequestList = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [indexTermsMap, setIndexTermsMap] = useState({});
+  const [approvedRequests, setApprovedRequests] = useState(new Set()); // Tracks approved requests
+  const [showIndexTermsColumn, setShowIndexTermsColumn] = useState(false);
+  const [message, setMessage] = useState(""); // To display success or error messages
+  const [isSubmitting, setIsSubmitting] = useState(false); // Track submission status
 
   useEffect(() => {
     const loadRequests = async () => {
@@ -22,39 +27,109 @@ const RequestList = () => {
     loadRequests();
   }, []);
 
-  const handleApprove = async (requestId) => {
-    try {
-      const response = await axios.patch(`http://localhost:5000/request/approve/${requestId}`);
-      if (response.status === 200) {
-        // Update the status locally
-        setRequests((prevRequests) =>
-          prevRequests.map((request) =>
-            request.id === requestId ? { ...request, status: 'approved' } : request
-          )
-        );
-      }
-    } catch (error) {
-      console.error('Error approving request:', error);
-      setError('Failed to approve request');
+  const handleApprove = (requestId) => {
+    setApprovedRequests((prev) => new Set(prev).add(requestId));
+    setShowIndexTermsColumn(true); // Show "Index Terms" column
+    if (!indexTermsMap[requestId]) {
+      setIndexTermsMap((prev) => ({ ...prev, [requestId]: [] }));
     }
   };
 
   const handleReject = async (requestId) => {
     try {
-      const response = await axios.patch(`http://localhost:5000/request/reject/${requestId}`);
-      if (response.status === 200) {
-        // Update the status locally
-        setRequests((prevRequests) =>
-          prevRequests.map((request) =>
-            request.id === requestId ? { ...request, status: 'rejected' } : request
-          )
-        );
+      const response = await fetch(`http://localhost:5000/request/reject/${requestId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (!response.ok) {
+        console.log("here");
+        throw new Error("Failed to reject request");
       }
+  
+      // Remove the rejected request from the list
+      setRequests((prevRequests) => prevRequests.filter((r) => r.id !== requestId));
+  
+      console.log(`Request ${requestId} rejected successfully.`);
     } catch (error) {
-      console.error('Error rejecting request:', error);
-      setError('Failed to reject request');
+      console.error("Error rejecting request:", error);
+      setError("Failed to reject request");
     }
   };
+  
+
+  const handleAddTerm = (requestId, term) => {
+    if (term.trim()) {
+      setIndexTermsMap((prev) => ({
+        ...prev,
+        [requestId]: [...prev[requestId], term],
+      }));
+    }
+  };
+
+  const handleRemoveTerm = (requestId, termToRemove) => {
+    setIndexTermsMap((prev) => ({
+      ...prev,
+      [requestId]: prev[requestId].filter((term) => term !== termToRemove),
+    }));
+  };
+
+  const handleAddToCatalog = async (request) => {
+    setIsSubmitting(true);
+    setMessage(""); // Clear any previous messages
+  
+    const formData = {
+      product_name: request.product_name,
+      product_description: request.product_description || "", // Default value if missing
+      category_id: request.category_id,
+      subcategory_id: request.subcategory_id,
+      brand: request.brand || "", // Default value if missing
+      model: request.model || "", // Default value if missing
+      size: request.size || "", // Default value if missing
+      index_terms: indexTermsMap[request.id] || [], // Include entered index terms
+    };
+  
+    try {
+      // Send request to add to catalog
+      const response = await fetch("http://localhost:5000/catalog", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to add catalog item");
+      }
+  
+      const data = await response.json();
+      setMessage(`Success: ${data.message}`);
+  
+      // If successfully added to catalog, approve the request
+      const approveResponse = await fetch(`http://localhost:5000/request/approve/${request.id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (!approveResponse.ok) {
+        console.log('here');
+        throw new Error("Failed to approve request");
+      }
+      setRequests((prevRequests) => prevRequests.filter((r) => r.id !== request.id));
+      console.log(`Request ${request.id} approved successfully.`);
+    } catch (error) {
+      console.error("Error:", error);
+      setMessage("Error adding catalog item or approving request.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
@@ -62,6 +137,8 @@ const RequestList = () => {
   return (
     <div style={{ padding: '2rem' }}>
       <h2>Requested Products</h2>
+      {message && <div style={{ marginBottom: "10px", color: "blue" }}>{message}</div>}
+
       <table style={{ width: '75%', borderCollapse: 'collapse', marginTop: '20px', marginLeft: '300px' }}>
         <thead>
           <tr>
@@ -71,6 +148,9 @@ const RequestList = () => {
             <th style={{ border: '1px solid #ddd', padding: '10px' }}>Product Name</th>
             <th style={{ border: '1px solid #ddd', padding: '10px' }}>Status</th>
             <th style={{ border: '1px solid #ddd', padding: '10px' }}>Date Requested</th>
+            {showIndexTermsColumn && (
+              <th style={{ border: '1px solid #ddd', padding: '10px' }}>Index Terms</th>
+            )}
             <th style={{ border: '1px solid #ddd', padding: '10px' }}>Actions</th>
           </tr>
         </thead>
@@ -85,19 +165,70 @@ const RequestList = () => {
               <td style={{ border: '1px solid #ddd', padding: '10px' }}>
                 {new Date(request.created_at).toLocaleDateString()}
               </td>
+
+              {/* Show Index Terms Column Only After Approval */}
+              {showIndexTermsColumn && (
+                <td style={{ border: '1px solid #ddd', padding: '10px' }}>
+                  {approvedRequests.has(request.id) ? (
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="Enter term"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            handleAddTerm(request.id, e.target.value);
+                            e.target.value = '';
+                          }
+                        }}
+                        style={{
+                          padding: '5px',
+                          width: '90%',
+                          marginBottom: '5px',
+                        }}
+                      />
+                      <ul style={{ listStyle: 'none', padding: 0 }}>
+                        {indexTermsMap[request.id]?.map((term, index) => (
+                          <li key={index} style={{ display: 'flex', alignItems: 'center' }}>
+                            {term}
+                            <button
+                              onClick={() => handleRemoveTerm(request.id, term)}
+                              style={{
+                                marginLeft: '10px',
+                                backgroundColor: 'red',
+                                color: 'white',
+                                border: 'none',
+                                cursor: 'pointer',
+                                padding: '2px 6px',
+                              }}
+                            >
+                              X
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : (
+                    indexTermsMap[request.id]?.join(', ') || '—'
+                  )}
+                </td>
+              )}
+
+              {/* Actions Column */}
               <td style={{ border: '1px solid #ddd', padding: '10px' }}>
-                <button
-                  onClick={() => handleApprove(request.id)}
-                  style={{ backgroundColor: 'green', color: 'white', padding: '5px 10px', marginRight: '10px' }}
-                >
-                  Approve
-                </button>
-                <button
-                  onClick={() => handleReject(request.id)}
-                  style={{ backgroundColor: 'red', color: 'white', padding: '5px 10px' }}
-                >
+                {!approvedRequests.has(request.id) ? (
+                    <>
+                  <button onClick={() => handleApprove(request.id)} style={{ backgroundColor: 'green', color: 'white', padding: '5px 10px' }}>
+                    Approve
+                  </button>
+                  <button onClick={() => handleReject(request.id)} style={{ backgroundColor: 'red', color: 'white', padding: '5px 10px' }}>
                   Reject
-                </button>
+                 </button>
+                 </>
+                ) : (
+                  <button onClick={() => handleAddToCatalog(request)} disabled={isSubmitting} style={{ backgroundColor: 'blue', color: 'white', padding: '5px 10px' }}>
+                    {isSubmitting ? "Adding..." : "Add to Catalog"}
+                  </button>
+                )}
               </td>
             </tr>
           ))}

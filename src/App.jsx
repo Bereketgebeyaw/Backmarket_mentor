@@ -27,9 +27,12 @@ import Wishlist from './pages/buyer/Wishlist';
 import ProductManagements from './pages/seller/ProductManagement';
 
 import Request from './pages/seller/Request.JSX';
+
 import About from './components/about/about';
 import Contact from './components/contact/contact';
 import Requests from './pages/admin/request';
+
+import  RequestList  from './pages/admin/requestedProducts';
 
 const App = () => {
    
@@ -62,6 +65,10 @@ const App = () => {
             <Route path="add-category" element={<AddCategory />} />
             <Route path="add-subcategory" element={<AddSubcategory />} />
             <Route path="onboard-supplier" element={<OnboardSupplier />} />
+
+            <Route path="requested-products" element={<RequestList />} />
+
+
             <Route path="add-catalog" element={<AddCatalog />} />
             <Route path="request" element={<Requests/>} />
           </Route>

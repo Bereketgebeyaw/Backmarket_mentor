@@ -36,8 +36,14 @@ const AdminLayout = () => {
       
     </li>
 
+
     <li style={{ marginTop: '2rem', listStyleType: 'none' , backgroundColor:'#38170c' ,padding:'1rem 2rem'}}>
       <Link style={{color: 'white', textDecoration: 'none'}}   to="/admin/request">Request</Link></li>
+
+
+    <li style={{ marginTop: '2rem', listStyleType: 'none' , backgroundColor:'#38170c' , padding:'1rem 2rem'}}>
+              <Link style={{color: 'white' , textDecoration: 'none'}}  to="/admin/requested-products">Requested Products</Link>
+            </li>
 
           </ul>
         </nav>

@@ -134,7 +134,7 @@ const Request = () => {
           <label>Message:</label>
           <textarea name="message" value={formData.message} onChange={handleChange} rows="3" style={{ width: "100%", padding: "8px" }}></textarea>
         </div>
-        <button type="submit" disabled={isSubmitting} style={{ width: "100%", padding: "10px", backgroundColor: "#007bff", color: "white", border: "none", cursor: "pointer" }}>
+        <button type="submit" disabled={isSubmitting} style={{ width: "100%", padding: "10px", backgroundColor: "#38170c", color: "white", border: "none", cursor: "pointer" }}>
           {isSubmitting ? "Adding..." : "submit request"}
         </button>
       </form>

@@ -297,5 +297,52 @@ export const getOrders = async (req, res) => {
     console.error("Error fetching orders:", error.message);
     res.status(500).json({ message: "Server error. Please try again later." });
   }
+
+ 
+
+
 };
+export const postcontact = async (req, res) => {
+  const { email, name, address, message } = req.body;
+
+  try {
+    const result = await db.query(
+      'INSERT INTO contact (email, name, address, message) VALUES ($1, $2, $3, $4)',
+      [email, name, address, message]
+    );
+    res.status(200).send('Message sent successfully!');
+  } catch (error) {
+    console.error('Error saving data to the database', error);
+    res.status(500).send('Error saving message');
+  }
+};
+
+
+export const getcontact = async (req, res) => {
+  try {
+    const result = await db.query('SELECT * FROM contact ORDER BY created_at DESC');
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error('Error retrieving data from the database', error);
+    res.status(500).send('Error retrieving messages');
+  }
+};
+
+
+export const deletecontact = async (req, res) => {
+  const { id } = req.params;
+  console.log(`Attempting to delete submission with ID: ${id}`); // Log the ID
+
+  try {
+    const result = await db.query('DELETE FROM contact WHERE id = $1', [id]);
+    if (result.rowCount === 0) {
+      return res.status(404).send('Submission not found');
+    }
+    res.status(200).send('Submission deleted successfully');
+  } catch (error) {
+    console.error('Error deleting submission', error);
+    res.status(500).send('Error deleting submission');
+  }
+};
+
 

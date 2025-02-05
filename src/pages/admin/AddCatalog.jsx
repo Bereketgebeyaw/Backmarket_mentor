@@ -106,7 +106,7 @@ const AddCatalog = () => {
         padding: "20px",
         margin: "0rem 15rem",
         marginLeft: "22rem",
-        marginTop: "-25rem",
+        marginTop: "-30rem",
         backgroundColor: "rgba(255, 255, 255, 0.8)",
         backdropFilter: "blur(10px)",
         boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",

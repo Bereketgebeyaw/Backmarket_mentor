@@ -16,11 +16,14 @@ const BuyerDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [cartCount, setCartCount] = useState(0);
   const [cartMessage, setCartMessage] = useState(null);
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState(() => {
+    // Load favorites from local storage on initialization
+    return JSON.parse(localStorage.getItem("favorites")) || [];
+  });
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const [isSearchActive, setIsSearchActive] = useState(false);
-
+ 
   useEffect(() => {
     const loadProductsAndSellers = async () => {
       try {
@@ -38,6 +41,7 @@ const BuyerDashboard = () => {
     };
 
     loadProductsAndSellers();
+    
 
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     setCartCount(cart.reduce((total, item) => total + item.quantity, 0));
@@ -96,6 +100,10 @@ const BuyerDashboard = () => {
     setSortOrder(event.target.value);
   };
 
+  
+
+
+
   const handleAddToCart = (product) => {
     try {
       const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -119,6 +127,23 @@ const BuyerDashboard = () => {
     } catch (error) {
       console.error("Error adding to cart:", error);
     }
+  };
+  const handleFavorite = (product) => {
+    // Log the current favorites and the product being toggled
+    console.log("Current favorites:", favorites);
+    console.log("Toggling favorite for product:", product);
+
+    const isCurrentlyFavorite = favorites.some((fav) => fav.id === product.id);
+    
+    const updatedFavorites = isCurrentlyFavorite
+      ? favorites.filter((fav) => fav.id !== product.id) // Remove from favorites
+      : [...favorites, product]; // Add to favorites
+
+    // Log the updated favorites
+    console.log("Updated favorites:", updatedFavorites);
+
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    setFavorites(updatedFavorites);
   };
 
   if (loading) return <p>Loading products...</p>;
@@ -180,13 +205,16 @@ const BuyerDashboard = () => {
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => {
               const seller = sellers.find(seller => seller.user_id === product.owner_id);
+              const isFavorite = favorites.some(fav => fav.id === product.id); // Check if the product is in favorites
               return (
                 <ProductCard
                   key={product.id}
                   product={product}
                   seller={seller}
-                  isFavorite={favorites.some((fav) => fav.id === product.id)}
+                  isFavorite={isFavorite}
+                  
                   onAddToCart={handleAddToCart}
+                  onFavorite={handleFavorite}
                   showSeller={isSearchActive} // Pass whether to show seller
                 />
               );

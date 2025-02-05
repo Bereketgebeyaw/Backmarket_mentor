@@ -135,34 +135,34 @@ const RequestList = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h2>Requested Products</h2>
-      {message && <div style={{ marginBottom: "10px", color: "blue" }}>{message}</div>}
+    <div style={{ padding: '2rem' , marginTop:"-35rem"}}>
+      <h2 style={{marginLeft: '32rem', marginTop:'-3rem', marginBottom:'2rem'}}>Requested Products</h2>
+      {message && <div style={{ marginLeft:'20rem', marginBottom: "10px", color: "blue" }}>{message}</div>}
 
       <table style={{ width: '75%', borderCollapse: 'collapse', marginTop: '20px', marginLeft: '300px' }}>
         <thead>
-          <tr>
-            <th style={{ border: '1px solid #ddd', padding: '10px' }}>Request ID</th>
-            <th style={{ border: '1px solid #ddd', padding: '10px' }}>Category</th>
-            <th style={{ border: '1px solid #ddd', padding: '10px' }}>Subcategory</th>
-            <th style={{ border: '1px solid #ddd', padding: '10px' }}>Product Name</th>
-            <th style={{ border: '1px solid #ddd', padding: '10px' }}>Status</th>
-            <th style={{ border: '1px solid #ddd', padding: '10px' }}>Date Requested</th>
+          <tr style={{backgroundColor:'khaki'}}>
+            <th style={{  padding: '10px' }}>Request ID</th>
+            <th style={{  padding: '10px' }}>Category</th>
+            <th style={{  padding: '10px' }}>Subcategory</th>
+            <th style={{  padding: '10px' }}>Product Name</th>
+            <th style={{  padding: '10px' }}>Status</th>
+            <th style={{  padding: '10px' }}>Date Requested</th>
             {showIndexTermsColumn && (
-              <th style={{ border: '1px solid #ddd', padding: '10px' }}>Index Terms</th>
+              <th style={{  padding: '10px' }}>Index Terms</th>
             )}
-            <th style={{ border: '1px solid #ddd', padding: '10px' }}>Actions</th>
+            <th style={{  padding: '10px' }}>Actions</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody style={{backgroundColor:"rgb(218, 231, 227)"}}>
           {requests.map((request) => (
             <tr key={request.id}>
-              <td style={{ border: '1px solid #ddd', padding: '10px' }}>{request.id}</td>
-              <td style={{ border: '1px solid #ddd', padding: '10px' }}>{request.category_name}</td>
-              <td style={{ border: '1px solid #ddd', padding: '10px' }}>{request.subcategory_name}</td>
-              <td style={{ border: '1px solid #ddd', padding: '10px' }}>{request.product_name}</td>
-              <td style={{ border: '1px solid #ddd', padding: '10px' }}>{request.status}</td>
-              <td style={{ border: '1px solid #ddd', padding: '10px' }}>
+              <td style={{ padding: '10px' }}>{request.id}</td>
+              <td style={{ padding: '10px' }}>{request.category_name}</td>
+              <td style={{ padding: '10px' }}>{request.subcategory_name}</td>
+              <td style={{  padding: '10px' }}>{request.product_name}</td>
+              <td style={{ padding: '10px' }}>{request.status}</td>
+              <td style={{  padding: '10px' }}>
                 {new Date(request.created_at).toLocaleDateString()}
               </td>
 
@@ -186,9 +186,9 @@ const RequestList = () => {
                           marginBottom: '5px',
                         }}
                       />
-                      <ul style={{ listStyle: 'none', padding: 0 }}>
+                      <ul style={{ listStyle: 'none', paddingBottom: '0rem', margin:'0.1rem' ,backgroundColor:'white'}}>
                         {indexTermsMap[request.id]?.map((term, index) => (
-                          <li key={index} style={{ display: 'flex', alignItems: 'center' }}>
+                          <li key={index} style={{ display: 'flex', alignItems: 'center' ,  marginLeft: '-2rem',}}>
                             {term}
                             <button
                               onClick={() => handleRemoveTerm(request.id, term)}
@@ -198,7 +198,7 @@ const RequestList = () => {
                                 color: 'white',
                                 border: 'none',
                                 cursor: 'pointer',
-                                padding: '2px 6px',
+                                padding: '0px 10px',
                               }}
                             >
                               X
@@ -214,10 +214,10 @@ const RequestList = () => {
               )}
 
               {/* Actions Column */}
-              <td style={{ border: '1px solid #ddd', padding: '10px' }}>
+              <td style={{ border: 'none', padding: '10px', width:"15rem", }}>
                 {!approvedRequests.has(request.id) ? (
                     <>
-                  <button onClick={() => handleApprove(request.id)} style={{ backgroundColor: 'green', color: 'white', padding: '5px 10px' }}>
+                  <button onClick={() => handleApprove(request.id)} style={{ backgroundColor: 'green', color: 'white', padding: '5px 10px' ,marginRight:"1rem" }}>
                     Approve
                   </button>
                   <button onClick={() => handleReject(request.id)} style={{ backgroundColor: 'red', color: 'white', padding: '5px 10px' }}>
@@ -225,7 +225,7 @@ const RequestList = () => {
                  </button>
                  </>
                 ) : (
-                  <button onClick={() => handleAddToCatalog(request)} disabled={isSubmitting} style={{ backgroundColor: 'blue', color: 'white', padding: '5px 10px' }}>
+                  <button onClick={() => handleAddToCatalog(request)} disabled={isSubmitting} style={{ backgroundColor: '#38170c', color: 'white', padding: '5px 10px' }}>
                     {isSubmitting ? "Adding..." : "Add to Catalog"}
                   </button>
                 )}

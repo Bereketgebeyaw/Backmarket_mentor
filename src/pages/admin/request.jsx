@@ -50,19 +50,19 @@ const Requests = () => {
     submissionList: {
       margin: '20px',
       marginLeft: '18rem',
-      marginTop: '-30rem'
+      marginTop: '-35rem'
     },
     table: {
       width: '100%',
       borderCollapse: 'collapse',
     },
     th: {
-      border: '1px solid #ccc',
+     
       padding: '10px',
       backgroundColor: '#f2f2f2',
     },
     td: {
-      border: '1px solid #ccc',
+       backgroundColor:'rgb(218, 231, 227)',
       padding: '10px',
     },
     deleteButton: {
@@ -73,7 +73,7 @@ const Requests = () => {
 
   return (
     <div style={styles.submissionList}>
-      <h1>Contact Submissions</h1>
+      <h1 style={{marginTop:'-2rem' , marginBottom:'2rem', marginLeft:'16rem'}}>Contact Submissions</h1>
       {submissions.length === 0 ? (
         <p>No submissions available.</p>
       ) : (

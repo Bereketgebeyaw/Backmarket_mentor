@@ -224,7 +224,7 @@ const AddCatalog = () => {
             name="brand"
             value={formData.brand}
             onChange={handleChange}
-            required
+            
             style={{
               width: "100%",
               padding: "8px",
@@ -242,7 +242,7 @@ const AddCatalog = () => {
             name="model"
             value={formData.model}
             onChange={handleChange}
-            required
+            
             style={{
               width: "100%",
               padding: "8px",

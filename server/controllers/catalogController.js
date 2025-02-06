@@ -10,14 +10,15 @@ export const addCatalogItem = async (req, res) => {
     brand,
     model,
     size,
+    unit,
     index_terms, // Capture index terms from request body
   } = req.body;
 
   try {
     // Insert the catalog item into the database, including index_terms
     const query = `
-      INSERT INTO catalogs (product_name, product_description, category_id, subcategory_id, brand, model, size, index_terms, created_at, updated_at)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), NOW())
+      INSERT INTO catalogs (product_name, product_description, category_id, subcategory_id, brand, model, size,dimension, index_terms, created_at, updated_at)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8,$9, NOW(), NOW())
       RETURNING *;
     `;
 
@@ -29,6 +30,7 @@ export const addCatalogItem = async (req, res) => {
       brand,
       model,
       size,
+      unit || "gram",
       index_terms ? JSON.stringify(index_terms) : null, // Convert array to JSON string
     ];
 

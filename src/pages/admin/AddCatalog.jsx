@@ -11,6 +11,7 @@ const AddCatalog = () => {
     brand: "",
     model: "",
     size: "",
+    unit: "",
     index_terms: [], // New field for index terms
   });
 
@@ -19,6 +20,8 @@ const AddCatalog = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
   const [termInput, setTermInput] = useState(""); // Temporary input for new term
+
+  const unitOptions = ["kg", "g", "liter", "ml", "m", "cm", "inch", "ft"];
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -90,6 +93,7 @@ const AddCatalog = () => {
         brand: "",
         model: "",
         size: "",
+        unit: "",
         index_terms: [], // Reset index terms
       });
     } catch (error) {
@@ -254,22 +258,47 @@ const AddCatalog = () => {
 
         {/* Size */}
         <div style={{ marginBottom: "15px" }}>
-          <label htmlFor="size">Size (grams):</label>
-          <input
-            type="number"
-            id="size"
-            name="size"
-            value={formData.size}
-            onChange={handleChange}
-            required
-            style={{
-              width: "100%",
-              padding: "8px",
-              borderRadius: "4px",
-              border: "1px solid #ddd",
-            }}
-          />
-        </div>
+      <label htmlFor="size">Size:</label>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <input
+          type="number"
+          id="size"
+          name="size"
+          value={formData.size}
+          onChange={handleChange}
+          required
+          style={{
+            flex: 1,
+            padding: "8px",
+            borderRadius: "4px",
+            border: "1px solid #ddd",
+            marginRight: "10px",
+          }}
+        />
+
+        {/* Unit Selection */}
+        <select
+          id="unit"
+          name="unit"
+          value={formData.unit}
+          onChange={handleChange}
+          required
+          style={{
+            padding: "8px",
+            borderRadius: "4px",
+            border: "1px solid #ddd",
+          }}
+        >
+          <option value="">Select Unit</option>
+          {unitOptions.map((unit, index) => (
+            <option key={index} value={unit}>
+              {unit}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
+
 
         {/* Index Terms */}
         <div style={{ marginBottom: "15px" }}>

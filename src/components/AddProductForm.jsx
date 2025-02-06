@@ -222,11 +222,13 @@ const AddProductForm = () => {
 
 const styles = {
   formContainer: {
-    marginTop: "-30px",
+    marginTop: "-43rem",
+    marginLeft:"22rem",
     padding: "20px",
     backgroundColor: "rgba(255, 255, 255, 0.8)",
     backdropFilter: "blur(10px)",
-    borderRadius: "130px 0px 0px 0px",
+    width:'50rem',
+  
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
     margin: "0rem 20rem",
   },

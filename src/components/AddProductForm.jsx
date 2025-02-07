@@ -121,13 +121,15 @@ const AddProductForm = () => {
     <div style={styles.formContainer}>
       <form onSubmit={handleSubmit} style={styles.form}>
         <h2 style={styles.header}>Add New Product</h2>
-
+    <div style={{display:'flex' }}> 
+    <label style={{marginLeft:"-4rem" , marginTop:'0.5rem' , marginBottom:'3rem'}}>catagory:</label>
+    
         {/* Category Dropdown */}
         <select
           name="category_id"
           value={formData.category_id}
           onChange={handleCategoryChange}
-          style={styles.input}
+          style={styles.input1}
         >
           <option value="">Select Category</option>
           {categories.map((category) => (
@@ -138,6 +140,7 @@ const AddProductForm = () => {
         </select>
 
         {/* Subcategory Dropdown */}
+        
         <select
           name="subcategory_id"
           value={formData.subcategory_id}
@@ -152,13 +155,17 @@ const AddProductForm = () => {
             </option>
           ))}
         </select>
-
+        
+        </div>
+        <label style={{marginLeft:"14rem" , marginTop:'-4.5rem' , marginBottom:'3rem'}}>subcategories:</label>
+       
         {/* Product Dropdown */}
+       
         <select
           name="catalog_id"
           value={formData.catalog_id}
           onChange={handleChange}
-          style={styles.input}
+          style={styles.input2}
           disabled={!formData.subcategory_id}
         >
           <option value="">Select Product</option>
@@ -172,7 +179,11 @@ const AddProductForm = () => {
             Product Not Found? Request Admin to Add
           </option>
         </select>
+        <label style={{marginLeft:"-4rem" , marginTop:'-4.2rem' , marginBottom:'3rem'}}>product:</label>
+        
 
+        <div style={{display:'flex' , height:'5rem', marginTop:'-1rem' , marginLeft:'0rem'}}>
+        <label style={{marginLeft:"-4rem" , marginTop:'0.8rem' , marginBottom:'3rem', marginRight:'2rem'}}>price:</label>
         <input
           type="number"
           name="price"
@@ -180,8 +191,9 @@ const AddProductForm = () => {
           placeholder="Price"
           onChange={handleChange}
           required
-          style={styles.input}
+          style={styles.input1}
         />
+        
         <input
           type="number"
           name="quantity_in_stock"
@@ -189,8 +201,11 @@ const AddProductForm = () => {
           placeholder="Quantity in Stock"
           onChange={handleChange}
           required
-          style={styles.input}
-        />
+          style={styles.input3}
+        /> </div>
+           <label style={{marginLeft:"14rem" , marginTop:'-4.2rem' , marginBottom:'3rem'}}>quantity:</label>
+
+        <div style={{display:'flex' , marginTop:'-1rem'}}>
         <input
           type="file"
           name="image"
@@ -205,13 +220,14 @@ const AddProductForm = () => {
           value={formData.shelf_life}
           onChange={handleChange}
           required
-          style={styles.input}
+          style={styles.input1}
         >
           <option value="">Select Shelf Life</option>
           <option value="Perishables">Perishables</option>
           <option value="Non-Perishables">Non-Perishables</option>
         </select>
-
+        <label style={{marginLeft:"-24rem" , marginTop:'1rem' , marginBottom:'3rem'}}>Shelf Life</label>
+        </div>
         <button type="submit" style={styles.button}>
           Add Product
         </button>
@@ -222,12 +238,14 @@ const AddProductForm = () => {
 
 const styles = {
   formContainer: {
-    marginTop: "-43rem",
+    marginTop: "-42rem",
     marginLeft:"22rem",
-    padding: "20px",
+    padding: "10px",
     backgroundColor: "rgba(255, 255, 255, 0.8)",
     backdropFilter: "blur(10px)",
     width:'50rem',
+    height:'25rem',
+
   
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
     margin: "0rem 20rem",
@@ -238,11 +256,58 @@ const styles = {
     width: "30rem",
     padding: "10px",
     margin: "10px 0",
+    
+   
+   
+    height:'2.5rem',
+    marginTop:'2rem',
+    border: "0.1rem dashed #38170c",
+    marginLeft:'1rem',
+    backgroundColor: "white",
+    borderRadius: "5px",
+   
+  },
+
+  input1: {
+    width: "25rem",
+    padding: "10px",
+    margin: "10px 0",
     border: "0.1rem dashed #38170c",
     backgroundColor: "white",
     borderRadius: "5px",
+    marginLeft:'-5rem',
+    marginTop: '2rem',
+
+    
   },
-  fileInput: { margin: "10px 0" },
+  input3: {
+    width: "30rem",
+    padding: "10px",
+    margin: "10px 0",
+    border: "0.1rem dashed #38170c",
+    backgroundColor: "white",
+    borderRadius: "5px",
+    marginLeft:'1rem',
+    marginTop: '2rem',
+    marginright:'2rem'
+    
+    
+  },
+  input2: {
+    width: "36.2rem",
+    padding: "10px",
+    margin: "10px 0",
+    border: "0.1rem dashed #38170c",
+    backgroundColor: "white",
+    borderRadius: "5px",
+    marginLeft:'-5rem',
+    marginTop: '1rem',
+
+    
+  },
+
+
+  fileInput: { margin: "10px 0" , marginTop:'2.5rem' , marginLeft:'-5rem' , marginright:'4rem'},
   button: {
     padding: "10px 20px",
     backgroundColor: "#38170c",
@@ -250,6 +315,9 @@ const styles = {
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
+    marginLeft:'24rem',
+    marginTop:'1rem'
+    
   },
   specialOption: {
     color: "red",

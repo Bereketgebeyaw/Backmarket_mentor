@@ -110,11 +110,12 @@ const AddCatalog = () => {
         padding: "20px",
         margin: "0rem 15rem",
         marginLeft: "22rem",
-        marginTop: "-30rem",
+        marginTop: "-43rem",
         backgroundColor: "rgba(255, 255, 255, 0.8)",
         backdropFilter: "blur(10px)",
         boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-        borderRadius: "130px 0px 0px 0px",
+        width:'50rem',
+      
       }}
     >
       <h1 style={{ textAlign: "center", marginBottom: "20px" }}>
@@ -132,7 +133,8 @@ const AddCatalog = () => {
         </p>
       )}
 
-      <form onSubmit={handleSubmit} style={{ margin: "5rem" }}>
+      <form onSubmit={handleSubmit} style={{ margin: "5rem" , height:'25rem' }}>
+        <div  style={{display:"flex" , marginTop:"-3rem"}}>
         {/* Product Name */}
         <div style={{ marginBottom: "15px" }}>
           <label htmlFor="product_name">Product Name:</label>
@@ -144,31 +146,15 @@ const AddCatalog = () => {
             onChange={handleChange}
             required
             style={{
-              width: "100%",
+              width: "16rem",
               padding: "8px",
               borderRadius: "4px",
-              border: "1px solid #ddd",
+              border: "0.1rem dashed #38170c",
             }}
           />
         </div>
 
-        {/* Product Description */}
-        <div style={{ marginBottom: "15px" }}>
-          <label htmlFor="product_description">Product Description:</label>
-          <textarea
-            id="product_description"
-            name="product_description"
-            value={formData.product_description}
-            onChange={handleChange}
-            rows="4"
-            style={{
-              width: "100%",
-              padding: "8px",
-              borderRadius: "4px",
-              border: "1px solid #ddd",
-            }}
-          ></textarea>
-        </div>
+     
 
         {/* Category & Subcategory */}
         <div style={{ marginBottom: "15px" }}>
@@ -180,10 +166,11 @@ const AddCatalog = () => {
             onChange={handleCategoryChange}
             required
             style={{
-              width: "100%",
+              width: "23rem",
               padding: "8px",
               borderRadius: "4px",
-              border: "1px solid #ddd",
+              border: "0.1rem dashed #38170c",
+              marginLeft: '1rem',
             }}
           >
             <option value="">Select Category</option>
@@ -194,7 +181,30 @@ const AddCatalog = () => {
             ))}
           </select>
         </div>
+        </div>
 
+           {/* Product Description */}
+           <div style={{ marginBottom: "15px" , marginTop:"-1rem" }}>
+          <label htmlFor="product_description">Product Description:</label>
+          <textarea
+            id="product_description"
+            name="product_description"
+            value={formData.product_description}
+            onChange={handleChange}
+            rows="4"
+            style={{
+              width: "100%",
+              padding: "8px",
+              borderRadius: "4px",
+              border: "0.1rem dashed #38170c",
+              height:"4rem"
+            }}
+          ></textarea>
+        </div>
+
+
+
+   <div style={{display:'flex' , marginTop:'-1rem'}}>
         <div style={{ marginBottom: "15px" }}>
           <label htmlFor="subcategory_id">Subcategory:</label>
           <select
@@ -204,10 +214,10 @@ const AddCatalog = () => {
             onChange={handleChange}
             required
             style={{
-              width: "100%",
+              width: "13rem",
               padding: "8px",
               borderRadius: "4px",
-              border: "1px solid #ddd",
+              border: "0.1rem dashed #38170c",
             }}
           >
             <option value="">Select Subcategory</option>
@@ -230,10 +240,12 @@ const AddCatalog = () => {
             onChange={handleChange}
             
             style={{
-              width: "100%",
+              width: "12rem",
               padding: "8px",
               borderRadius: "4px",
-              border: "1px solid #ddd",
+              border: "0.1rem dashed #38170c",
+              marginLeft:"1rem",
+              marginRight: "1rem",
             }}
           />
         </div>
@@ -248,16 +260,16 @@ const AddCatalog = () => {
             onChange={handleChange}
             
             style={{
-              width: "100%",
+              width: "12rem",
               padding: "8px",
               borderRadius: "4px",
-              border: "1px solid #ddd",
+              border: "0.1rem dashed #38170c",
             }}
           />
-        </div>
+        </div> </div>
 
         {/* Size */}
-        <div style={{ marginBottom: "15px" }}>
+        <div style={{ marginBottom: "15px" , marginTop:'-1rem' }}>
       <label htmlFor="size">Size:</label>
       <div style={{ display: "flex", alignItems: "center" }}>
         <input
@@ -271,8 +283,9 @@ const AddCatalog = () => {
             flex: 1,
             padding: "8px",
             borderRadius: "4px",
-            border: "1px solid #ddd",
+            border: "0.1rem dashed #38170c",
             marginRight: "10px",
+            marginTop:'-1rem'
           }}
         />
 
@@ -286,7 +299,8 @@ const AddCatalog = () => {
           style={{
             padding: "8px",
             borderRadius: "4px",
-            border: "1px solid #ddd",
+            border: "0.1rem dashed #38170c",
+            
           }}
         >
           <option value="">Select Unit</option>
@@ -301,7 +315,7 @@ const AddCatalog = () => {
 
 
         {/* Index Terms */}
-        <div style={{ marginBottom: "15px" }}>
+        <div style={{ marginBottom: "15px" , marginTop:'-1rem'}}>
           <label>Index Terms:</label>
           <input
             type="text"
@@ -309,20 +323,20 @@ const AddCatalog = () => {
             onChange={(e) => setTermInput(e.target.value)}
             placeholder="Enter term and press Add"
             style={{
-              width: "80%",
+              width: "82%",
               padding: "8px",
               borderRadius: "4px",
-              border: "1px solid #ddd",
+              border: "0.1rem dashed #38170c",
             }}
           />
-          <button type="button" onClick={handleAddTerm}>
+          <button type="button" style={{backgroundColor:'yellow' , height:'2rem' , width:'6rem' ,}} onClick={handleAddTerm}>
             Add
           </button>
-          <ul>
+          <ul style={{display:'flex' , gap:'1rem'}} >
             {formData.index_terms.map((term, index) => (
-              <li key={index}>
+              <li key={index} style={{marginRight:'0.5rem'}}>
                 {term}{" "}
-                <button type="button" onClick={() => handleRemoveTerm(term)}>
+                <button type="button" style={{backgroundColor:"red"}} onClick={() => handleRemoveTerm(term)}>
                   Remove
                 </button>
               </li>
@@ -330,7 +344,7 @@ const AddCatalog = () => {
           </ul>
         </div>
 
-        <button type="submit" disabled={isSubmitting}>
+        <button type="submit" disabled={isSubmitting} style={{  marginLeft:'25rem', padding:"0.7rem 5rem"  ,backgroundColor:"#38170c" , color:"white"}}>
           {isSubmitting ? "Adding..." : "Add Catalog"}
         </button>
       </form>

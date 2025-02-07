@@ -74,14 +74,16 @@ const OnboardSupplier = () => {
   // Styles
   const containerStyle = {
     padding: "20px",
-    marginTop: '-30rem',
+    marginTop: '-39rem',
     marginLeft: '17rem'
   };
 
   const headerStyle = {
     textAlign: "center",
-    marginBottom: "20px",
+    marginBottom: "60px",
     color:'#38170c',
+    marginRight:'20rem'
+    
   };
 
   const noSuppliersStyle = {

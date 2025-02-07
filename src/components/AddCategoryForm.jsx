@@ -47,7 +47,7 @@ const AddCategoryForm = () => {
     <form onSubmit={handleSubmit} style={styles.form}>
      
       <h2 style={styles.h2}>Add New Category</h2>
-      
+       <label style={{marginBottom:'-0.5rem'}}>category</label>
       <input
         type="text"
         name="categoryName"
@@ -57,7 +57,7 @@ const AddCategoryForm = () => {
         required
         style={styles.input}
       />
-      
+      <label style={{marginBottom:'-0.5rem'}}> Description</label>
       <textarea
         name="description"
         placeholder="Category Description"
@@ -66,6 +66,7 @@ const AddCategoryForm = () => {
         required
         style={styles.textarea}
       ></textarea>
+
 
       <button type="submit" style={styles.button}>Add Category</button>
     
@@ -85,31 +86,37 @@ const styles = {
     padding: '20px',
     fontFamily: 'sans-serif',
     borderRadius: '8px',
+   
   },
    h2:{
     textAlign: "center",
     color:" #38170c",
+    marginBottom:'2rem',
+    marginTop:'-2rem'
    },
   category:{
    backgroundColor: "rgba(255, 255, 255, 0.8)",
    backdropFilter: "blur(10px)" ,
    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
    margin :'0rem 19rem',
-   borderRadius: "130px 0px 0px 0px",
+   height:'19rem',
    paddingTop: '5rem',
    paddingBottom: '5rem',
-   marginTop : '-30rem'
+   marginTop : '-45rem',
+   marginLeft:'25rem'
   },
   input: {
     padding: '10px',
     fontSize: '16px',
-    border: "0.1rem solid #38170c",
+   
+    width:'25rem',
+    border: "0.1rem dashed #38170c",
   },
   textarea: {
     padding: '10px',
     fontSize: '16px',
     height: '100px',
-    border: "0.1rem solid #38170c",
+    border: "0.1rem dashed #38170c",
   },
   button: {
     padding: '10px',
@@ -121,6 +128,7 @@ const styles = {
     fontSize: '16px',
     
   },
+ 
 };
 
 export default AddCategoryForm;

@@ -45,7 +45,7 @@ const SubcategoryForm = () => {
     maxWidth: "600px",
     margin: "0 auto",
     marginLeft: '25rem',
-    marginTop: '-28rem',
+    marginTop: '-44rem',
     padding: "70px",
     border: "1px solid #ddd",
    
@@ -53,7 +53,7 @@ const SubcategoryForm = () => {
     backgroundColor: "rgba(255, 255, 255, 0.8)",
     backdropFilter: "blur(10px)" ,
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-    borderRadius: "130px 0px 0px 0px",
+   
   };
 
   const labelStyle = {
@@ -69,7 +69,19 @@ const SubcategoryForm = () => {
     border: "1px solid #ccc",
     borderRadius: "4px",
     fontSize: "16px",
+    border: "0.1rem dashed #38170c",
+    
   };
+  const inputStyle1 = {
+    width: "17rem",
+    padding: "10px",
+    marginBottom: "16px",
+    border: "1px solid #ccc",
+    borderRadius: "4px",
+    fontSize: "16px",
+    marginRight:'1rem',
+    border: "0.1rem dashed #38170c",
+  }
 
   const buttonStyle = {
     display: "block",
@@ -78,10 +90,11 @@ const SubcategoryForm = () => {
     backgroundColor: "#38170c",
     color: "white",
     border: "none",
-    borderRadius: "4px",
+    borderRadius: "10rem",
     cursor: "pointer",
     fontSize: "16px",
     fontWeight: "bold",
+
   };
 
   const messageStyle = {
@@ -93,9 +106,10 @@ const SubcategoryForm = () => {
 
   return (
     <div style={containerStyle}>
-      <h2 style={{ textAlign: "center", marginBottom: "20px" , color:'#38170c'}}>Add Subcategory</h2>
+      <h2 style={{ textAlign: "center", marginBottom: "30px" , color:'#38170c'}}>Add Subcategory</h2>
       {message && <p style={messageStyle}>{message}</p>}
       <form onSubmit={handleSubmit}>
+        <div style={{ display:'flex' }}>
         <div>
           <label htmlFor="name" style={labelStyle}>Subcategory Name:</label>
           <input
@@ -105,7 +119,7 @@ const SubcategoryForm = () => {
             value={subcategory.name}
             onChange={handleChange}
             required
-            style={inputStyle}
+            style={inputStyle1}
           />
         </div>
         <div>
@@ -116,8 +130,9 @@ const SubcategoryForm = () => {
             name="description"
             value={subcategory.description}
             onChange={handleChange}
-            style={inputStyle}
+            style={inputStyle1}
           />
+        </div>
         </div>
         <div>
           <label htmlFor="category_id" style={labelStyle}>Category:</label>

@@ -4,7 +4,7 @@ import AddProductForm from '../../components/AddProductForm';
 
 const ProductManagement = () => {
   return (
-    <div style={{marginTop: "-25rem"}}>
+    <div style={{marginTop: "-42rem"}}>
        
       <AddProductForm />
       

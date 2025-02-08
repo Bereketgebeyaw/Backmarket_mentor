@@ -129,22 +129,21 @@ const BuyerDashboard = () => {
     }
   };
   const handleFavorite = (product) => {
-    // Log the current favorites and the product being toggled
     console.log("Current favorites:", favorites);
     console.log("Toggling favorite for product:", product);
-
-    const isCurrentlyFavorite = favorites.some((fav) => fav.id === product.id);
-    
+  
+    const isCurrentlyFavorite = favorites.some((fav) => fav.id === product.product_id);
+  
     const updatedFavorites = isCurrentlyFavorite
-      ? favorites.filter((fav) => fav.id !== product.id) // Remove from favorites
-      : [...favorites, product]; // Add to favorites
-
-    // Log the updated favorites
+      ? favorites.filter((fav) => fav.id !== product.product_id) // Remove from favorites
+      : [...favorites, { id: product.product_id, name: product.product_name, price: product.price }]; // Add only selected product to favorites
+  
     console.log("Updated favorites:", updatedFavorites);
-
+  
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
     setFavorites(updatedFavorites);
   };
+  
 
   if (loading) return <p>Loading products...</p>;
  
@@ -211,7 +210,7 @@ const BuyerDashboard = () => {
                   key={product.id}
                   product={product}
                   seller={seller}
-                  isFavorite={isFavorite}
+                  isFavorite={favorites.some((fav) => fav.id === product.product_id)}
                   
                   onAddToCart={handleAddToCart}
                   onFavorite={handleFavorite}

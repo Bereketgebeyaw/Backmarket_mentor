@@ -18,7 +18,12 @@ const BuyerDashboard = () => {
   const [cartMessage, setCartMessage] = useState(null);
   const [favorites, setFavorites] = useState(() => {
     // Load favorites from local storage on initialization
-    return JSON.parse(localStorage.getItem("favorites")) || [];
+    try {
+      return JSON.parse(localStorage.getItem("favorites")) || [];
+    } catch (error) {
+      console.error("Failed to load favorites from localStorage:", error);
+      return [];
+    }
   });
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("");
